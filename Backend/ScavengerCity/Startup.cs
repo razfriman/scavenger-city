@@ -79,6 +79,15 @@ namespace ScavengerCity
                     builder => builder.WithOrigins(
                         "http://*.razfriman.com",
                         "http://localhost:4200"));
+
+                options.AddPolicy(
+                   "AllowAll",
+                    builder => builder
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowAnyOrigin());
+
+                    
             });
 
             // ===== Add MVC ========
@@ -109,9 +118,9 @@ namespace ScavengerCity
 
             app.UseAuthentication();
 
-            app.UseCors("AllowSpecificOrigin");
+            app.UseCors("AllowAll");
             app.UseMvc();
-            //dbContext.Database.Migrate();
+
             dbContext.Database.EnsureCreated();
         }
     }

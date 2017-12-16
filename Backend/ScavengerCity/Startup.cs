@@ -71,6 +71,16 @@ namespace ScavengerCity
             // ===== Add Automapper =====
             services.AddAutoMapper();
 
+            services.AddCors();
+            services.AddCors(options =>
+            {
+                options.AddPolicy(
+                    "AllowSpecificOrigin",
+                    builder => builder.WithOrigins(
+                        "http://*.razfriman.com",
+                        "http://localhost:4200"));
+            });
+
             // ===== Add MVC ========
             services.Configure<MvcOptions>(x =>
             {
@@ -98,6 +108,8 @@ namespace ScavengerCity
             }
 
             app.UseAuthentication();
+
+            app.UseCors("AllowSpecificOrigin");
             app.UseMvc();
             //dbContext.Database.Migrate();
             dbContext.Database.EnsureCreated();

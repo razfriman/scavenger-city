@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
     this.submitted = true;
     this.notification = null;
 
-    this.apiService.login(this.form.value.email, this.form.value.password)
+    this.apiService.login('a', 'b')
     .subscribe(data => {
       this.router.navigate(['/']);
     },

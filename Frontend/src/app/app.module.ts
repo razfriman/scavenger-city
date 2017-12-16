@@ -13,7 +13,9 @@ import {
   MatInputModule,
   MatIconRegistry,
   MatListModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatSnackBarModule,
+  MatDialogModule
 } from '@angular/material';
 import { JwtModule } from '@auth0/angular-jwt';
 
@@ -66,13 +68,15 @@ import { SignUpComponent } from './sign-up/sign-up.component';
     MatCardModule,
     MatListModule,
     MatProgressSpinnerModule,
+    MatSnackBarModule,
+    MatDialogModule,
     HttpClientModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: () => {
-          return localStorage.getItem('access_token');
+          return localStorage.getItem(AuthService.TOKEN_KEY);
         },
-        whitelistedDomains: ['localhost', 'razfriman.com']
+        whitelistedDomains: ['localhost', 'api.razfriman.com']
       }
     })
   ],

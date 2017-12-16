@@ -29,7 +29,7 @@ namespace ScavengerCity.Controllers
             return _huntService.Get(id);
         }
 
-        [HttpPost("purchase/{id}")]
+        [HttpPost("{id}/purchase")]
         public HuntInstance Purchase(int id)
         {
             return _huntService.Purchase(id);

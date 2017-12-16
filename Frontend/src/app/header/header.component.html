@@ -28,7 +28,7 @@
         <span>Sign Up</span>
       </button>
 
-      <button mat-menu-item *ngIf="hasSignedIn()" routerLink="/login">
+      <button mat-menu-item *ngIf="hasSignedIn()" (click)="logOut()">
         <mat-icon>exit_to_app</mat-icon>
         <span>Log Out</span>
       </button>

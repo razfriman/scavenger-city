@@ -28,6 +28,7 @@ namespace ScavengerCity.Services
         {
             return _dbContext
                 .HuntInstances
+                .Include(x => x.Hunt)
                 .Where(x => x.UserID == _userManager.GetUserId(_user))
                 .ToArray()
                 .Select(x => Mapper.Map<HuntInstance>(x));
@@ -37,6 +38,7 @@ namespace ScavengerCity.Services
         {
             var hunt = _dbContext
                 .HuntInstances
+                .Include(x => x.Hunt)
                 .Include(x => x.CurrentQuestionInstance.Answers)
                 .Include(x => x.CurrentQuestionInstance.Question)
                 .Where(x => x.UserID == _userManager.GetUserId(_user))

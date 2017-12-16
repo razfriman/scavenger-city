@@ -86,8 +86,6 @@ namespace ScavengerCity
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowAnyOrigin());
-
-                    
             });
 
             // ===== Add MVC ========

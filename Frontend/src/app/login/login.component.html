@@ -7,8 +7,6 @@
       </mat-card-subtitle>
 
       <mat-card-content>
-        <p *ngIf="notification">{{notification}}</p>
-
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
             <mat-input-container>
               <input matInput formControlName="email" required type="email" placeholder="Email">

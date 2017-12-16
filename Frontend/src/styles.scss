@@ -3,3 +3,11 @@
 body {
   margin: 0;
 }
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  select.mat-input-element,
+  textarea.mat-input-element,
+  input.mat-input-element {
+    font-size: 16px;
+  }
+}

@@ -1,0 +1,4 @@
+<p>
+  <app-guest *ngIf="!hasSignedIn()"></app-guest>
+  <app-dashboard *ngIf="hasSignedIn()"></app-dashboard>
+</p>

@@ -1,0 +1,43 @@
+.content {
+  width: 100%;
+}
+
+mat-card {
+  max-width: 350px;
+  text-align: center;
+  animation: fadein 1s;
+}
+
+mat-input-container {
+  display: block;
+}
+
+mat-spinner {
+  display: inline-block;
+}
+
+button {
+  display: block;
+  width: 100%;
+}
+
+@media screen and (max-width: 599px) {
+
+  .content {
+    /* https://github.com/angular/flex-layout/issues/295 */
+    display: block !important;
+  }
+
+  mat-card {
+    /* https://github.com/angular/flex-layout/issues/295 */
+    display: block !important;
+    max-width: 999px;
+  }
+
+}
+
+a {
+  text-decoration: none;
+  cursor: auto;
+  color: #FFFFFF;
+}

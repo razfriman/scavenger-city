@@ -1,0 +1,36 @@
+<mat-toolbar color="primary" class="app-navbar">
+
+  <button mat-icon-button mat-ripple routerLink="/">
+    <img alt="ScavengerCity" class="app-angular-logo" src="assets/image/angular-white-transparent.svg">
+    <span>Scavenger City</span>
+  </button>
+
+  <button  *ngIf="hasSignedIn()" mat-button mat-ripple routerLink="/purchased-hunts">
+    <span>My Hunts</span>
+  </button>
+
+  <button mat-icon-button [matMenuTriggerFor]="menu" class="right-menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu" yPosition="below" xPosition="before">
+      <button mat-menu-item *ngIf="hasSignedIn()" routerLink="/purchased-hunts">
+        <mat-icon>account_balance</mat-icon>
+        <span>My Hunts</span>
+      </button>
+
+      <button mat-menu-item routerLink="/hunts">
+        <mat-icon>near_me</mat-icon>
+        <span>Explore Hunts</span>
+      </button>
+
+      <button mat-menu-item *ngIf="!hasSignedIn()" routerLink="/login">
+        <mat-icon>person</mat-icon>
+        <span>Log In</span>
+      </button>
+
+      <button mat-menu-item *ngIf="hasSignedIn()" routerLink="/login">
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Log Out</span>
+      </button>
+    </mat-menu>
+</mat-toolbar>

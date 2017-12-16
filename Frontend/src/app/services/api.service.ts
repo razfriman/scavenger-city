@@ -4,6 +4,7 @@ import { ApiResponse } from '../models/api-response';
 import { Hunt } from '../models/hunt';
 import { HuntInstance } from '../models/hunt-instance';
 import { AnswerInstance } from '../models/answer-instance';
+import { Hint } from '../models/hint';
 
 @Injectable()
 export class ApiService {

@@ -12,6 +12,7 @@ import {
   MatCardModule,
   MatInputModule,
   MatIconRegistry,
+  MatListModule,
   MatProgressSpinnerModule
 } from '@angular/material';
 import { JwtModule } from '@auth0/angular-jwt';
@@ -32,6 +33,7 @@ import { HuntDetailComponent } from './hunt-detail/hunt-detail.component';
 import { AuthService } from './services/auth.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ApiService } from './services/api.service';
+import { SignUpComponent } from './sign-up/sign-up.component';
 
 
 @NgModule({
@@ -46,7 +48,8 @@ import { ApiService } from './services/api.service';
     GuestComponent,
     HuntsComponent,
     HuntDetailComponent,
-    DashboardComponent
+    DashboardComponent,
+    SignUpComponent
   ],
   imports: [
     BrowserModule,
@@ -61,6 +64,7 @@ import { ApiService } from './services/api.service';
     MatInputModule,
     MatToolbarModule,
     MatCardModule,
+    MatListModule,
     MatProgressSpinnerModule,
     HttpClientModule,
     JwtModule.forRoot({

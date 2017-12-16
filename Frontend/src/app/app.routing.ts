@@ -8,6 +8,7 @@ import { LoginComponent } from './login/login.component';
 import { GuestGuard } from './guard/guest.guard';
 import { HuntsComponent } from './hunts/hunts.component';
 import { HuntDetailComponent } from './hunt-detail/hunt-detail.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
 
 
 export const routes: Routes = [
@@ -22,6 +23,11 @@ export const routes: Routes = [
     canActivate: [GuestGuard]
   },
   {
+    path: 'signup',
+    component: SignUpComponent,
+    canActivate: [GuestGuard]
+  },
+  {
     path: 'hunts',
     component: HuntsComponent
   },
@@ -29,16 +35,6 @@ export const routes: Routes = [
     path: 'hunts/:id',
     component: HuntDetailComponent
   },
-  // {
-  //   path: 'change-password',
-  //   component: ChangePasswordComponent,
-  //   canActivate: [LoginGuard]
-  // },
-  // {
-  //   path: 'admin',
-  //   component: AdminComponent,
-  //   canActivate: [AdminGuard]
-  // },
   {
     path: '404',
     component: NotFoundComponent

@@ -3,7 +3,7 @@
     <mat-card elevation="5" fxFlex>
 
       <mat-card-subtitle>
-        <h2>Login</h2>
+        <h2>Sign Up</h2>
       </mat-card-subtitle>
 
       <mat-card-content>
@@ -17,12 +17,12 @@
               <input matInput formControlName="password" required type="password" placeholder="Password">
             </mat-input-container>
             <button type="submit" [disabled]="!form.valid || submitted" mat-raised-button color="primary">
-                Login
+                Sign Up
               <mat-spinner *ngIf="submitted" mode="indeterminate" [diameter]="20"></mat-spinner>
             </button>
           </form>
 
-          <p>Don't have an account?  <a routerLink="/signup">Sign up now</a></p>
+          <p>Already have an account?  <a routerLink="/login">Login now</a></p>
 
       </mat-card-content>
     </mat-card>

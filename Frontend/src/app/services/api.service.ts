@@ -16,6 +16,13 @@ export class ApiService {
     });
   }
 
+  public signUp(email: string, password: string) {
+    return this.httpClient.post(`${this.API_BASE}/account/register`, {
+      email: email,
+      password: password
+    });
+  }
+
   public getHunts() {
     return this.httpClient.get(`${this.API_BASE}/hunts`);
   }

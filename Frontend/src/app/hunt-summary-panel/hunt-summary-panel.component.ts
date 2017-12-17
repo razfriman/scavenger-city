@@ -10,7 +10,7 @@ import { HuntInstance } from 'app/models/hunt-instance';
 export class HuntSummaryPanelComponent implements OnInit {
 
   @Input('hunt')
-  private hunt: HuntInstance;
+  public hunt: HuntInstance;
 
   constructor() { }
 

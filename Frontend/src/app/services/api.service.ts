@@ -9,7 +9,7 @@ import { Hint } from '../models/hint';
 @Injectable()
 export class ApiService {
 
-  private API_BASE = 'http://api.razfriman.com';
+  private API_BASE = 'https://api.razfriman.com';
 
   constructor(private httpClient: HttpClient) {
   }

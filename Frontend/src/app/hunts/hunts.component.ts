@@ -13,7 +13,7 @@ export class HuntsComponent implements OnInit, OnDestroy {
 
   constructor(private apiService: ApiService) { }
 
-  private hunts: Hunt[];
+  hunts: Hunt[];
   private ngUnsubscribe = new Subject();
 
   ngOnInit() {

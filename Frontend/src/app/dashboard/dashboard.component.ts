@@ -14,7 +14,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   constructor(private apiService: ApiService) { }
 
-  private huntInstances: HuntInstance[];
+  huntInstances: HuntInstance[];
   private ngUnsubscribe = new Subject();
 
   ngOnInit() {

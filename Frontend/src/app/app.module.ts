@@ -19,7 +19,7 @@ import {
   MatTabsModule,
   MatExpansionModule
 } from '@angular/material';
-import { JwtModule } from '@auth0/angular-jwt';
+import { JwtModule, JwtModuleOptions } from '@auth0/angular-jwt';
 
 import { AppComponent } from './app.component';
 import { FooterComponent } from './footer/footer.component';
@@ -44,6 +44,18 @@ import { HuntSummaryPanelComponent } from './hunt-summary-panel/hunt-summary-pan
 import { HuntSummaryComponent } from './hunt-summary/hunt-summary.component';
 import { HuntAvailableFilterPipe } from './pipes/hunt-available-filter.pipe';
 import { HuntFinishedFilterPipe } from './pipes/hunt-finished-filter.pipe';
+
+
+export function tokenGetter() {
+  return localStorage.getItem(AuthService.TOKEN_KEY);
+}
+
+const jwtConf: JwtModuleOptions = {
+  config: {
+    tokenGetter: tokenGetter,
+    whitelistedDomains: ['localhost', 'api.razfriman.com']
+  }
+};
 
 @NgModule({
   declarations: [
@@ -86,14 +98,7 @@ import { HuntFinishedFilterPipe } from './pipes/hunt-finished-filter.pipe';
     MatTabsModule,
     MatExpansionModule,
     HttpClientModule,
-    JwtModule.forRoot({
-      config: {
-        tokenGetter: () => {
-          return localStorage.getItem(AuthService.TOKEN_KEY);
-        },
-        whitelistedDomains: ['localhost', 'api.razfriman.com']
-      }
-    })
+    JwtModule.forRoot(jwtConf)
   ],
   providers: [
     LoginGuard,

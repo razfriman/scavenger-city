@@ -30,9 +30,9 @@ namespace ScavengerCity.Controllers
         }
 
         [HttpPost("{id}/purchase")]
-        public HuntInstance Purchase(int id)
+        public HuntInstance Purchase(int id, [FromBody] PurchaseRequest request)
         {
-            return _huntService.Purchase(id);
+            return _huntService.Purchase(id, request);
         }
     }
 }

@@ -13,8 +13,8 @@ import { Subject } from 'rxjs/Subject';
 })
 export class SignUpComponent implements OnInit, OnDestroy {
 
-  private form: FormGroup;
-  private submitted = false;
+  form: FormGroup;
+  submitted = false;
   private ngUnsubscribe = new Subject();
 
   constructor(

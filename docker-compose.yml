@@ -32,5 +32,9 @@ services:
        - "postgres"
     environment:
       - VIRTUAL_HOST=api.razfriman.com
+  api:
+    image: rfriman/scavenger-city
+    environment:
+      - VIRTUAL_HOST=scavengercity.razfriman.com
 volumes:
   pgdata:

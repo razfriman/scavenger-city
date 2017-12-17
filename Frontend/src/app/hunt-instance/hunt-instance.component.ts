@@ -16,10 +16,10 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class HuntInstanceComponent implements OnInit, OnDestroy {
 
-  private form: FormGroup;
-  private submitted = false;
+  form: FormGroup;
+  submitted = false;
+  hunt: HuntInstance;
   private id: number;
-  private hunt: HuntInstance;
   private ngUnsubscribe = new Subject();
 
   constructor(

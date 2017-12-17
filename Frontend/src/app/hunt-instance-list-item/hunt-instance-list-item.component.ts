@@ -12,7 +12,7 @@ export class HuntInstanceListItemComponent implements OnInit {
 
 
   @Input('hunt')
-  hunt: HuntInstance;
+  public hunt: HuntInstance;
 
   constructor() { }
 

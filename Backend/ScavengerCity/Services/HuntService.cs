@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ScavengerCity.Entities;
 using ScavengerCity.Helpers;
 using ScavengerCity.Models;
+using Stripe;
 
 namespace ScavengerCity.Services
 {
@@ -46,7 +47,7 @@ namespace ScavengerCity.Services
             return Mapper.Map<Hunt>(hunt);
         }
 
-        public HuntInstance Purchase(int id)
+        public HuntInstance Purchase(int id, PurchaseRequest request)
         {
             var hunt = _dbContext.Hunts
                                 .Include(x => x.Questions)
@@ -56,6 +57,8 @@ namespace ScavengerCity.Services
             {
                 throw new RecordNotFoundException($"Cannot find Hunt with ID={id}");
             }
+
+            var charge = Charge(request);
 
             var instance = new HuntInstanceEntity
             {
@@ -73,6 +76,28 @@ namespace ScavengerCity.Services
             _dbContext.SaveChanges();
 
             return Mapper.Map<HuntInstance>(instance);
+        }
+
+        private StripeCharge Charge(PurchaseRequest request)
+        {
+            var customers = new StripeCustomerService();
+            var charges = new StripeChargeService();
+
+            var customer = customers.Create(new StripeCustomerCreateOptions
+            {
+                Email = request.Email,
+                SourceToken = request.Token
+            });
+
+            var charge = charges.Create(new StripeChargeCreateOptions
+            {
+                Amount = 500,
+                Description = "Sample Charge",
+                Currency = "usd",
+                CustomerId = customer.Id
+            });
+
+            return charge;
         }
     }
 }

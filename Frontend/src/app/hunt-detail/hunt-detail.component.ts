@@ -15,7 +15,7 @@ import { Subject } from 'rxjs/Subject';
 export class HuntDetailComponent implements OnInit, OnDestroy {
 
   private id: number;
-  private hunt: Hunt;
+  hunt: Hunt;
   private ngUnsubscribe = new Subject();
 
   constructor(

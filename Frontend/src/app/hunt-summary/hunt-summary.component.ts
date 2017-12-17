@@ -10,7 +10,7 @@ import { HuntStatus } from 'app/models/hunt-status';
 export class HuntSummaryComponent implements OnInit {
 
   @Input('hunt')
-  private hunt: HuntInstance;
+  public hunt: HuntInstance;
 
   constructor() { }
 

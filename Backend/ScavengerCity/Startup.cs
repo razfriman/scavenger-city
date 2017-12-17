@@ -15,7 +15,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using ScavengerCity.Entities;
 using ScavengerCity.Helpers;
+using ScavengerCity.Models;
 using ScavengerCity.Services;
+using Stripe;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace ScavengerCity
@@ -79,6 +81,10 @@ namespace ScavengerCity
                 c.SwaggerDoc("v1", new Info { Title = "Scavenger City API", Version = "v1" });
             });
 
+            // ==== Add Stripe ====
+            services.Configure<StripeSettings>(Configuration.GetSection("Stripe"));
+
+
             // ==== Add CORS =====
             services.AddCors();
             services.AddCors(options =>
@@ -122,6 +128,9 @@ namespace ScavengerCity
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            StripeConfiguration.SetApiKey(Configuration.GetSection("Stripe")["SecretKey"]);
+
 
             app.UseAuthentication();
 

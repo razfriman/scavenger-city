@@ -1,11 +1,14 @@
-<mat-list>
-  <h3 mat-subheader>Your Hunts</h3>
+<mat-tab-group>
+  <mat-tab label="Available">
+    <mat-list>
+      <app-hunt-instance-list-item *ngFor="let hunt of huntInstances" [hunt]="hunt"></app-hunt-instance-list-item>
+    </mat-list>
+  </mat-tab>
+  <mat-tab label="Completed">
+    <mat-list>
+      <app-hunt-instance-list-item *ngFor="let hunt of huntInstances" [hunt]="hunt"></app-hunt-instance-list-item>
+    </mat-list>
+  </mat-tab>
+</mat-tab-group>
 
-  <mat-spinner *ngIf="!huntInstances" mode="indeterminate"></mat-spinner>
-  <mat-list-item *ngFor="let hunt of huntInstances" routerLink="/hunt-instances/{{hunt.huntInstanceID}}">
-    <mat-icon mat-list-icon>map</mat-icon>
-    <h4 mat-line>{{hunt?.hunt?.name}}</h4>
-    <p mat-line>{{getHuntStatus(hunt)}}</p>
-    <p mat-line>{{hunt?.hunt?.city}}, {{hunt?.hunt?.country}} </p>
-  </mat-list-item>
-</mat-list>
+<mat-spinner *ngIf="!huntInstances" mode="indeterminate"></mat-spinner>

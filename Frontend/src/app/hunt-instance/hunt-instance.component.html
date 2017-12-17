@@ -1,10 +1,44 @@
-<p>
-  hunt-instance works!
-</p>
+<mat-spinner *ngIf="!hunt" mode="indeterminate"></mat-spinner>
 
+<mat-card>
+  <mat-card-header *ngIf="hunt">
+    <mat-card-title>{{hunt?.hunt?.name}}</mat-card-title>
+    <mat-card-subtitle>{{hunt?.hunt?.city}}, {{hunt?.hunt?.country}}</mat-card-subtitle>
+    <mat-card-subtitle>{{hunt?.hunt?.distance}}km</mat-card-subtitle>
+    <mat-card-subtitle>Question {{hunt?.progress}}/{{hunt?.questionCount}}</mat-card-subtitle>
+    <mat-card-subtitle>Status: </mat-card-subtitle>
+    <mat-card-subtitle>Penalties: {{hunt?.penalties}}</mat-card-subtitle>
+    <mat-card-subtitle>Skipped: </mat-card-subtitle>
+    <mat-card-subtitle>Date Started: </mat-card-subtitle>
+    <mat-card-subtitle>Date Ended: </mat-card-subtitle>
+    <mat-card-subtitle>Time Taken: </mat-card-subtitle>
 
+  </mat-card-header>
 
-<!--
-export class HuntInstance { huntInstanceID: number; hunt: Hunt; currentQuestionInstance: QuestionInstance; currentQuestionInstanceID:
-number; startTime: Date; endTime: Date; adjustedEndTime: Date; status: number; userID: string; huntID: number; penalties:
-number; progress: number; purchase: any; questionCount: number; skipped: number; } -->
+  <mat-card-actions>
+    <button mat-raised-button *ngIf="isAvailable()" color="primary" (click)="start()">START</button>
+  </mat-card-actions>
+</mat-card>
+
+<mat-card *ngIf="hunt?.currentQuestionInstance">
+  <mat-card-header>
+    <mat-card-title>QUESTION: {{hunt.currentQuestionInstance.question.text}}</mat-card-title>
+    <mat-card-subtitle>Hint: {{getHint()}}</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <mat-input-container>
+        <input matInput formControlName="answer" required type="text" placeholder="Answer">
+      </mat-input-container>
+    </form>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button *ngIf="isInProgress()" color="primary" [disabled]="!form.valid || submitted" (click)="submit()">
+      SUBMIT
+    </button>
+
+    <button mat-raised-button *ngIf="isInProgress()" color="accent" [disabled]="isHintUsed()" (click)="hint()">HINT</button>
+    <button mat-raised-button *ngIf="isInProgress()" color="accent" (click)="skip()">SKIP</button>
+  </mat-card-actions>
+</mat-card>

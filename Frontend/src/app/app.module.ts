@@ -15,7 +15,8 @@ import {
   MatListModule,
   MatProgressSpinnerModule,
   MatSnackBarModule,
-  MatDialogModule
+  MatDialogModule,
+  MatTabsModule
 } from '@angular/material';
 import { JwtModule } from '@auth0/angular-jwt';
 
@@ -37,6 +38,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ApiService } from './services/api.service';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { HuntInstanceComponent } from './hunt-instance/hunt-instance.component';
+import { HuntInstanceListItemComponent } from './hunt-instance-list-item/hunt-instance-list-item.component';
 
 
 @NgModule({
@@ -53,7 +55,8 @@ import { HuntInstanceComponent } from './hunt-instance/hunt-instance.component';
     HuntDetailComponent,
     DashboardComponent,
     SignUpComponent,
-    HuntInstanceComponent
+    HuntInstanceComponent,
+    HuntInstanceListItemComponent
   ],
   imports: [
     BrowserModule,
@@ -72,6 +75,7 @@ import { HuntInstanceComponent } from './hunt-instance/hunt-instance.component';
     MatProgressSpinnerModule,
     MatSnackBarModule,
     MatDialogModule,
+    MatTabsModule,
     HttpClientModule,
     JwtModule.forRoot({
       config: {

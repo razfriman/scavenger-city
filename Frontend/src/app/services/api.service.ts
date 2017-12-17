@@ -53,7 +53,7 @@ export class ApiService {
   }
 
   public submitAnswer(id: number, value: string) {
-    return this.httpClient.post<ApiResponse<AnswerInstance>>(`${this.API_BASE}/hunt-instances/${id}/answer`, { value: value });
+    return this.httpClient.post<ApiResponse<AnswerInstance>>(`${this.API_BASE}/hunt-instances/${id}/submit`, { text: value });
   }
 
   public start(id: number) {

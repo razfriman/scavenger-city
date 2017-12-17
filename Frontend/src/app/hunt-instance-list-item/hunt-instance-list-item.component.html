@@ -1,0 +1,6 @@
+<mat-list-item routerLink="/hunt-instances/{{hunt.huntInstanceID}}">
+  <mat-icon mat-list-icon>map</mat-icon>
+  <h4 mat-line>{{hunt?.hunt?.name}}</h4>
+  <p mat-line>{{getHuntStatus()}}</p>
+  <p mat-line>{{hunt?.hunt?.city}}, {{hunt?.hunt?.country}} </p>
+</mat-list-item>

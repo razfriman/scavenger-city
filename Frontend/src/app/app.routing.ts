@@ -6,6 +6,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
 import { LoginComponent } from './login/login.component';
 import { GuestGuard } from './guard/guest.guard';
+import { LoginGuard } from './guard/login.guard';
 import { HuntsComponent } from './hunts/hunts.component';
 import { HuntDetailComponent } from './hunt-detail/hunt-detail.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
@@ -38,7 +39,8 @@ export const routes: Routes = [
   },
   {
     path: 'hunt-instances/:id',
-    component: HuntInstanceComponent
+    component: HuntInstanceComponent,
+    canActivate: [LoginGuard]
   },
   {
     path: '404',

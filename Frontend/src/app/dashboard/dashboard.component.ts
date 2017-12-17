@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
 import { ApiService } from '../services/api.service';
 import { HuntInstance } from '../models/hunt-instance';
 import { Hunt } from '../models/hunt';
 import { HuntStatus } from '../models/hunt-status';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,25 +14,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   constructor(private apiService: ApiService) { }
 
-  subscription: Subscription;
-  huntInstances: HuntInstance[];
+  private huntInstances: HuntInstance[];
+  private ngUnsubscribe = new Subject();
 
   ngOnInit() {
-    this.subscription = this.apiService.getInstances().subscribe(x => {
-      this.huntInstances = x.data;
-    });
-  }
-
-  getHuntStatus(hunt: HuntInstance): string {
-    if (!hunt) {
-      return null;
-    }
-
-    return HuntStatus[hunt.status];
+    this.apiService.getInstances()
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe(x => {
+        this.huntInstances = x.data;
+      });
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
-
 }

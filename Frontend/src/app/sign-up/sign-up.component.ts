@@ -1,20 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../services/api.service';
 import { AuthService } from '../services/auth.service';
 import { MatSnackBar } from '@angular/material';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss']
 })
-export class SignUpComponent implements OnInit {
+export class SignUpComponent implements OnInit, OnDestroy {
 
-  form: FormGroup;
-  submitted = false;
-  notification: string;
+  private form: FormGroup;
+  private submitted = false;
+  private ngUnsubscribe = new Subject();
 
   constructor(
     private apiService: ApiService,
@@ -33,20 +34,23 @@ export class SignUpComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
   onSubmit() {
     this.submitted = true;
-    this.notification = null;
 
     this.apiService.signUp(this.form.value.email, this.form.value.password)
+      .takeUntil(this.ngUnsubscribe)
       .subscribe(data => {
         this.authService.setToken(data.data);
         this.router.navigate(['/']);
       },
       error => {
         this.submitted = false;
-        this.notification = 'Incorrect username or password.';
         this.snackBar.open('error', 'Cannot create account.', { duration: 2000 });
       });
   }
-
 }

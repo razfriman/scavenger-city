@@ -1,19 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../services/api.service';
 import { AuthService } from '../services/auth.service';
 import { MatSnackBar } from '@angular/material';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
-  form: FormGroup;
-  submitted = false;
+  private form: FormGroup;
+  private submitted = false;
+  private ngUnsubscribe = new Subject();
 
   constructor(
     private apiService: ApiService,
@@ -32,10 +34,16 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
   onSubmit() {
     this.submitted = true;
 
     this.apiService.login(this.form.value.email, this.form.value.password)
+      .takeUntil(this.ngUnsubscribe)
       .subscribe(data => {
         this.authService.setToken(data.data);
         this.router.navigate(['/']);

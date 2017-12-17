@@ -1,11 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
 import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
 import { ApiService } from '../services/api.service';
 import { AuthService } from '../services/auth.service';
 import { Hunt } from '../models/hunt';
 import { MatSnackBar } from '@angular/material';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-hunt-detail',
@@ -16,8 +16,7 @@ export class HuntDetailComponent implements OnInit, OnDestroy {
 
   private id: number;
   private hunt: Hunt;
-  private routeSub: Subscription;
-  private huntSub: Subscription;
+  private ngUnsubscribe = new Subject();
 
   constructor(
     private route: ActivatedRoute,
@@ -27,30 +26,30 @@ export class HuntDetailComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar) { }
 
   ngOnInit() {
-    this.routeSub = this.route.params.subscribe(params => {
-      this.id = +params['id'];
+    this.route.params
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe(params => {
+        this.id = +params['id'];
 
-      if (!this.id) {
-        this.router.navigate(['/404']);
-        return;
-      }
-
-      this.apiService.getHunt(this.id)
-        .subscribe(x => {
-          this.hunt = x.data;
-        }, err => {
+        if (!this.id) {
           this.router.navigate(['/404']);
           return;
-        });
-    });
+        }
+
+        this.apiService.getHunt(this.id)
+          .takeUntil(this.ngUnsubscribe)
+          .subscribe(x => {
+            this.hunt = x.data;
+          }, err => {
+            this.router.navigate(['/404']);
+            return;
+          });
+      });
   }
 
   ngOnDestroy(): void {
-    this.routeSub.unsubscribe();
-
-    if (this.huntSub) {
-      this.huntSub.unsubscribe();
-    }
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   purchase() {
@@ -58,7 +57,7 @@ export class HuntDetailComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         console.log(data);
         this.snackBar.open('Success', '', { duration: 2000 });
-        // this.router.navigate(['/hunt-instance', data.data.huntInstanceID]);
+        this.router.navigate(['/hunt-instance', data.data.huntInstanceID]);
       },
       error => {
         this.snackBar.open('Error', 'Cannot purchase hunt.', { duration: 2000 });

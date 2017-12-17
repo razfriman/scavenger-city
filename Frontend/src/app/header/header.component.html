@@ -7,7 +7,7 @@
   <button mat-icon-button [matMenuTriggerFor]="menu" class="right-menu">
     <mat-icon>more_vert</mat-icon>
   </button>
-  <mat-menu #menu="matMenu" yPosition="below" xPosition="before">
+  <mat-menu #menu="matMenu" yPosition="below" xPosition="before" [overlapTrigger]="false">
     <button mat-menu-item *ngIf="hasSignedIn()" routerLink="/">
       <mat-icon>home</mat-icon>
       <span>Dashboard</span>

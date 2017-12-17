@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
 import { ApiService } from '../services/api.service';
+import { AuthService } from '../services/auth.service';
 import { Hunt } from '../models/hunt';
 import { MatSnackBar } from '@angular/material';
 
@@ -22,6 +23,7 @@ export class HuntDetailComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private apiService: ApiService,
+    private authService: AuthService,
     private snackBar: MatSnackBar) { }
 
   ngOnInit() {
@@ -61,5 +63,9 @@ export class HuntDetailComponent implements OnInit, OnDestroy {
       error => {
         this.snackBar.open('Error', 'Cannot purchase hunt.', { duration: 2000 });
       });
+  }
+
+  hasSignedIn() {
+    return this.authService.isAuthenticated();
   }
 }

@@ -16,6 +16,7 @@ using Microsoft.IdentityModel.Tokens;
 using ScavengerCity.Entities;
 using ScavengerCity.Helpers;
 using ScavengerCity.Services;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace ScavengerCity
 {
@@ -36,9 +37,10 @@ namespace ScavengerCity
         {
             // ===== Add Entity Framework =====
             var sqlConnectionString = Configuration.GetConnectionString("DataAccessPostgreSqlProvider");
-            services.AddDbContext<ScavengerDbContext>(options =>
-                options.UseNpgsql(sqlConnectionString)
-            );
+            services.AddDbContext<ScavengerDbContext>(options => {
+                options.UseNpgsql(sqlConnectionString);
+                //options.UseInMemoryDatabase("db");
+            });
 
             // ===== Add Identity ========
             services.AddIdentity<IdentityUser, IdentityRole>()
@@ -71,6 +73,13 @@ namespace ScavengerCity
             // ===== Add Automapper =====
             services.AddAutoMapper();
 
+            // ===== Add Swagger ====
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Scavenger City API", Version = "v1" });
+            });
+
+            // ==== Add CORS =====
             services.AddCors();
             services.AddCors(options =>
             {
@@ -117,6 +126,13 @@ namespace ScavengerCity
             app.UseAuthentication();
 
             app.UseCors("AllowAll");
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Scavenger City API V1");
+            });
+
             app.UseMvc();
 
             dbContext.Database.EnsureCreated();

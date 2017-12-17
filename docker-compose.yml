@@ -19,6 +19,8 @@ services:
          POSTGRES_DB: scavengercity
      volumes:
        - pgdata:/var/lib/postgresql/data
+     ports:
+       - 5432:5432
   api:
     image: rfriman/scavenger-city-api
     ports:

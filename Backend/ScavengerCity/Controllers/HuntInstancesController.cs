@@ -5,7 +5,7 @@ using ScavengerCity.Services;
 
 namespace ScavengerCity.Controllers
 {
-    [Route("hunt-instances")]
+    [Route("Hunt-Instances")]
     public class HuntInstancesController : Controller
     {
         private readonly HuntInstanceService _huntInstanceService;

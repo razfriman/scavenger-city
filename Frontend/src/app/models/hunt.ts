@@ -7,5 +7,6 @@ export class Hunt {
   description: string;
   city: string;
   country: string;
+  price: number;
   questions: Question[];
 }

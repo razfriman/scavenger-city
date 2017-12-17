@@ -42,7 +42,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   onSubmit() {
     this.submitted = true;
 
-    this.apiService.login(this.form.value.email, this.form.value.password)
+    this.apiService.login({
+      email: this.form.value.email,
+      password: this.form.value.password
+    })
       .takeUntil(this.ngUnsubscribe)
       .subscribe(data => {
         this.authService.setToken(data.data);

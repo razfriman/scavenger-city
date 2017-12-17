@@ -5,6 +5,9 @@ import { Hunt } from '../models/hunt';
 import { HuntInstance } from '../models/hunt-instance';
 import { AnswerInstance } from '../models/answer-instance';
 import { Hint } from '../models/hint';
+import { PurchaseRequest } from 'app/models/purchase-request';
+import { AnswerSubmission } from 'app/models/answer-submission';
+import { LoginRequest } from 'app/models/login-request';
 
 @Injectable()
 export class ApiService {
@@ -14,18 +17,12 @@ export class ApiService {
   constructor(private httpClient: HttpClient) {
   }
 
-  public login(email: string, password: string) {
-    return this.httpClient.post<ApiResponse>(`${this.API_BASE}/account/login`, {
-      email: email,
-      password: password
-    });
+  public login(request: LoginRequest) {
+    return this.httpClient.post<ApiResponse>(`${this.API_BASE}/account/login`, request);
   }
 
-  public signUp(email: string, password: string) {
-    return this.httpClient.post<ApiResponse>(`${this.API_BASE}/account/register`, {
-      email: email,
-      password: password
-    });
+  public signUp(request: LoginRequest) {
+    return this.httpClient.post<ApiResponse>(`${this.API_BASE}/account/register`, request);
   }
 
   public getHunts() {
@@ -52,15 +49,15 @@ export class ApiService {
     return this.httpClient.post<ApiResponse<Hint>>(`${this.API_BASE}/hunt-instances/${id}/hint`, {});
   }
 
-  public submitAnswer(id: number, value: string) {
-    return this.httpClient.post<ApiResponse<AnswerInstance>>(`${this.API_BASE}/hunt-instances/${id}/submit`, { text: value });
+  public submitAnswer(id: number, answerSubmission: AnswerSubmission) {
+    return this.httpClient.post<ApiResponse<AnswerInstance>>(`${this.API_BASE}/hunt-instances/${id}/submit`, answerSubmission);
   }
 
   public start(id: number) {
     return this.httpClient.post<ApiResponse<HuntInstance>>(`${this.API_BASE}/hunt-instances/${id}/start`, {});
   }
 
-  public purchase(id: number) {
-    return this.httpClient.post<ApiResponse<HuntInstance>>(`${this.API_BASE}/hunts/${id}/purchase`, {});
+  public purchase(id: number, purchaseRequest: PurchaseRequest) {
+    return this.httpClient.post<ApiResponse<HuntInstance>>(`${this.API_BASE}/hunts/${id}/purchase`, purchaseRequest);
   }
 }

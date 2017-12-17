@@ -42,7 +42,10 @@ export class SignUpComponent implements OnInit, OnDestroy {
   onSubmit() {
     this.submitted = true;
 
-    this.apiService.signUp(this.form.value.email, this.form.value.password)
+    this.apiService.signUp({
+      email: this.form.value.email,
+      password: this.form.value.password
+    })
       .takeUntil(this.ngUnsubscribe)
       .subscribe(data => {
         this.authService.setToken(data.data);

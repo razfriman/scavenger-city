@@ -5,32 +5,32 @@
   </button>
 
   <button mat-icon-button [matMenuTriggerFor]="menu" class="right-menu">
-      <mat-icon>more_vert</mat-icon>
+    <mat-icon>more_vert</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu" yPosition="below" xPosition="before">
+    <button mat-menu-item *ngIf="hasSignedIn()" routerLink="/">
+      <mat-icon>home</mat-icon>
+      <span>Dashboard</span>
     </button>
-    <mat-menu #menu="matMenu" yPosition="below" xPosition="before">
-      <button mat-menu-item *ngIf="hasSignedIn()" routerLink="/">
-        <mat-icon>home</mat-icon>
-        <span>Dashboard</span>
-      </button>
 
-      <button mat-menu-item routerLink="/hunts">
-        <mat-icon>near_me</mat-icon>
-        <span>Explore Hunts</span>
-      </button>
+    <button mat-menu-item routerLink="/hunts">
+      <mat-icon>near_me</mat-icon>
+      <span>Explore Hunts</span>
+    </button>
 
-      <button mat-menu-item *ngIf="!hasSignedIn()" routerLink="/login">
-        <mat-icon>person</mat-icon>
-        <span>Log In</span>
-      </button>
+    <button mat-menu-item *ngIf="!hasSignedIn()" routerLink="/login">
+      <mat-icon>person</mat-icon>
+      <span>Log In</span>
+    </button>
 
-      <button mat-menu-item *ngIf="!hasSignedIn()" routerLink="/signup">
-        <mat-icon>person_add</mat-icon>
-        <span>Sign Up</span>
-      </button>
+    <button mat-menu-item *ngIf="!hasSignedIn()" routerLink="/signup">
+      <mat-icon>person_add</mat-icon>
+      <span>Sign Up</span>
+    </button>
 
-      <button mat-menu-item *ngIf="hasSignedIn()" (click)="logOut()">
-        <mat-icon>exit_to_app</mat-icon>
-        <span>Log Out</span>
-      </button>
-    </mat-menu>
+    <button mat-menu-item *ngIf="hasSignedIn()" (click)="logOut()">
+      <mat-icon>exit_to_app</mat-icon>
+      <span>Log Out</span>
+    </button>
+  </mat-menu>
 </mat-toolbar>

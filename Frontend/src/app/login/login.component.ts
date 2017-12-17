@@ -36,14 +36,14 @@ export class LoginComponent implements OnInit {
     this.submitted = true;
 
     this.apiService.login(this.form.value.email, this.form.value.password)
-    .subscribe(data => {
-      this.authService.setToken(data.data);
-      this.router.navigate(['/']);
-    },
-    error => {
-      this.submitted = false;
-      this.snackBar.open('Error', 'Incorrect username or password.', { duration: 2000 });
-    });
+      .subscribe(data => {
+        this.authService.setToken(data.data);
+        this.router.navigate(['/']);
+      },
+      error => {
+        this.submitted = false;
+        this.snackBar.open('Error', 'Incorrect username or password.', { duration: 2000 });
+      });
   }
 
 }

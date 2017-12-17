@@ -38,15 +38,15 @@ export class SignUpComponent implements OnInit {
     this.notification = null;
 
     this.apiService.signUp(this.form.value.email, this.form.value.password)
-    .subscribe(data => {
-      this.authService.setToken(data.data);
-      this.router.navigate(['/']);
-    },
-    error => {
-      this.submitted = false;
-      this.notification = 'Incorrect username or password.';
-      this.snackBar.open('error', 'Cannot create account.', { duration: 2000});
-    });
+      .subscribe(data => {
+        this.authService.setToken(data.data);
+        this.router.navigate(['/']);
+      },
+      error => {
+        this.submitted = false;
+        this.notification = 'Incorrect username or password.';
+        this.snackBar.open('error', 'Cannot create account.', { duration: 2000 });
+      });
   }
 
 }

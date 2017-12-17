@@ -1,10 +1,10 @@
 <mat-list>
-    <h3 mat-subheader>Your Hunts</h3>
+  <h3 mat-subheader>Your Hunts</h3>
 
-    <mat-spinner *ngIf="!huntInstances"  mode="indeterminate"></mat-spinner>
-    <mat-list-item *ngFor="let hunt of huntInstances" routerLink="/hunt-instances/{{hunt.huntInstanceID}}">
-      <mat-icon mat-list-icon>map</mat-icon>
-      <h4 mat-line>{{hunt?.hunt?.name}}</h4>
-      <p mat-line> Status: IN PROGRESS - {{hunt?.hunt?.city}}, {{hunt?.hunt?.country}} </p>
-    </mat-list-item>
+  <mat-spinner *ngIf="!huntInstances" mode="indeterminate"></mat-spinner>
+  <mat-list-item *ngFor="let hunt of huntInstances" routerLink="/hunt-instances/{{hunt.huntInstanceID}}">
+    <mat-icon mat-list-icon>map</mat-icon>
+    <h4 mat-line>{{hunt?.hunt?.name}}</h4>
+    <p mat-line> Status: IN PROGRESS - {{hunt?.hunt?.city}}, {{hunt?.hunt?.country}} </p>
+  </mat-list-item>
 </mat-list>

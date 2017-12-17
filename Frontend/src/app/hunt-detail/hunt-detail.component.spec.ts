@@ -8,9 +8,9 @@ describe('HuntDetailComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HuntDetailComponent ]
+      declarations: [HuntDetailComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

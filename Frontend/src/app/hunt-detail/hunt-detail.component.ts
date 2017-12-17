@@ -21,8 +21,8 @@ export class HuntDetailComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-   private apiService: ApiService,
-  private snackBar: MatSnackBar) { }
+    private apiService: ApiService,
+    private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.routeSub = this.route.params.subscribe(params => {
@@ -34,32 +34,32 @@ export class HuntDetailComponent implements OnInit, OnDestroy {
       }
 
       this.apiService.getHunt(this.id)
-      .subscribe(x => {
-        this.hunt = x.data;
-      }, err => {
-        this.router.navigate(['/404']);
-        return;
-      });
-   });
+        .subscribe(x => {
+          this.hunt = x.data;
+        }, err => {
+          this.router.navigate(['/404']);
+          return;
+        });
+    });
   }
 
   ngOnDestroy(): void {
     this.routeSub.unsubscribe();
 
     if (this.huntSub) {
-    this.huntSub.unsubscribe();
+      this.huntSub.unsubscribe();
     }
   }
 
   purchase() {
     this.apiService.purchase(this.id)
-    .subscribe(data => {
-      console.log(data);
-      this.snackBar.open('Success', '', { duration: 2000 });
-      // this.router.navigate(['/hunt-instance', data.data.huntInstanceID]);
-    },
-    error => {
-      this.snackBar.open('Error', 'Cannot purchase hunt.', { duration: 2000 });
-    });
+      .subscribe(data => {
+        console.log(data);
+        this.snackBar.open('Success', '', { duration: 2000 });
+        // this.router.navigate(['/hunt-instance', data.data.huntInstanceID]);
+      },
+      error => {
+        this.snackBar.open('Error', 'Cannot purchase hunt.', { duration: 2000 });
+      });
   }
 }

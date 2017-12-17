@@ -8,13 +8,13 @@ import { AuthService } from '../services/auth.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(    private authService: AuthService) { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
   }
 
   hasSignedIn() {
-return this.authService.isAuthenticated();
+    return this.authService.isAuthenticated();
   }
 
 }

@@ -58,7 +58,12 @@ namespace ScavengerCity.Services
                 throw new RecordNotFoundException($"Cannot find Hunt with ID={id}");
             }
 
-            var charge = Charge(request);
+            var charge = Charge(request, hunt.Price, $"ScavengerCity Purchase - {hunt.Name}");
+
+            if (!charge.Paid)
+            {
+                throw new InvalidActionException("Purchase was unsuccessful");
+            }
 
             var instance = new HuntInstanceEntity
             {
@@ -67,8 +72,9 @@ namespace ScavengerCity.Services
                 UserID = _userManager.GetUserId(_user),
                 Purchase = new PurchaseEntity
                 {
-                    Price = 0,
-                    Date = DateTime.Now
+                    Price = charge.Amount,
+                    Date = DateTime.Now,
+                    ChargeID = charge.Id
                 }
             };
 
@@ -78,7 +84,7 @@ namespace ScavengerCity.Services
             return Mapper.Map<HuntInstance>(instance);
         }
 
-        private StripeCharge Charge(PurchaseRequest request)
+        private StripeCharge Charge(PurchaseRequest request, int price, string description)
         {
             var customers = new StripeCustomerService();
             var charges = new StripeChargeService();
@@ -91,8 +97,8 @@ namespace ScavengerCity.Services
 
             var charge = charges.Create(new StripeChargeCreateOptions
             {
-                Amount = 500,
-                Description = "Sample Charge",
+                Amount = price,
+                Description = description,
                 Currency = "usd",
                 CustomerId = customer.Id
             });

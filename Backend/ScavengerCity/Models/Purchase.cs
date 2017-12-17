@@ -9,5 +9,7 @@ namespace ScavengerCity.Models
         public int Price { get; set; }
 
         public DateTime Date { get; set; }
+
+        public string ChargeID { get; set; }
     }
 }

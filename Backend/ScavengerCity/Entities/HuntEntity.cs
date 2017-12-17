@@ -28,6 +28,9 @@ namespace ScavengerCity.Entities
         [Required]
         public string Country { get; set; }
 
+        [Required]
+        public int Price { get; set; }
+
         public ICollection<QuestionEntity> Questions { get; set; }
     }
 }

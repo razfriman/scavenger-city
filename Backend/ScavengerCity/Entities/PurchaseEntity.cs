@@ -13,5 +13,8 @@ namespace ScavengerCity.Entities
 
         [Required]
         public DateTime Date { get; set; }
+
+        [Required]
+        public string ChargeID { get; set; }
     }
 }

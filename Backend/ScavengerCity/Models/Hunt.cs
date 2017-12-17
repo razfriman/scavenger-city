@@ -21,6 +21,8 @@ namespace ScavengerCity.Models
 
         public string Country { get; set; }
 
+        public int Price { get; set; }
+
         public List<Question> Questions { get; set; }
     }
 }

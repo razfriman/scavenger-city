@@ -128,4 +128,26 @@ export class HuntInstanceComponent implements OnInit, OnDestroy {
   isInProgress(): boolean {
     return this.hunt && this.hunt.status === HuntStatus.InProgress;
   }
+
+  isFinished(): boolean {
+    return this.hunt && this.hunt.status === HuntStatus.Finished;
+  }
+
+  getHuntStatus(): string {
+
+    if (!this.hunt) {
+      return null;
+    }
+
+    switch (this.hunt.status) {
+      case HuntStatus.Available:
+        return 'Available';
+      case HuntStatus.InProgress:
+        return 'In Progress';
+      case HuntStatus.Finished:
+        return 'Finished';
+      default:
+        return 'Unknown';
+    }
+  }
 }

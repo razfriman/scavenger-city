@@ -1,5 +1,5 @@
 <mat-list>
-  <h3 mat-subheader>Available Hunts</h3>
+  <h3 mat-subheader>All Hunts</h3>
 
   <mat-spinner *ngIf="!hunts" mode="indeterminate"></mat-spinner>
   <mat-list-item *ngFor="let hunt of hunts" routerLink="/hunts/{{hunt?.huntID}}">

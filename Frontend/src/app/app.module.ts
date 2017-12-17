@@ -16,7 +16,8 @@ import {
   MatProgressSpinnerModule,
   MatSnackBarModule,
   MatDialogModule,
-  MatTabsModule
+  MatTabsModule,
+  MatExpansionModule
 } from '@angular/material';
 import { JwtModule } from '@auth0/angular-jwt';
 
@@ -39,7 +40,10 @@ import { ApiService } from './services/api.service';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { HuntInstanceComponent } from './hunt-instance/hunt-instance.component';
 import { HuntInstanceListItemComponent } from './hunt-instance-list-item/hunt-instance-list-item.component';
-
+import { HuntSummaryPanelComponent } from './hunt-summary-panel/hunt-summary-panel.component';
+import { HuntSummaryComponent } from './hunt-summary/hunt-summary.component';
+import { HuntAvailableFilterPipe } from './pipes/hunt-available-filter.pipe';
+import { HuntFinishedFilterPipe } from './pipes/hunt-finished-filter.pipe';
 
 @NgModule({
   declarations: [
@@ -56,7 +60,11 @@ import { HuntInstanceListItemComponent } from './hunt-instance-list-item/hunt-in
     DashboardComponent,
     SignUpComponent,
     HuntInstanceComponent,
-    HuntInstanceListItemComponent
+    HuntInstanceListItemComponent,
+    HuntSummaryPanelComponent,
+    HuntSummaryComponent,
+    HuntAvailableFilterPipe,
+    HuntFinishedFilterPipe
   ],
   imports: [
     BrowserModule,
@@ -76,6 +84,7 @@ import { HuntInstanceListItemComponent } from './hunt-instance-list-item/hunt-in
     MatSnackBarModule,
     MatDialogModule,
     MatTabsModule,
+    MatExpansionModule,
     HttpClientModule,
     JwtModule.forRoot({
       config: {

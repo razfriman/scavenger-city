@@ -1,0 +1,16 @@
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      {{hunt?.hunt?.name}}
+    </mat-panel-title>
+    <mat-panel-description>
+      {{hunt?.hunt?.city}}, {{hunt?.hunt?.country}}
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+
+  <p>Distance {{hunt?.hunt?.distance}}km </p>
+  <p>Question {{hunt?.progress}}/{{hunt?.questionCount}}</p>
+  <p>Penalties: {{hunt?.penalties}}</p>
+  <p>Skipped: {{hunt?.skipped}}</p>
+  <p>Date Started: {{hunt?.startTime | date: 'medium' }}</p>
+</mat-expansion-panel>

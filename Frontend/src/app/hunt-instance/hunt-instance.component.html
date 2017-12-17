@@ -1,26 +1,9 @@
 <mat-spinner *ngIf="!hunt" mode="indeterminate"></mat-spinner>
 
-<mat-card>
-  <mat-card-header *ngIf="hunt">
-    <mat-card-title>{{hunt?.hunt?.name}}</mat-card-title>
-    <mat-card-subtitle>{{hunt?.hunt?.city}}, {{hunt?.hunt?.country}}</mat-card-subtitle>
-    <mat-card-subtitle>{{hunt?.hunt?.distance}}km</mat-card-subtitle>
-    <mat-card-subtitle>Question {{hunt?.progress}}/{{hunt?.questionCount}}</mat-card-subtitle>
-    <mat-card-subtitle>Status: </mat-card-subtitle>
-    <mat-card-subtitle>Penalties: {{hunt?.penalties}}</mat-card-subtitle>
-    <mat-card-subtitle>Skipped: </mat-card-subtitle>
-    <mat-card-subtitle>Date Started: </mat-card-subtitle>
-    <mat-card-subtitle>Date Ended: </mat-card-subtitle>
-    <mat-card-subtitle>Time Taken: </mat-card-subtitle>
+<app-hunt-summary *ngIf="isFinished() || isAvailable()" [hunt]="hunt"></app-hunt-summary>
 
-  </mat-card-header>
-
-  <mat-card-actions>
-    <button mat-raised-button *ngIf="isAvailable()" color="primary" (click)="start()">START</button>
-  </mat-card-actions>
-</mat-card>
-
-<mat-card *ngIf="hunt?.currentQuestionInstance">
+<app-hunt-summary-panel *ngIf="isInProgress()" [hunt]="hunt"></app-hunt-summary-panel>
+<mat-card *ngIf="isInProgress()">
   <mat-card-header>
     <mat-card-title>QUESTION: {{hunt.currentQuestionInstance.question.text}}</mat-card-title>
     <mat-card-subtitle>Hint: {{getHint()}}</mat-card-subtitle>
@@ -38,7 +21,13 @@
       SUBMIT
     </button>
 
+
+    <button mat-raised-button *ngIf="isAvailable()" color="primary" (click)="start()">START</button>
+
+
     <button mat-raised-button *ngIf="isInProgress()" color="accent" [disabled]="isHintUsed()" (click)="hint()">HINT</button>
-    <button mat-raised-button *ngIf="isInProgress()" color="accent" (click)="skip()">SKIP</button>
+    <button mat-raised-button *ngIf="isInProgress()" color="warn" (click)="skip()">SKIP</button>
   </mat-card-actions>
 </mat-card>
+
+<button mat-raised-button class="start-button" *ngIf="isAvailable()" color="primary" (click)="start()">START</button>

@@ -1,0 +1,12 @@
+<section class="mat-typography">
+  <h1>{{hunt?.hunt?.name}}</h1>
+  <h2>{{hunt?.hunt?.city}}, {{hunt?.hunt?.country}}</h2>
+  <p>Distance: {{hunt?.hunt?.distance}}km </p>
+  <p>Questions: {{hunt?.questionCount}}</p>
+  <p>Status: {{getHuntStatus()}}</p>
+  <p>Penalties: {{hunt?.penalties}}</p>
+  <p>Skipped: {{hunt?.skipped}}</p>
+  <p>Date Started: {{hunt?.startTime | date: 'medium' }}</p>
+  <p>Date Ended: {{hunt?.endTime | date: 'medium'}}</p>
+  <p>Time Taken: {{getDuration() / 1000}}s </p>
+</section>

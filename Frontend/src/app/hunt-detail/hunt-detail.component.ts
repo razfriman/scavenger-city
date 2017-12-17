@@ -57,7 +57,7 @@ export class HuntDetailComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         console.log(data);
         this.snackBar.open('Success', '', { duration: 2000 });
-        this.router.navigate(['/hunt-instance', data.data.huntInstanceID]);
+        this.router.navigate(['/hunt-instances', data.data.huntInstanceID]);
       },
       error => {
         this.snackBar.open('Error', 'Cannot purchase hunt.', { duration: 2000 });

@@ -2,11 +2,14 @@ version: '3'
 
 services:
   nginx-proxy:
-    image: jwilder/nginx-proxy
+    image: eforce21/letsencrypt-nginx-proxy
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
+    environment:
+      - LETSENCRYPT_EMAIL=raz.friman@razfriman.com
   razapp:
     image: rfriman/raz-app
     environment:

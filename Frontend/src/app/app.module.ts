@@ -36,6 +36,7 @@ import { AuthService } from './services/auth.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ApiService } from './services/api.service';
 import { SignUpComponent } from './sign-up/sign-up.component';
+import { HuntInstanceComponent } from './hunt-instance/hunt-instance.component';
 
 
 @NgModule({
@@ -51,7 +52,8 @@ import { SignUpComponent } from './sign-up/sign-up.component';
     HuntsComponent,
     HuntDetailComponent,
     DashboardComponent,
-    SignUpComponent
+    SignUpComponent,
+    HuntInstanceComponent
   ],
   imports: [
     BrowserModule,

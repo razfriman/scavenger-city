@@ -5,7 +5,7 @@ using ScavengerCity.Services;
 
 namespace ScavengerCity.Controllers
 {
-    [Route("[controller]")]
+    [Route("hunt-instances")]
     public class HuntInstancesController : Controller
     {
         private readonly HuntInstanceService _huntInstanceService;
@@ -38,8 +38,6 @@ namespace ScavengerCity.Controllers
         {
             return _huntInstanceService.SubmitAnswer(id, model);
         }
-
-
 
         [HttpPost("{id}/hint")]
         public Hint Hint(int id)

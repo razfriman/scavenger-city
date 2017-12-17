@@ -1,5 +1,6 @@
 import { Hunt } from './hunt';
 import { QuestionInstance } from './question-instance';
+import { HuntStatus } from './hunt-status';
 
 export class HuntInstance {
   huntInstanceID: number;
@@ -9,7 +10,7 @@ export class HuntInstance {
   startTime: Date;
   endTime: Date;
   adjustedEndTime: Date;
-  status: number;
+  status: HuntStatus;
   userID: string;
   huntID: number;
   penalties: number;

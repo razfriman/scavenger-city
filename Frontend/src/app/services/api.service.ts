@@ -37,27 +37,27 @@ export class ApiService {
   }
 
   public getInstances() {
-    return this.httpClient.get<ApiResponse<HuntInstance[]>>(`${this.API_BASE}/huntInstances/`);
+    return this.httpClient.get<ApiResponse<HuntInstance[]>>(`${this.API_BASE}/hunt-instances/`);
   }
 
   public getInstance(id: number) {
-    return this.httpClient.get<ApiResponse<HuntInstance>>(`${this.API_BASE}/huntInstances/${id}`);
+    return this.httpClient.get<ApiResponse<HuntInstance>>(`${this.API_BASE}/hunt-instances/${id}`);
   }
 
   public skip(id: number) {
-    return this.httpClient.post<ApiResponse<AnswerInstance>>(`${this.API_BASE}/huntInstances/${id}/skip`, {});
+    return this.httpClient.post<ApiResponse<AnswerInstance>>(`${this.API_BASE}/hunt-instances/${id}/skip`, {});
   }
 
   public hint(id: number) {
-    return this.httpClient.post<ApiResponse<Hint>>(`${this.API_BASE}/huntInstances/${id}/hint`, {});
+    return this.httpClient.post<ApiResponse<Hint>>(`${this.API_BASE}/hunt-instances/${id}/hint`, {});
   }
 
   public submitAnswer(id: number, value: string) {
-    return this.httpClient.post<ApiResponse<AnswerInstance>>(`${this.API_BASE}/huntInstances/${id}/answer`, { value: value });
+    return this.httpClient.post<ApiResponse<AnswerInstance>>(`${this.API_BASE}/hunt-instances/${id}/answer`, { value: value });
   }
 
   public start(id: number) {
-    return this.httpClient.post<ApiResponse<HuntInstance>>(`${this.API_BASE}/huntInstances/${id}/start`, {});
+    return this.httpClient.post<ApiResponse<HuntInstance>>(`${this.API_BASE}/hunt-instances/${id}/start`, {});
   }
 
   public purchase(id: number) {

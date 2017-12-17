@@ -9,6 +9,7 @@ import { GuestGuard } from './guard/guest.guard';
 import { HuntsComponent } from './hunts/hunts.component';
 import { HuntDetailComponent } from './hunt-detail/hunt-detail.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
+import { HuntInstanceComponent } from './hunt-instance/hunt-instance.component';
 
 
 export const routes: Routes = [
@@ -34,6 +35,10 @@ export const routes: Routes = [
   {
     path: 'hunts/:id',
     component: HuntDetailComponent
+  },
+  {
+    path: 'hunt-instances/:id',
+    component: HuntInstanceComponent
   },
   {
     path: '404',

@@ -42,7 +42,7 @@ namespace ScavengerCity.Services
                 .Include(x => x.CurrentQuestionInstance.Answers)
                 .Include(x => x.CurrentQuestionInstance.Question)
                 .Where(x => x.UserID == _userManager.GetUserId(_user))
-                .FirstOrDefault(x => x.HuntID == id);
+                .FirstOrDefault(x => x.HuntInstanceID == id);
 
             if (hunt == null)
             {

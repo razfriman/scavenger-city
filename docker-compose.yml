@@ -1,21 +1,34 @@
 version: '3'
 
 services:
-  nginx-proxy:
+  watchtower:
+    image: v2tec/watchtower
+    container_name: watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /root/.docker/config.json:/config.json
+    command: watchtower nginxproxy razapp postgres backend frontend --interval 30
+    restart: unless-stopped
+  nginxproxy:
     image: eforce21/letsencrypt-nginx-proxy
+    container_name: nginxproxy
+    restart: always
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
+      - logs:/var/log
     environment:
       - LETSENCRYPT_EMAIL=raz.friman@razfriman.com
   razapp:
     image: rfriman/raz-app
+    container_name: razapp
     environment:
       - VIRTUAL_HOST=www.razfriman.com,razfriman.com
   postgres:
      image: postgres
+     container_name: postgres
      environment:
          POSTGRES_USER: test
          POSTGRES_PASSWORD: test
@@ -24,8 +37,9 @@ services:
        - pgdata:/var/lib/postgresql/data
      ports:
        - 5432:5432
-  api:
+  backend:
     image: rfriman/scavenger-city-api
+    container_name: backend
     ports:
        - 5000:80
     depends_on:
@@ -34,7 +48,9 @@ services:
       - VIRTUAL_HOST=api.razfriman.com
   frontend:
     image: rfriman/scavenger-city
+    container_name: frontend
     environment:
       - VIRTUAL_HOST=scavengercity.razfriman.com
 volumes:
+  logs:
   pgdata:

@@ -12,7 +12,7 @@ import { LoginRequest } from 'app/models/login-request';
 @Injectable()
 export class ApiService {
 
-  private API_BASE = 'https://api.razfriman.com';
+  private API_BASE = 'http://api.razfriman.com';
 
   constructor(private httpClient: HttpClient) {
   }

@@ -1,7 +1,6 @@
-<mat-card>
+<mat-spinner *ngIf="!hunt" mode="indeterminate"></mat-spinner>
 
-  <mat-spinner *ngIf="!hunt" mode="indeterminate"></mat-spinner>
-
+<mat-card *ngIf="hunt">
   <mat-card-header>
     <div mat-card class="example-header-image"></div>
     <mat-card-title>{{hunt?.name}}</mat-card-title>
@@ -18,7 +17,7 @@
     </p>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button color="primary" [disabled]="!hasSignedIn()" (click)="purchase()">PURCHASE</button>
+    <button mat-raised-button color="primary" [disabled]="!hasSignedIn()" (click)="purchase()">PURCHASE {{hunt?.price / 100 | currency}}</button>
     <button *ngIf="!hasSignedIn()" mat-raised-button color="primary" routerLink="/login">LOGIN TO PURCHASE</button>
   </mat-card-actions>
 </mat-card>

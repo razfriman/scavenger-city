@@ -50,7 +50,8 @@ namespace ScavengerCity
                 Country = "Australia",
                 Description = "Walk around Sydney",
                 Distance = 3.5f,
-                Name = "Sydney Walkabout"
+                Name = "Sydney Walkabout",
+                Price = 200
             };
 
             AddQuestion(dbContext, hunt, "question 1", "fact 1", "hint 1", "answer 1", 1);

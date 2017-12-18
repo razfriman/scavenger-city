@@ -56,9 +56,10 @@ export class HuntDetailComponent implements OnInit, OnDestroy {
 
     const handler = (<any>window).StripeCheckout
       .configure({
-        key: 'pk_test_oi0sKPJYLGjdvOXOM8tE8cMa',
+        key: 'pk_test_Gcszgnmu3v1mmaUEMvWzsNmX',
         locale: 'auto',
-        token: function (token: any) {
+        token: (token: any) => {
+          console.log(token);
           this.chargePurchase(token);
         }
       });
@@ -66,7 +67,7 @@ export class HuntDetailComponent implements OnInit, OnDestroy {
     handler.open({
       name: 'Scavenger City',
       description: this.hunt.name,
-      amount: this.hunt.price,
+      amount: 200,
       bitcoin: true
     });
   }
@@ -76,22 +77,24 @@ export class HuntDetailComponent implements OnInit, OnDestroy {
   }
 
   chargePurchase(token: any) {
-
-    console.log(token);
-    console.log(token.id);
-
     this.apiService.purchase(this.id, {
-      email: 'test@test.com',
+      email: token.email,
       token: token.id
     })
       .takeUntil(this.ngUnsubscribe)
       .subscribe(data => {
+
+        console.log(data);
+
         // TODO - Show alert popup instead of a SnackBar
         this.snackBar.open('Success', '', { duration: 2000 });
 
         this.router.navigate(['/hunt-instances', data.data.huntInstanceID]);
       },
       error => {
+
+        console.log(error);
+
         // TODO - Show alert popup instead of a SnackBar
         this.snackBar.open('Error', 'Cannot purchase hunt.', { duration: 2000 });
       });

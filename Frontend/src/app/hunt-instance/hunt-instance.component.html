@@ -4,12 +4,14 @@
 
 <app-hunt-summary-panel *ngIf="isInProgress()" [hunt]="hunt"></app-hunt-summary-panel>
 <mat-card *ngIf="isInProgress()">
-  <mat-card-header>
-    <mat-card-title>QUESTION: {{hunt.currentQuestionInstance.question.text}}</mat-card-title>
-    <mat-card-subtitle>Hint: {{getHint()}}</mat-card-subtitle>
-  </mat-card-header>
-
   <mat-card-content>
+
+    <markdown [data]="markdown">
+    </markdown>
+
+    <mat-card-subtitle>Hint: {{getHint()}}</mat-card-subtitle>
+
+
     <form [formGroup]="form" (ngSubmit)="submit()">
       <mat-input-container>
         <input matInput formControlName="answer" required type="text" placeholder="Answer">
@@ -22,12 +24,12 @@
     </button>
 
 
-    <button mat-raised-button *ngIf="isAvailable()" color="primary" (click)="start()">START</button>
+    <button mat-raised-button *ngIf="isAvailable()" color="primary" [disabled]="submitted" (click)="start()">START</button>
 
 
-    <button mat-raised-button *ngIf="isInProgress()" color="accent" [disabled]="isHintUsed()" (click)="hint()">HINT</button>
-    <button mat-raised-button *ngIf="isInProgress()" color="warn" (click)="skip()">SKIP</button>
+    <button mat-raised-button *ngIf="isInProgress()" color="accent" [disabled]="isHintUsed() || submitted" (click)="hint()">HINT</button>
+    <button mat-raised-button *ngIf="isInProgress()" color="warn" [disabled]="submitted" (click)="skip()">SKIP</button>
   </mat-card-actions>
 </mat-card>
 
-<button mat-raised-button class="start-button" *ngIf="isAvailable()" color="primary" (click)="start()">START</button>
+<button mat-raised-button class="start-button" *ngIf="isAvailable()" color="primary" [disabled]="submitted" (click)="start()">START</button>

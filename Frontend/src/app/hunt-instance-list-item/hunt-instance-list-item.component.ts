@@ -19,6 +19,22 @@ export class HuntInstanceListItemComponent implements OnInit {
   ngOnInit() {
   }
 
+  getStatusClass(): string {
+    if (!this.hunt) {
+      return '';
+    }
+
+    switch (this.hunt.status) {
+      case HuntStatus.Available:
+        return 'status-available';
+      case HuntStatus.InProgress:
+        return 'status-in-progress';
+      case HuntStatus.Finished:
+        return 'status-finished';
+      default:
+        return '';
+    }
+  }
 
   getHuntStatus(): string {
 

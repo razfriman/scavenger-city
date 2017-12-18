@@ -1,0 +1,6 @@
+<mat-spinner *ngIf="!huntInstances" mode="indeterminate">
+</mat-spinner>
+
+<mat-list>
+  <app-hunt-instance-list-item *ngFor="let hunt of huntInstances | huntFinishedFilter" [hunt]="hunt"></app-hunt-instance-list-item>
+</mat-list>

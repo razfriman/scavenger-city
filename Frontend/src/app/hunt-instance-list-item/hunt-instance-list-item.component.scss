@@ -1,0 +1,12 @@
+.status {
+  font-weight: bolder;
+  &.status-available {
+    color: green;
+  }
+  &.status-in-progress {
+    color: rgb(255, 119, 0);
+  }
+  &.status-finished {
+    color: blue;
+  }
+}

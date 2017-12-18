@@ -21,6 +21,10 @@ export class HuntSummaryComponent implements OnInit {
     return this.hunt && this.hunt.status === HuntStatus.Available;
   }
 
+  isStarted(): boolean {
+    return this.hunt && (this.hunt.status === HuntStatus.InProgress || this.hunt.status === HuntStatus.Finished);
+  }
+
   getHuntStatus(): string {
 
     if (!this.hunt) {

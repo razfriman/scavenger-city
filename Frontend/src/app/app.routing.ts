@@ -11,13 +11,32 @@ import { HuntsComponent } from './hunts/hunts.component';
 import { HuntDetailComponent } from './hunt-detail/hunt-detail.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { HuntInstanceComponent } from './hunt-instance/hunt-instance.component';
+import { DashboardComponent } from 'app/dashboard/dashboard.component';
+import { GuestComponent } from 'app/guest/guest.component';
+import { AvailableHuntInstancesComponent } from 'app/available-hunt-instances/available-hunt-instances.component';
+import { CompletedHuntInstancesComponent } from 'app/completed-hunt-instances/completed-hunt-instances.component';
 
 
 export const routes: Routes = [
   {
     path: '',
-    component: HomeComponent,
+    redirectTo: 'dashboard',
     pathMatch: 'full'
+  },
+  {
+    path: 'guest',
+    component: GuestComponent,
+    canActivate: [GuestGuard]
+  },
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    canActivate: [LoginGuard],
+    children: [
+      { path: '', redirectTo: 'available', pathMatch: 'full' },
+      { path: 'available', component: AvailableHuntInstancesComponent },
+      { path: 'completed', component: CompletedHuntInstancesComponent }
+    ]
   },
   {
     path: 'login',

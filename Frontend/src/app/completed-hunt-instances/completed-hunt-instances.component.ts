@@ -1,23 +1,16 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ApiService } from '../services/api.service';
-import { HuntInstance } from '../models/hunt-instance';
-import { Hunt } from '../models/hunt';
-import { HuntStatus } from '../models/hunt-status';
+import { ApiService } from 'app/services/api.service';
 import { Subject } from 'rxjs/Subject';
+import { HuntInstance } from 'app/models/hunt-instance';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  selector: 'app-completed-hunt-instances',
+  templateUrl: './completed-hunt-instances.component.html',
+  styleUrls: ['./completed-hunt-instances.component.scss']
 })
-export class DashboardComponent implements OnInit, OnDestroy {
+export class CompletedHuntInstancesComponent implements OnInit, OnDestroy {
 
   constructor(private apiService: ApiService) { }
-
-  navLinks = [
-    { label: 'Available', path: 'available' },
-    { label: 'Completed', path: 'completed' }
-  ];
 
   huntInstances: HuntInstance[];
   private ngUnsubscribe = new Subject();

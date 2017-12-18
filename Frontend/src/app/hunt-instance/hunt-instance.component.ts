@@ -19,6 +19,48 @@ export class HuntInstanceComponent implements OnInit, OnDestroy {
   form: FormGroup;
   submitted = false;
   hunt: HuntInstance;
+  markdown = `
+  # H1
+## H2
+### H3
+#### H4
+##### H5
+###### H6
+
+
+\`\`\`javascript
+var s = "JavaScript syntax highlighting";
+alert(s);
+\`\`\`
+
+\`\`\`python
+s = "Python syntax highlighting"
+print s
+\`\`\`
+
+Colons can be used to align columns.
+
+| Tables        | Are           | Cool  |
+| ------------- |:-------------:| -----:|
+| col 3 is      | right-aligned | $1600 |
+| col 2 is      | centered      |   $12 |
+| zebra stripes | are neat      |    $1 |
+
+There must be at least 3 dashes separating each header cell.
+The outer pipes (|) are optional, and you don't need to make the
+raw Markdown line up prettily. You can also use inline Markdown.
+
+
+Alternatively, for H1 and H2, an underline-ish style:
+
+Alt-H1
+======
+
+Alt-H2
+------
+
+  \`\`\`typescript const myProp: string = 'value'; + \`\`\`
+  #HELLO `;
   private id: number;
   private ngUnsubscribe = new Subject();
 
@@ -44,10 +86,12 @@ export class HuntInstanceComponent implements OnInit, OnDestroy {
   }
 
   start() {
-    console.log('lets go!');
+    this.submitted = true;
+
     this.apiService.start(this.id)
       .takeUntil(this.ngUnsubscribe)
       .subscribe(x => {
+        this.submitted = false;
         this.reloadQuestion();
       });
   }
@@ -68,25 +112,37 @@ export class HuntInstanceComponent implements OnInit, OnDestroy {
   }
 
   hint() {
+    this.submitted = true;
+
     this.apiService.hint(this.id)
       .takeUntil(this.ngUnsubscribe)
       .subscribe(x => {
+        this.submitted = false;
+
         this.reloadQuestion();
       });
   }
 
   skip() {
+    this.submitted = true;
+
     this.apiService.skip(this.id)
       .takeUntil(this.ngUnsubscribe)
       .subscribe(x => {
+        this.submitted = false;
         this.reloadQuestion();
       });
   }
 
   submit() {
-    this.apiService.submitAnswer(this.id, this.form.value.answer)
+    this.submitted = true;
+
+    this.apiService.submitAnswer(this.id, {
+      text: this.form.value.answer
+    })
       .takeUntil(this.ngUnsubscribe)
       .subscribe(x => {
+        this.submitted = false;
         this.reloadQuestion();
 
         if (x.data.isCorrect) {
@@ -100,6 +156,8 @@ export class HuntInstanceComponent implements OnInit, OnDestroy {
   }
 
   reloadQuestion() {
+    this.submitted = true;
+
     this.route.params
       .takeUntil(this.ngUnsubscribe)
       .subscribe(params => {
@@ -114,6 +172,7 @@ export class HuntInstanceComponent implements OnInit, OnDestroy {
           .takeUntil(this.ngUnsubscribe)
           .subscribe(x => {
             this.hunt = x.data;
+            this.submitted = false;
           }, err => {
             this.router.navigate(['/404']);
             return;

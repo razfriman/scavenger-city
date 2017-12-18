@@ -4,9 +4,11 @@
   <p>Distance: {{hunt?.hunt?.distance}}km </p>
   <p>Questions: {{hunt?.questionCount}}</p>
   <p>Status: {{getHuntStatus()}}</p>
-  <p>Penalties: {{hunt?.penalties}}</p>
-  <p>Skipped: {{hunt?.skipped}}</p>
-  <p>Date Started: {{hunt?.startTime | date: 'medium' }}</p>
-  <p>Date Ended: {{hunt?.endTime | date: 'medium'}}</p>
-  <p>Time Taken: {{getDuration() / 1000}}s </p>
+  <p>Starting Point: XXX</p>
+
+  <p *ngIf="isStarted()">Penalties: {{hunt?.penalties}}</p>
+  <p *ngIf="isStarted()">Skipped: {{hunt?.skipped}}</p>
+  <p *ngIf="isStarted()">Date Started: {{hunt?.startTime | date: 'medium' }}</p>
+  <p *ngIf="isStarted()">Date Ended: {{hunt?.endTime | date: 'medium'}}</p>
+  <p *ngIf="isStarted()">Time Taken: {{getDuration() / 1000}}s </p>
 </section>

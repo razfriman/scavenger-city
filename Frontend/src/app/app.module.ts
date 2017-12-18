@@ -20,6 +20,7 @@ import {
   MatExpansionModule
 } from '@angular/material';
 import { JwtModule, JwtModuleOptions } from '@auth0/angular-jwt';
+import { MarkdownModule } from 'ngx-markdown';
 
 import { AppComponent } from './app.component';
 import { FooterComponent } from './footer/footer.component';
@@ -44,6 +45,8 @@ import { HuntSummaryPanelComponent } from './hunt-summary-panel/hunt-summary-pan
 import { HuntSummaryComponent } from './hunt-summary/hunt-summary.component';
 import { HuntAvailableFilterPipe } from './pipes/hunt-available-filter.pipe';
 import { HuntFinishedFilterPipe } from './pipes/hunt-finished-filter.pipe';
+import { AvailableHuntInstancesComponent } from './available-hunt-instances/available-hunt-instances.component';
+import { CompletedHuntInstancesComponent } from './completed-hunt-instances/completed-hunt-instances.component';
 
 
 export function tokenGetter() {
@@ -76,7 +79,9 @@ const jwtConf: JwtModuleOptions = {
     HuntSummaryPanelComponent,
     HuntSummaryComponent,
     HuntAvailableFilterPipe,
-    HuntFinishedFilterPipe
+    HuntFinishedFilterPipe,
+    AvailableHuntInstancesComponent,
+    CompletedHuntInstancesComponent
   ],
   imports: [
     BrowserModule,
@@ -98,6 +103,7 @@ const jwtConf: JwtModuleOptions = {
     MatTabsModule,
     MatExpansionModule,
     HttpClientModule,
+    MarkdownModule.forRoot(),
     JwtModule.forRoot(jwtConf)
   ],
   providers: [

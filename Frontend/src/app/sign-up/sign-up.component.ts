@@ -53,7 +53,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
       },
       error => {
         this.submitted = false;
-        this.snackBar.open('error', 'Cannot create account.', { duration: 2000 });
+        this.snackBar.open('Error', 'Cannot create account.', { duration: 2000 });
       });
   }
 }

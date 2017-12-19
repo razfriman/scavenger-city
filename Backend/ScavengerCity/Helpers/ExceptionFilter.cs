@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
@@ -25,39 +26,37 @@ namespace ScavengerCity.Helpers
 
         public void OnException(ExceptionContext context)
         {
+            _ravenClient.CaptureAsync(new SentryEvent(context.Exception));
+            _logger.LogError("Exception", context.Exception);
+
             var response = new ApiResponse
             {
-                Data = context.Exception
+                Data = context.Exception.Message,
+                StatusCode = GetStatusCode(context)
             };
-
-            _ravenClient.CaptureAsync(new SentryEvent(context.Exception));
-
-            switch (context.Exception)
-            {
-                case RecordNotFoundException e:
-                    response.StatusCode = System.Net.HttpStatusCode.NotFound;
-                    break;
-                case InvalidActionException e:
-                    response.StatusCode = System.Net.HttpStatusCode.ExpectationFailed;
-                    break;
-                case AuthorizationException e:
-                    response.StatusCode = System.Net.HttpStatusCode.ExpectationFailed;
-                    break;
-                case PaymentAuthorizationException e:
-                    response.StatusCode = System.Net.HttpStatusCode.ExpectationFailed;
-                    break;
-                default:
-                    response.StatusCode = System.Net.HttpStatusCode.InternalServerError;
-                    break;
-            }
-
-            _logger.LogError("Exception", context.Exception);
 
             context.Result = new ObjectResult(response)
             {
                 StatusCode = (int)response.StatusCode,
                 DeclaredType = typeof(ApiResponse)
             };
+        }
+
+        private static HttpStatusCode GetStatusCode(ExceptionContext context)
+        {
+            switch (context.Exception)
+            {
+                case RecordNotFoundException e:
+                    return HttpStatusCode.NotFound;
+                case InvalidActionException e:
+                    return HttpStatusCode.ExpectationFailed;
+                case AuthorizationException e:
+                    return HttpStatusCode.ExpectationFailed;
+                case PaymentAuthorizationException e:
+                    return HttpStatusCode.ExpectationFailed;
+                default:
+                    return HttpStatusCode.InternalServerError;
+            }
         }
     }
 }

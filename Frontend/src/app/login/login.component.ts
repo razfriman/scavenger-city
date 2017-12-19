@@ -53,6 +53,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       },
       error => {
         this.submitted = false;
+        console.log(error);
         this.snackBar.open('Error', 'Incorrect username or password.', { duration: 2000 });
       });
   }

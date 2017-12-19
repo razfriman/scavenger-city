@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import {
@@ -50,7 +50,7 @@ import { HuntFinishedFilterPipe } from './pipes/hunt-finished-filter.pipe';
 import { AvailableHuntInstancesComponent } from './available-hunt-instances/available-hunt-instances.component';
 import { CompletedHuntInstancesComponent } from './completed-hunt-instances/completed-hunt-instances.component';
 import { FactDialogComponent } from './fact-dialog/fact-dialog.component';
-import { ErrorInterceptor } from 'app/error-interceptor';
+
 
 export function tokenGetter() {
   return localStorage.getItem(AuthService.TOKEN_KEY);
@@ -115,8 +115,7 @@ const jwtConf: JwtModuleOptions = {
     LoginGuard,
     GuestGuard,
     AuthService,
-    ApiService,
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    ApiService
   ],
   entryComponents: [FactDialogComponent],
   bootstrap: [AppComponent]

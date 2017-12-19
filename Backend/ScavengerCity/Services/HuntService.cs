@@ -62,7 +62,7 @@ namespace ScavengerCity.Services
 
             if (!charge.Paid)
             {
-                throw new InvalidActionException("Purchase was unsuccessful");
+                throw new PaymentAuthorizationException(charge.FailureMessage);
             }
 
             var instance = new HuntInstanceEntity

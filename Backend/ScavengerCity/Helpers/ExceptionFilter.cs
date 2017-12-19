@@ -40,7 +40,16 @@ namespace ScavengerCity.Helpers
                     response.StatusCode = System.Net.HttpStatusCode.ExpectationFailed;
                     response.Message = e.Message;
                     _logger.LogInformation(nameof(InvalidActionException), e);
-
+                    break;
+                case AuthorizationException e:
+                    response.StatusCode = System.Net.HttpStatusCode.ExpectationFailed;
+                    response.Message = e.Message;
+                    _logger.LogInformation(nameof(AuthorizationException), e);
+                    break;
+                case PaymentAuthorizationException e:
+                    response.StatusCode = System.Net.HttpStatusCode.ExpectationFailed;
+                    response.Message = e.Message;
+                    _logger.LogInformation(nameof(PaymentAuthorizationException), e);
                     break;
                 default:
                     response.StatusCode = System.Net.HttpStatusCode.InternalServerError;

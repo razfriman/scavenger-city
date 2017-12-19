@@ -23,6 +23,8 @@ namespace ScavengerCity.Models
 
         public int Price { get; set; }
 
+        public string StartingPoint { get; set; }
+
         public List<Question> Questions { get; set; }
     }
 }

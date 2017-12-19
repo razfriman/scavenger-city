@@ -31,6 +31,10 @@ namespace ScavengerCity.Entities
         [Required]
         public int Price { get; set; }
 
+        [Required]
+        public string StartingPoint { get; set; }
+
         public ICollection<QuestionEntity> Questions { get; set; }
+
     }
 }

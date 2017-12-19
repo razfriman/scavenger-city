@@ -51,6 +51,7 @@ namespace ScavengerCity
                 Description = "Walk around Sydney",
                 Distance = 3.5f,
                 Name = "Sydney Walkabout",
+                StartingPoint = "Make your way to the Sydney Opera House",
                 Price = 200
             };
 

@@ -34,8 +34,8 @@ export const routes: Routes = [
     canActivate: [LoginGuard],
     children: [
       { path: '', redirectTo: 'available', pathMatch: 'full' },
-      { path: 'available', component: AvailableHuntInstancesComponent },
-      { path: 'completed', component: CompletedHuntInstancesComponent }
+      { path: 'available', component: AvailableHuntInstancesComponent, canActivate: [LoginGuard] },
+      { path: 'completed', component: CompletedHuntInstancesComponent, canActivate: [LoginGuard] }
     ]
   },
   {

@@ -21,6 +21,8 @@ import {
 } from '@angular/material';
 import { JwtModule, JwtModuleOptions } from '@auth0/angular-jwt';
 import { MarkdownModule } from 'ngx-markdown';
+import { Angulartics2Module } from 'angulartics2';
+import { Angulartics2GoogleAnalytics } from 'angulartics2/ga';
 
 import { AppComponent } from './app.component';
 import { FooterComponent } from './footer/footer.component';
@@ -106,7 +108,8 @@ const jwtConf: JwtModuleOptions = {
     MatExpansionModule,
     HttpClientModule,
     MarkdownModule.forRoot(),
-    JwtModule.forRoot(jwtConf)
+    JwtModule.forRoot(jwtConf),
+    Angulartics2Module.forRoot([Angulartics2GoogleAnalytics])
   ],
   providers: [
     LoginGuard,

@@ -17,6 +17,7 @@ using ScavengerCity.Entities;
 using ScavengerCity.Helpers;
 using ScavengerCity.Models;
 using ScavengerCity.Services;
+using SharpRaven.Core;
 using Stripe;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -107,7 +108,7 @@ namespace ScavengerCity
             services.Configure<MvcOptions>(x =>
             {
                 x.Filters.Add<ResultWrapperFilter>();
-                x.Filters.Add(new ExceptionFilter(_loggerFactory));
+                x.Filters.Add(new ExceptionFilter(_loggerFactory, new RavenClient(Configuration.GetSection("Sentry")["DNS"])));
             });
 
             services.AddMvc();

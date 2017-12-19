@@ -2,14 +2,17 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
+using SharpRaven.Core;
+using SharpRaven.Core.Data;
 
 namespace ScavengerCity.Helpers
 {
     public class ExceptionFilter : IExceptionFilter
     {
         private readonly ILogger _logger;
+        private readonly RavenClient _ravenClient;
 
-        public ExceptionFilter(ILoggerFactory logger)
+        public ExceptionFilter(ILoggerFactory logger, RavenClient ravenClient)
         {
             if (logger == null)
             {
@@ -17,11 +20,14 @@ namespace ScavengerCity.Helpers
             }
 
             _logger = logger.CreateLogger(nameof(ExceptionFilter));
+            _ravenClient = ravenClient;
         }
 
         public void OnException(ExceptionContext context)
         {
             var response = new ApiResponse();
+
+            _ravenClient.CaptureAsync(new SentryEvent(context.Exception));
 
             switch (context.Exception)
             {

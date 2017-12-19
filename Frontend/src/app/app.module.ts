@@ -47,6 +47,7 @@ import { HuntAvailableFilterPipe } from './pipes/hunt-available-filter.pipe';
 import { HuntFinishedFilterPipe } from './pipes/hunt-finished-filter.pipe';
 import { AvailableHuntInstancesComponent } from './available-hunt-instances/available-hunt-instances.component';
 import { CompletedHuntInstancesComponent } from './completed-hunt-instances/completed-hunt-instances.component';
+import { FactDialogComponent } from './fact-dialog/fact-dialog.component';
 
 
 export function tokenGetter() {
@@ -81,7 +82,8 @@ const jwtConf: JwtModuleOptions = {
     HuntAvailableFilterPipe,
     HuntFinishedFilterPipe,
     AvailableHuntInstancesComponent,
-    CompletedHuntInstancesComponent
+    CompletedHuntInstancesComponent,
+    FactDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -112,6 +114,7 @@ const jwtConf: JwtModuleOptions = {
     AuthService,
     ApiService
   ],
+  entryComponents: [FactDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

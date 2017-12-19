@@ -3,11 +3,13 @@ import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { ApiService } from '../services/api.service';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatDialog } from '@angular/material';
 import { HuntInstance } from '../models/hunt-instance';
 import { Subject } from 'rxjs/Subject';
 import { HuntStatus } from 'app/models/hunt-status';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FactDialogComponent } from 'app/fact-dialog/fact-dialog.component';
+import { Question } from 'app/models/question';
 
 @Component({
   selector: 'app-hunt-instance',
@@ -19,48 +21,7 @@ export class HuntInstanceComponent implements OnInit, OnDestroy {
   form: FormGroup;
   submitted = false;
   hunt: HuntInstance;
-  markdown = `
-  # H1
-## H2
-### H3
-#### H4
-##### H5
-###### H6
 
-
-\`\`\`javascript
-var s = "JavaScript syntax highlighting";
-alert(s);
-\`\`\`
-
-\`\`\`python
-s = "Python syntax highlighting"
-print s
-\`\`\`
-
-Colons can be used to align columns.
-
-| Tables        | Are           | Cool  |
-| ------------- |:-------------:| -----:|
-| col 3 is      | right-aligned | $1600 |
-| col 2 is      | centered      |   $12 |
-| zebra stripes | are neat      |    $1 |
-
-There must be at least 3 dashes separating each header cell.
-The outer pipes (|) are optional, and you don't need to make the
-raw Markdown line up prettily. You can also use inline Markdown.
-
-
-Alternatively, for H1 and H2, an underline-ish style:
-
-Alt-H1
-======
-
-Alt-H2
-------
-
-  \`\`\`typescript const myProp: string = 'value'; + \`\`\`
-  #HELLO `;
   private id: number;
   private ngUnsubscribe = new Subject();
 
@@ -70,7 +31,8 @@ Alt-H2
     private formBuilder: FormBuilder,
     private apiService: ApiService,
     private authService: AuthService,
-    private snackBar: MatSnackBar) { }
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog) { }
 
   ngOnInit() {
     this.form = this.formBuilder.group({
@@ -143,15 +105,16 @@ Alt-H2
       .takeUntil(this.ngUnsubscribe)
       .subscribe(x => {
         this.submitted = false;
-        this.reloadQuestion();
 
         if (x.data.isCorrect) {
           this.snackBar.open('Success', 'That was correct!');
           this.form.reset();
-          // Show a fact now! :)
+          this.openDialog(this.hunt.currentQuestionInstance.question);
         } else {
           this.snackBar.open('Sorry', 'That was incorrect, try again');
         }
+
+        this.reloadQuestion();
       });
   }
 
@@ -208,5 +171,12 @@ Alt-H2
       default:
         return 'Unknown';
     }
+  }
+
+  openDialog(question: Question): void {
+    const dialogRef = this.dialog.open(FactDialogComponent, {
+      width: '250px',
+      data: { question: this.hunt.currentQuestionInstance.question }
+    });
   }
 }

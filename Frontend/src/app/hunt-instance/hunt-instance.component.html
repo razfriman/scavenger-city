@@ -3,14 +3,14 @@
 <app-hunt-summary *ngIf="isFinished() || isAvailable()" [hunt]="hunt"></app-hunt-summary>
 
 <app-hunt-summary-panel *ngIf="isInProgress()" [hunt]="hunt"></app-hunt-summary-panel>
+
 <mat-card *ngIf="isInProgress()">
   <mat-card-content>
 
-    <markdown [data]="markdown">
+    <markdown [data]="hunt.currentQuestionInstance.question.text">
     </markdown>
 
     <mat-card-subtitle>Hint: {{getHint()}}</mat-card-subtitle>
-
 
     <form [formGroup]="form" (ngSubmit)="submit()">
       <mat-input-container>
@@ -23,9 +23,7 @@
       SUBMIT
     </button>
 
-
     <button mat-raised-button *ngIf="isAvailable()" color="primary" [disabled]="submitted" (click)="start()">START</button>
-
 
     <button mat-raised-button *ngIf="isInProgress()" color="accent" [disabled]="isHintUsed() || submitted" (click)="hint()">HINT</button>
     <button mat-raised-button *ngIf="isInProgress()" color="warn" [disabled]="submitted" (click)="skip()">SKIP</button>

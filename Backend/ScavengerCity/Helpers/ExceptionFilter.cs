@@ -25,7 +25,10 @@ namespace ScavengerCity.Helpers
 
         public void OnException(ExceptionContext context)
         {
-            var response = new ApiResponse();
+            var response = new ApiResponse
+            {
+                Data = context.Exception
+            };
 
             _ravenClient.CaptureAsync(new SentryEvent(context.Exception));
 
@@ -33,31 +36,22 @@ namespace ScavengerCity.Helpers
             {
                 case RecordNotFoundException e:
                     response.StatusCode = System.Net.HttpStatusCode.NotFound;
-                    response.Message = e.Message;
-                    _logger.LogInformation(nameof(RecordNotFoundException), e);
                     break;
                 case InvalidActionException e:
                     response.StatusCode = System.Net.HttpStatusCode.ExpectationFailed;
-                    response.Message = e.Message;
-                    _logger.LogInformation(nameof(InvalidActionException), e);
                     break;
                 case AuthorizationException e:
                     response.StatusCode = System.Net.HttpStatusCode.ExpectationFailed;
-                    response.Message = e.Message;
-                    _logger.LogInformation(nameof(AuthorizationException), e);
                     break;
                 case PaymentAuthorizationException e:
                     response.StatusCode = System.Net.HttpStatusCode.ExpectationFailed;
-                    response.Message = e.Message;
-                    _logger.LogInformation(nameof(PaymentAuthorizationException), e);
                     break;
                 default:
                     response.StatusCode = System.Net.HttpStatusCode.InternalServerError;
-                    response.Message = context.Exception.Message;
-                    response.Data = context.Exception;
-                    _logger.LogError("Exception", context.Exception);
                     break;
             }
+
+            _logger.LogError("Exception", context.Exception);
 
             context.Result = new ObjectResult(response)
             {

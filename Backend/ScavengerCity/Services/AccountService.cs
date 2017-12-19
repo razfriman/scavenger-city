@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using ScavengerCity.Helpers;
 using ScavengerCity.Models;
 
 namespace ScavengerCity.Services
@@ -35,10 +36,10 @@ namespace ScavengerCity.Services
             if (result.Succeeded)
             {
                 var appUser = _userManager.Users.SingleOrDefault(r => r.Email == model.Email);
-                return await GenerateJwtToken(model.Email, appUser);
+                return GenerateJwtToken(model.Email, appUser);
             }
 
-            throw new ApplicationException("INVALID_LOGIN_ATTEMPT");
+            throw new AuthorizationException("Invalid email or password");
         }
 
         public async Task<string> Register(RegisterDto model)
@@ -53,13 +54,14 @@ namespace ScavengerCity.Services
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, false);
-                return await GenerateJwtToken(model.Email, user);
+                return GenerateJwtToken(model.Email, user);
             }
 
-            throw new ApplicationException("UNKNOWN_ERROR");
+            var errors = string.Join(",", result.Errors.Select(x => x.Description));
+            throw new AuthorizationException(errors);
         }
 
-        private async Task<string> GenerateJwtToken(string email, IdentityUser user)
+        private string GenerateJwtToken(string email, IdentityUser user)
         {
             var claims = new List<Claim>
             {

@@ -57,7 +57,7 @@ export function tokenGetter() {
 const jwtConf: JwtModuleOptions = {
   config: {
     tokenGetter: tokenGetter,
-    whitelistedDomains: ['localhost', 'api.razfriman.com']
+    whitelistedDomains: ['localhost', 'api.razfriman.com', 'api.scavenger.city']
   }
 };
 

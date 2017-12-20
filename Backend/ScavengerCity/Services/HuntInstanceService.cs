@@ -173,6 +173,7 @@ namespace ScavengerCity.Services
         {
             var hunt = _dbContext
                     .HuntInstances
+                    .Include(x => x.Questions)
                     .Include(x => x.Hunt.Questions)
                     .Where(x => x.UserID == _userManager.GetUserId(_user))
                     .FirstOrDefault(x => x.HuntInstanceID == id);

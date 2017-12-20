@@ -1,3 +1,7 @@
-mat-spinner {
+mat-spinner.page-loading-spinner {
   margin: 20px auto;
+}
+
+mat-spinner.inline-button-spinner {
+  display: inline-block;
 }

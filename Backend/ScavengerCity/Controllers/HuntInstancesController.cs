@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ScavengerCity.Models;
 using ScavengerCity.Services;
@@ -6,6 +7,7 @@ using ScavengerCity.Services;
 namespace ScavengerCity.Controllers
 {
     [Route("Hunt-Instances")]
+    [Authorize]
     public class HuntInstancesController : Controller
     {
         private readonly HuntInstanceService _huntInstanceService;

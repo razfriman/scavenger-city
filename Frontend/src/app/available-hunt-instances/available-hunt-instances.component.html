@@ -1,10 +1,10 @@
 <mat-spinner *ngIf="!huntInstances" mode="indeterminate"></mat-spinner>
 
-<mat-list>
+<mat-list *ngIf="huntInstances">
   <app-hunt-instance-list-item *ngFor="let hunt of huntInstances | huntAvailableFilter" [hunt]="hunt"></app-hunt-instance-list-item>
-  <!-- <mat-list-item>
-    <p mat-line>You have no hunts available</p>
-  </mat-list-item> -->
+  <mat-list-item *ngIf="!(huntInstances | huntAvailableFilter).length">
+    <p class=" mat-caption ">You have no hunts available</p>
+  </mat-list-item>
   <mat-divider></mat-divider>
   <mat-list-item routerLink="/hunts">
     <mat-icon matListIcon>near_me</mat-icon>

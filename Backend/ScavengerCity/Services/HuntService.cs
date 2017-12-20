@@ -67,7 +67,8 @@ namespace ScavengerCity.Services
 
             var instance = new HuntInstanceEntity
             {
-                HuntID = hunt.HuntID,
+                HuntID = id,
+                Hunt = hunt,
                 Status = HuntStatus.Available,
                 UserID = _userManager.GetUserId(_user),
                 Purchase = new PurchaseEntity
@@ -77,6 +78,8 @@ namespace ScavengerCity.Services
                     ChargeID = charge.Id
                 }
             };
+
+            CreateQuestionInstances(instance);
 
             _dbContext.HuntInstances.Add(instance);
             _dbContext.SaveChanges();
@@ -104,6 +107,23 @@ namespace ScavengerCity.Services
             });
 
             return charge;
+        }
+
+        private static void CreateQuestionInstances(HuntInstanceEntity hunt)
+        {
+            foreach (var item in hunt.Hunt.Questions)
+            {
+                var questionInstance = new QuestionInstanceEntity
+                {
+                    HuntInstanceID = hunt.HuntInstanceID,
+                    QuestionID = item.QuestionID,
+                    SequenceNumber = item.SequenceNumber
+                };
+
+                hunt.Questions.Add(questionInstance);
+            }
+
+            hunt.QuestionCount = hunt.Questions.Count;
         }
     }
 }

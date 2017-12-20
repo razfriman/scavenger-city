@@ -4,8 +4,10 @@ import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
 import { ApiService } from '../services/api.service';
 import { AuthService } from '../services/auth.service';
 import { Hunt } from '../models/hunt';
-import { MatSnackBar } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { Subject } from 'rxjs/Subject';
+import { MessageDialogComponent } from 'app/dialogs/message-dialog/message-dialog.component';
+import { MessageDialogData } from 'app/models/message-dialog-data';
 
 @Component({
   selector: 'app-hunt-detail',
@@ -16,6 +18,7 @@ export class HuntDetailComponent implements OnInit, OnDestroy {
 
   private id: number;
   hunt: Hunt;
+  submitted: boolean;
   private ngUnsubscribe = new Subject();
 
   constructor(
@@ -23,7 +26,7 @@ export class HuntDetailComponent implements OnInit, OnDestroy {
     private router: Router,
     private apiService: ApiService,
     private authService: AuthService,
-    private snackBar: MatSnackBar) { }
+    private dialog: MatDialog) { }
 
   ngOnInit() {
     this.route.params
@@ -59,7 +62,6 @@ export class HuntDetailComponent implements OnInit, OnDestroy {
         key: 'pk_test_Gcszgnmu3v1mmaUEMvWzsNmX',
         locale: 'auto',
         token: (token: any) => {
-          console.log(token);
           this.chargePurchase(token);
         }
       });
@@ -77,26 +79,32 @@ export class HuntDetailComponent implements OnInit, OnDestroy {
   }
 
   chargePurchase(token: any) {
+
+    this.submitted = true;
     this.apiService.purchase(this.id, {
       email: token.email,
       token: token.id
     })
       .takeUntil(this.ngUnsubscribe)
       .subscribe(data => {
-
-        console.log(data);
-
-        // TODO - Show alert popup instead of a SnackBar
-        this.snackBar.open('Success', '', { duration: 2000 });
-
+        this.submitted = false;
+        this.openDialog('Success', `Congratulations, you just purchased the ${this.hunt.name} hunt!`);
         this.router.navigate(['/hunt-instances', data.data.huntInstanceID]);
       },
       error => {
-
-        console.log(error);
-
-        // TODO - Show alert popup instead of a SnackBar
-        this.snackBar.open('Error', 'Cannot purchase hunt.', { duration: 2000 });
+        this.submitted = false;
+        this.openDialog('Error', error.error.data);
       });
+  }
+
+  openDialog(title: string, message: string, closeButtonLabel: string = 'Close'): void {
+    const dialogRef = this.dialog.open(MessageDialogComponent, {
+      width: '250px',
+      data: {
+        title: title,
+        message: message,
+        closeButtonLabel: closeButtonLabel
+      } as MessageDialogData
+    });
   }
 }

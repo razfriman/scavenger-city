@@ -8,5 +8,6 @@ export class Hunt {
   city: string;
   country: string;
   price: number;
+  startingPoint: string;
   questions: Question[];
 }

@@ -3,8 +3,10 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../services/api.service';
 import { AuthService } from '../services/auth.service';
-import { MatSnackBar } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { Subject } from 'rxjs/Subject';
+import { MessageDialogComponent } from 'app/dialogs/message-dialog/message-dialog.component';
+import { MessageDialogData } from 'app/models/message-dialog-data';
 
 @Component({
   selector: 'app-sign-up',
@@ -22,7 +24,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private router: Router,
     private formBuilder: FormBuilder,
-    private snackBar: MatSnackBar
+    private dialog: MatDialog
   ) {
 
   }
@@ -53,7 +55,18 @@ export class SignUpComponent implements OnInit, OnDestroy {
       },
       error => {
         this.submitted = false;
-        this.snackBar.open('Error', 'Cannot create account.', { duration: 2000 });
+        this.openDialog('Error', error.error.data);
       });
+  }
+
+  openDialog(title: string, message: string, closeButtonLabel: string = 'Close'): void {
+    const dialogRef = this.dialog.open(MessageDialogComponent, {
+      width: '250px',
+      data: {
+        title: title,
+        message: message,
+        closeButtonLabel: closeButtonLabel
+      } as MessageDialogData
+    });
   }
 }

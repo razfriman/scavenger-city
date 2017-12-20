@@ -189,7 +189,6 @@ namespace ScavengerCity.Services
 
             hunt.Status = HuntStatus.InProgress;
             hunt.StartTime = DateTime.Now;
-            CreateQuestionInstances(hunt);
             AdvanceNextQuestion(hunt);
             _dbContext.SaveChanges();
 
@@ -216,23 +215,6 @@ namespace ScavengerCity.Services
         private bool CheckAnswer(string userAnswer, string realAnswer)
         {
             return userAnswer?.Trim()?.Equals(realAnswer.Trim(), StringComparison.InvariantCultureIgnoreCase) ?? false;
-        }
-
-        private static void CreateQuestionInstances(HuntInstanceEntity hunt)
-        {
-            foreach (var item in hunt.Hunt.Questions)
-            {
-                var questionInstance = new QuestionInstanceEntity
-                {
-                    HuntInstanceID = hunt.HuntInstanceID,
-                    QuestionID = item.QuestionID,
-                    SequenceNumber = item.SequenceNumber
-                };
-
-                hunt.Questions.Add(questionInstance);
-            }
-
-            hunt.QuestionCount = hunt.Questions.Count;
         }
     }
 }

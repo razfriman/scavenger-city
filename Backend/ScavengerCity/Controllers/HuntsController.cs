@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ScavengerCity.Models;
 using ScavengerCity.Services;
@@ -30,6 +31,7 @@ namespace ScavengerCity.Controllers
         }
 
         [HttpPost("{id}/purchase")]
+        [Authorize]
         public HuntInstance Purchase(int id, [FromBody] PurchaseRequest request)
         {
             return _huntService.Purchase(id, request);

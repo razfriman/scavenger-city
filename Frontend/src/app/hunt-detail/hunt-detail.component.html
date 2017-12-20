@@ -1,4 +1,4 @@
-<mat-spinner *ngIf="!hunt" mode="indeterminate"></mat-spinner>
+<mat-spinner class="page-loading-spinner" *ngIf="!hunt" mode="indeterminate"></mat-spinner>
 
 <mat-card *ngIf="hunt">
   <mat-card-header>
@@ -6,18 +6,20 @@
     <mat-card-title>{{hunt?.name}}</mat-card-title>
     <mat-card-subtitle>{{hunt?.city}}, {{hunt?.country}}</mat-card-subtitle>
     <mat-card-subtitle>{{hunt?.distance}}km</mat-card-subtitle>
-
   </mat-card-header>
-
-  <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
-
   <mat-card-content>
     <p>
       {{hunt?.description}}
     </p>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button color="primary" [disabled]="!hasSignedIn()" (click)="purchase()">PURCHASE {{hunt?.price / 100 | currency}}</button>
+    <button (click)="purchase()" [disabled]="!hasSignedIn() || submitted" mat-raised-button color="primary">
+      PURCHASE {{hunt?.price / 100 | currency}}
+      <mat-spinner class="inline-button-spinner" color="accent" *ngIf="submitted" mode="indeterminate" [diameter]="20"></mat-spinner>
+    </button>
+
+
+
     <button *ngIf="!hasSignedIn()" mat-raised-button color="primary" routerLink="/login">LOGIN TO PURCHASE</button>
   </mat-card-actions>
 </mat-card>

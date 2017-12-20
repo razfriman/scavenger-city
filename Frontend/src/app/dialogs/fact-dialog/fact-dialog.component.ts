@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Question } from 'app/models/question';
+import { FactDialogData } from 'app/models/fact-dialog-data';
 
 @Component({
   selector: 'app-fact-dialog',
@@ -9,19 +10,11 @@ import { Question } from 'app/models/question';
 })
 export class FactDialogComponent implements OnInit {
 
-  question: Question;
-
   constructor(
     public dialogRef: MatDialogRef<FactDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) {
-    this.question = data.question;
+    @Inject(MAT_DIALOG_DATA) public data: FactDialogData) {
   }
 
   ngOnInit() {
   }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
 }

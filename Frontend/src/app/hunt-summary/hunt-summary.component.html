@@ -4,7 +4,7 @@
   <p>Distance: {{hunt?.hunt?.distance}}km </p>
   <p>Questions: {{hunt?.questionCount}}</p>
   <p>Status: {{getHuntStatus()}}</p>
-  <p>Starting Point: XXX</p>
+  <p>Starting Point: {{hunt?.hunt?.startingPoint}}</p>
 
   <p *ngIf="isStarted()">Penalties: {{hunt?.penalties}}</p>
   <p *ngIf="isStarted()">Skipped: {{hunt?.skipped}}</p>

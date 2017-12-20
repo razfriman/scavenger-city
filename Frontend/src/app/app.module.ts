@@ -14,7 +14,6 @@ import {
   MatIconRegistry,
   MatListModule,
   MatProgressSpinnerModule,
-  MatSnackBarModule,
   MatDialogModule,
   MatTabsModule,
   MatExpansionModule
@@ -49,7 +48,8 @@ import { HuntAvailableFilterPipe } from './pipes/hunt-available-filter.pipe';
 import { HuntFinishedFilterPipe } from './pipes/hunt-finished-filter.pipe';
 import { AvailableHuntInstancesComponent } from './available-hunt-instances/available-hunt-instances.component';
 import { CompletedHuntInstancesComponent } from './completed-hunt-instances/completed-hunt-instances.component';
-import { FactDialogComponent } from './fact-dialog/fact-dialog.component';
+import { FactDialogComponent } from './dialogs/fact-dialog/fact-dialog.component';
+import { MessageDialogComponent } from './dialogs/message-dialog/message-dialog.component';
 
 
 export function tokenGetter() {
@@ -85,7 +85,8 @@ const jwtConf: JwtModuleOptions = {
     HuntFinishedFilterPipe,
     AvailableHuntInstancesComponent,
     CompletedHuntInstancesComponent,
-    FactDialogComponent
+    FactDialogComponent,
+    MessageDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -102,7 +103,6 @@ const jwtConf: JwtModuleOptions = {
     MatCardModule,
     MatListModule,
     MatProgressSpinnerModule,
-    MatSnackBarModule,
     MatDialogModule,
     MatTabsModule,
     MatExpansionModule,
@@ -117,7 +117,7 @@ const jwtConf: JwtModuleOptions = {
     AuthService,
     ApiService
   ],
-  entryComponents: [FactDialogComponent],
+  entryComponents: [FactDialogComponent, MessageDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

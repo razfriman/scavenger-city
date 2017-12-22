@@ -40,7 +40,8 @@ namespace ScavengerCity
         {
             // ===== Add Entity Framework =====
             var sqlConnectionString = Configuration.GetConnectionString("DataAccessPostgreSqlProvider");
-            services.AddDbContext<ScavengerDbContext>(options => {
+            services.AddDbContext<ScavengerDbContext>(options =>
+            {
                 options.UseNpgsql(sqlConnectionString);
                 //options.UseInMemoryDatabase("db");
             });
@@ -108,7 +109,7 @@ namespace ScavengerCity
             services.Configure<MvcOptions>(x =>
             {
                 x.Filters.Add<ResultWrapperFilter>();
-                x.Filters.Add(new ExceptionFilter(_loggerFactory, new RavenClient(Configuration.GetSection("Sentry")["DNS"])));
+                x.Filters.Add(new ExceptionFilter(_loggerFactory, new RavenClient(Configuration.GetSection("Sentry")["DNS"]), Configuration.GetSection("Sentry")["Release"]));
             });
 
             services.AddMvc();

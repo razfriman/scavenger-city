@@ -13,12 +13,14 @@ namespace ScavengerCity.Helpers
         private readonly ILogger _logger;
         private readonly RavenClient _ravenClient;
 
-        public ExceptionFilter(ILoggerFactory logger, RavenClient ravenClient)
+        public ExceptionFilter(ILoggerFactory logger, RavenClient ravenClient, string release)
         {
             if (logger == null)
             {
                 throw new ArgumentNullException(nameof(logger));
             }
+
+            ravenClient.Release = release;
 
             _logger = logger.CreateLogger(nameof(ExceptionFilter));
             _ravenClient = ravenClient;

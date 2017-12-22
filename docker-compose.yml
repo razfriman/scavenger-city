@@ -1,14 +1,6 @@
 version: '3'
 
 services:
-  watchtower:
-    image: v2tec/watchtower
-    container_name: watchtower
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /root/.docker/config.json:/config.json
-    command: watchtower nginxproxy razapp postgres backend frontend --interval 30
-    restart: unless-stopped
   nginxproxy:
     #image: eforce21/letsencrypt-nginx-proxy
     image: jwilder/nginx-proxy
@@ -45,11 +37,51 @@ services:
     depends_on:
        - "postgres"
     environment:
-      - VIRTUAL_HOST=api.razfriman.com
+      - VIRTUAL_HOST=api.scavenger.city
   frontend:
     image: rfriman/scavenger-city:latest
     container_name: frontend
     environment:
-      - VIRTUAL_HOST=scavengercity.razfriman.com
+      - VIRTUAL_HOST=app.scavenger.city
+  wordpress_db:
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: wordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+  wordpress:
+    depends_on:
+      - wordpress_db
+    image: wordpress:latest
+    volumes:
+      - wp-content:/var/www/html
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: wordpress_db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      VIRTUAL_HOST: "www.scavenger.city,scavenger.city"
 volumes:
   pgdata:
+  db_data:
+  wp-content:
+
+
+
+
+
+
+
+
+
+
+
+
+^G Get Help                      ^O WriteOut                      ^R Read File                     ^Y Prev Page                     ^K Cut Text                      ^C Cur Pos
+^X Exit                          ^J Justify                       ^W Where Is                      ^V Next Page                     ^U UnCut Text                    ^T To Spell

@@ -2,7 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
+import * as Raven from 'raven-js';
+
 import {
   MatButtonModule,
   MatMenuModule,
@@ -63,6 +65,18 @@ const jwtConf: JwtModuleOptions = {
   }
 };
 
+Raven
+  .config('https://9372ab341f334865a9cc64d2f5d7fabc@sentry.io/263222', {
+    release: '0e4fdef81448dcfa0e16ecc4433ff3997aa53572'
+  })
+  .install();
+
+export class RavenErrorHandler implements ErrorHandler {
+  handleError(err: any): void {
+    Raven.captureException(err);
+  }
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -115,7 +129,8 @@ const jwtConf: JwtModuleOptions = {
     LoginGuard,
     GuestGuard,
     AuthService,
-    ApiService
+    ApiService,
+    { provide: ErrorHandler, useClass: RavenErrorHandler }
   ],
   entryComponents: [FactDialogComponent, MessageDialogComponent],
   bootstrap: [AppComponent]

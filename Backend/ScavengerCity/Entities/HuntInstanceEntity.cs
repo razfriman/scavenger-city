@@ -16,6 +16,9 @@ namespace ScavengerCity.Entities
         public int HuntInstanceID { get; set; }
 
         [Required]
+        public string ShareID { get; set; }
+
+        [Required]
         public string UserID { get; set; }
 
         [Required]

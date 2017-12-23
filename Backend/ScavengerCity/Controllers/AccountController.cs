@@ -16,17 +16,11 @@ namespace ScavengerCity.Controllers
         {
             _accountService = accountService;
         }
-        
+
         [HttpPost]
-        public async Task<object> Login([FromBody] LoginDto model)
-        {
-            return await _accountService.Login(model);
-        }
-       
+        public async Task<object> Login([FromBody] LoginDto model) => await _accountService.Login(model);
+
         [HttpPost]
-        public async Task<string> Register([FromBody] RegisterDto model)
-        {
-            return await _accountService.Register(model);
-        }
+        public async Task<string> Register([FromBody] RegisterDto model) => await _accountService.Register(model);
     }
 }

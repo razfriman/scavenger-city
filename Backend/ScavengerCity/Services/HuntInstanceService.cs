@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ScavengerCity.Entities;
 using ScavengerCity.Helpers;
 using ScavengerCity.Models;
+using ScavengerCity.SignalR;
 
 namespace ScavengerCity.Services
 {
@@ -16,12 +17,14 @@ namespace ScavengerCity.Services
         private readonly ClaimsPrincipal _user;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ScavengerDbContext _dbContext;
+        private readonly HuntHub _huntHub;
 
-        public HuntInstanceService(ClaimsPrincipal user, UserManager<IdentityUser> userManager, ScavengerDbContext dbContext)
+        public HuntInstanceService(ClaimsPrincipal user, UserManager<IdentityUser> userManager, ScavengerDbContext dbContext, HuntHub huntHub)
         {
             _user = user;
             _userManager = userManager;
             _dbContext = dbContext;
+            _huntHub = huntHub;
         }
 
         public IEnumerable<HuntInstance> Get()
@@ -33,6 +36,32 @@ namespace ScavengerCity.Services
                 .ToArray()
                 .Select(x => Mapper.Map<HuntInstance>(x));
         }
+
+        internal HuntInstance GetShared(string id)
+        {
+            var hunt = _dbContext
+                .HuntInstances
+                .Include(x => x.Hunt)
+                .Include(x => x.CurrentQuestionInstance.Answers)
+                .Include(x => x.CurrentQuestionInstance.Question)
+                .FirstOrDefault(x => x.ShareID == id);
+
+            if (hunt == null)
+            {
+                throw new RecordNotFoundException($"Cannot find Hunt Instance with ID={id}");
+            }
+
+            if (hunt.CurrentQuestionInstance?.IsHintUsed ?? false)
+            {
+                _dbContext.Hints
+                         .Where(x => x.HintID == hunt.CurrentQuestionInstance.Question.HintID)
+                         .ToArray();
+            }
+
+            return Mapper.Map<HuntInstance>(hunt);
+        }
+
+        internal void Join(string id) => _huntHub.Groups.AddAsync(_huntHub.Context.ConnectionId, id);
 
         public HuntInstance Get(int id)
         {
@@ -91,7 +120,9 @@ namespace ScavengerCity.Services
             hunt.Skipped++;
             AdvanceNextQuestion(hunt);
 
+
             _dbContext.SaveChanges();
+            _huntHub.UpdateHunt(hunt.ShareID);
 
             return Mapper.Map<AnswerInstance>(submission);
         }
@@ -135,6 +166,7 @@ namespace ScavengerCity.Services
             }
 
             _dbContext.SaveChanges();
+            _huntHub.UpdateHunt(hunt.ShareID);
 
             return Mapper.Map<AnswerInstance>(submission);
         }
@@ -164,6 +196,7 @@ namespace ScavengerCity.Services
                 hunt.CurrentQuestionInstance.IsHintUsed = true;
                 hunt.Penalties += 10;
                 _dbContext.SaveChanges();
+                _huntHub.UpdateHunt(hunt.ShareID);
             }
 
             return Mapper.Map<Hint>(hint);
@@ -192,6 +225,7 @@ namespace ScavengerCity.Services
             hunt.StartTime = DateTime.Now;
             AdvanceNextQuestion(hunt);
             _dbContext.SaveChanges();
+            _huntHub.UpdateHunt(hunt.ShareID);
 
             return Mapper.Map<HuntInstance>(hunt);
         }
@@ -213,9 +247,6 @@ namespace ScavengerCity.Services
             }
         }
 
-        private bool CheckAnswer(string userAnswer, string realAnswer)
-        {
-            return userAnswer?.Trim()?.Equals(realAnswer.Trim(), StringComparison.InvariantCultureIgnoreCase) ?? false;
-        }
+        private bool CheckAnswer(string userAnswer, string realAnswer) => userAnswer?.Trim()?.Equals(realAnswer.Trim(), StringComparison.InvariantCultureIgnoreCase) ?? false;
     }
 }

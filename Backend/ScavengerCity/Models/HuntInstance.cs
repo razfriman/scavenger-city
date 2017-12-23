@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace ScavengerCity.Models
 {
     public class HuntInstance
     {
         public int HuntInstanceID { get; set; }
+
+        public string ShareID { get; set; }
 
         public string UserID { get; set; }
 

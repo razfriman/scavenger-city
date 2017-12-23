@@ -69,6 +69,7 @@ namespace ScavengerCity.Services
             {
                 HuntID = id,
                 Hunt = hunt,
+                ShareID = Guid.NewGuid().ToString(),
                 Status = HuntStatus.Available,
                 UserID = _userManager.GetUserId(_user),
                 Purchase = new PurchaseEntity

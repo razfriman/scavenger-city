@@ -5,13 +5,13 @@ namespace ScavengerCity.SignalR
 {
     public class HuntHub : Hub
     {
-        public Task JoinHunt(int huntInstanceID)
+        public Task JoinHunt(string huntShareID)
         {
-            return Groups.AddAsync(Context.ConnectionId, huntInstanceID.ToString());
+            return Groups.AddAsync(Context.ConnectionId, huntShareID);
         }
-        public Task UpdateHunt(int huntInstanceID)
+        public Task UpdateHunt(string huntShareID)
         {
-            return Clients.Group(huntInstanceID.ToString()).InvokeAsync("HuntInstanceUpdated");
+            return Clients.Group(huntShareID).InvokeAsync("HuntUpdated");
         }
     }
 }

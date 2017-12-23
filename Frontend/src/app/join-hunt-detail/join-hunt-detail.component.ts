@@ -3,6 +3,7 @@ import { HuntInstance } from 'app/models/hunt-instance';
 import { Subject } from 'rxjs/Subject';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from 'app/services/api.service';
+import { HubConnection } from '@aspnet/signalr-client';
 
 @Component({
   selector: 'app-join-hunt-detail',
@@ -11,6 +12,7 @@ import { ApiService } from 'app/services/api.service';
 })
 export class JoinHuntDetailComponent implements OnInit, OnDestroy {
 
+  private _hubConnection: HubConnection;
   private id: string;
   hunt: HuntInstance;
   private ngUnsubscribe = new Subject();
@@ -21,6 +23,14 @@ export class JoinHuntDetailComponent implements OnInit, OnDestroy {
     private apiService: ApiService) { }
 
   ngOnInit() {
+
+    this._hubConnection = new HubConnection('/hunt');
+
+    this._hubConnection.on('HuntUpdated', () => {
+      console.log('Received Event: HuntUpdated');
+      this.reloadEvent();
+    });
+
     this.route.params
       .takeUntil(this.ngUnsubscribe)
       .subscribe(params => {
@@ -31,26 +41,43 @@ export class JoinHuntDetailComponent implements OnInit, OnDestroy {
           return;
         }
 
-        this.apiService.getSharedInstance(this.id)
-          .takeUntil(this.ngUnsubscribe)
-          .subscribe(x => {
-            this.hunt = x.data;
-
-            this.apiService.joinSharedInstance(this.id)
-              .takeUntil(this.ngUnsubscribe)
-              .subscribe(data => {
-                console.log('Joined SignalR');
-              });
-          }, err => {
-            this.router.navigate(['/join']);
-            return;
-          });
+        this.connectToSignalR();
+        // this.reloadEvent();
       });
   }
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+  }
+
+  connectToSignalR() {
+    this._hubConnection.start()
+      .then(() => {
+        console.log('Hub connection started');
+        this.joinGroup();
+      })
+      .catch(err => {
+        console.log('Error while establishing connection');
+      });
+  }
+  joinGroup() {
+    this.apiService.joinSharedInstance(this.id)
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe(data => {
+        console.log('Joined SignalR');
+      });
+  }
+
+  reloadEvent() {
+    this.apiService.getSharedInstance(this.id)
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe(x => {
+        this.hunt = x.data;
+      }, err => {
+        this.router.navigate(['/join']);
+        return;
+      });
   }
 
 }

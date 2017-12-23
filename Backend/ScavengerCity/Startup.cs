@@ -17,6 +17,7 @@ using ScavengerCity.Entities;
 using ScavengerCity.Helpers;
 using ScavengerCity.Models;
 using ScavengerCity.Services;
+using ScavengerCity.SignalR;
 using SharpRaven.Core;
 using Stripe;
 using Swashbuckle.AspNetCore.Swagger;
@@ -86,6 +87,9 @@ namespace ScavengerCity
             // ==== Add Stripe ====
             services.Configure<StripeSettings>(Configuration.GetSection("Stripe"));
 
+            // ==== Add SignalR ====
+            services.AddSignalR();
+
 
             // ==== Add CORS =====
             services.AddCors();
@@ -142,6 +146,11 @@ namespace ScavengerCity
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Scavenger City API V1");
+            });
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<HuntHub>("hunt");
             });
 
             app.UseMvc();

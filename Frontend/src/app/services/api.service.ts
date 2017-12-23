@@ -41,6 +41,14 @@ export class ApiService {
     return this.httpClient.get<ApiResponse<HuntInstance>>(`${this.API_BASE}/hunt-instances/${id}`);
   }
 
+  public getSharedInstance(id: string) {
+    return this.httpClient.get<ApiResponse<HuntInstance>>(`${this.API_BASE}/hunt-instances/shared/${id}`);
+  }
+
+  public joinSharedInstance(id: string) {
+    return this.httpClient.post<ApiResponse>(`${this.API_BASE}/hunt-instances/shared/${id}/join`, {});
+  }
+
   public skip(id: number) {
     return this.httpClient.post<ApiResponse<AnswerInstance>>(`${this.API_BASE}/hunt-instances/${id}/skip`, {});
   }

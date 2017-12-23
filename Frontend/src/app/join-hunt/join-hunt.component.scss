@@ -1,0 +1,22 @@
+.content {
+  width: 100%;
+}
+
+mat-card {
+  max-width: 350px;
+  text-align: center;
+  animation: fadein 1s;
+}
+
+mat-input-container {
+  display: block;
+}
+
+mat-spinner {
+  display: inline-block;
+}
+
+button {
+  display: block;
+  width: 100%;
+}

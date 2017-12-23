@@ -1,4 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Subject } from 'rxjs/Subject';
+import { MatDialog } from '@angular/material';
+import { ApiService } from 'app/services/api.service';
+import { AuthService } from 'app/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-join-hunt',
@@ -7,9 +13,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class JoinHuntComponent implements OnInit {
 
-  constructor() { }
+  form: FormGroup;
 
-  ngOnInit() {
+  constructor(
+    private formBuilder: FormBuilder
+  ) {
+
   }
 
+  ngOnInit() {
+    this.form = this.formBuilder.group({
+      hunt: ['', Validators.compose([Validators.required])]
+    });
+  }
 }

@@ -55,6 +55,7 @@ import { CompletedHuntInstancesComponent } from './completed-hunt-instances/comp
 import { FactDialogComponent } from './dialogs/fact-dialog/fact-dialog.component';
 import { MessageDialogComponent } from './dialogs/message-dialog/message-dialog.component';
 import { JoinHuntComponent } from './join-hunt/join-hunt.component';
+import { JoinHuntDetailComponent } from './join-hunt-detail/join-hunt-detail.component';
 
 
 export function tokenGetter() {
@@ -104,7 +105,8 @@ export class RavenErrorHandler implements ErrorHandler {
     CompletedHuntInstancesComponent,
     FactDialogComponent,
     MessageDialogComponent,
-    JoinHuntComponent
+    JoinHuntComponent,
+    JoinHuntDetailComponent
   ],
   imports: [
     BrowserModule,

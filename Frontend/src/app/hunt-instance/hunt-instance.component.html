@@ -7,7 +7,7 @@
 <mat-card *ngIf="isInProgress()">
   <mat-card-content>
 
-    <markdown [data]="hunt.currentQuestionInstance.question.text">
+    <markdown [data]="hunt?.currentQuestionInstance.question.text">
     </markdown>
 
     <mat-card-subtitle>Hint: {{getHint()}}</mat-card-subtitle>

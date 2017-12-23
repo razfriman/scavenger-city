@@ -57,7 +57,7 @@ namespace ScavengerCity.Services
                 return GenerateJwtToken(model.Email, user);
             }
 
-            var errors = string.Join(",", result.Errors.Select(x => x.Description));
+            var errors = string.Join(", ", result.Errors.Select(x => x.Description));
             throw new AuthorizationException(errors);
         }
 

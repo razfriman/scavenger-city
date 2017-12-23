@@ -28,7 +28,7 @@ export class JoinHuntDetailComponent implements OnInit, OnDestroy {
 
     this._hubConnection.on('HuntUpdated', () => {
       console.log('Received Event: HuntUpdated');
-      this.reloadEvent();
+      this.reloadHunt();
     });
 
     this.route.params
@@ -42,7 +42,6 @@ export class JoinHuntDetailComponent implements OnInit, OnDestroy {
         }
 
         this.connectToSignalR();
-        // this.reloadEvent();
       });
   }
 
@@ -62,14 +61,17 @@ export class JoinHuntDetailComponent implements OnInit, OnDestroy {
       });
   }
   joinGroup() {
-    this.apiService.joinSharedInstance(this.id)
-      .takeUntil(this.ngUnsubscribe)
-      .subscribe(data => {
-        console.log('Joined SignalR');
+    this._hubConnection.invoke('JoinHunt', this.id)
+      .then(() => {
+        console.log('Joined group');
+        this.reloadHunt();
+      })
+      .catch(err => {
+        console.log('Error while joining group');
       });
   }
 
-  reloadEvent() {
+  reloadHunt() {
     this.apiService.getSharedInstance(this.id)
       .takeUntil(this.ngUnsubscribe)
       .subscribe(x => {

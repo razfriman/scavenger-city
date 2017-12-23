@@ -15,6 +15,7 @@ import { DashboardComponent } from 'app/dashboard/dashboard.component';
 import { GuestComponent } from 'app/guest/guest.component';
 import { AvailableHuntInstancesComponent } from 'app/available-hunt-instances/available-hunt-instances.component';
 import { CompletedHuntInstancesComponent } from 'app/completed-hunt-instances/completed-hunt-instances.component';
+import { JoinHuntComponent } from 'app/join-hunt/join-hunt.component';
 
 
 export const routes: Routes = [
@@ -60,6 +61,10 @@ export const routes: Routes = [
     path: 'hunt-instances/:id',
     component: HuntInstanceComponent,
     canActivate: [LoginGuard]
+  },
+  {
+    path: 'join',
+    component: JoinHuntComponent
   },
   {
     path: '404',

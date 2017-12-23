@@ -18,6 +18,11 @@
       <span>Explore Hunts</span>
     </button>
 
+    <button mat-menu-item routerLink="/join">
+      <mat-icon>people</mat-icon>
+      <span>Join Hunt</span>
+    </button>
+
     <button mat-menu-item *ngIf="!hasSignedIn()" routerLink="/login">
       <mat-icon>person</mat-icon>
       <span>Log In</span>

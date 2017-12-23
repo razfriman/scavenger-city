@@ -14,7 +14,11 @@
 
     <form [formGroup]="form" (ngSubmit)="submit()">
       <mat-input-container>
-        <input matInput formControlName="answer" required type="text" placeholder="Answer">
+        <input matInput formControlName="answer" placeholder="Answer">
+        <mat-error *ngIf="form.controls.answer.hasError('required')">
+          Answer is
+          <strong>required</strong>
+        </mat-error>
       </mat-input-container>
     </form>
   </mat-card-content>

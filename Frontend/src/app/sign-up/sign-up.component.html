@@ -7,12 +7,25 @@
     </mat-card-subtitle>
 
     <mat-card-content>
+
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <mat-input-container>
-          <input matInput formControlName="email" required type="email" placeholder="Email">
+          <input matInput formControlName="email" placeholder="Email">
+          <mat-error *ngIf="form.controls.email.hasError('email') && !form.controls.email.hasError('required')">
+            Please enter a valid email address
+          </mat-error>
+          <mat-error *ngIf="form.controls.email.hasError('required')">
+            Email is
+            <strong>required</strong>
+          </mat-error>
         </mat-input-container>
+
         <mat-input-container>
-          <input matInput formControlName="password" required type="password" placeholder="Password">
+          <input matInput formControlName="password" type="password" placeholder="Password">
+          <mat-error *ngIf="form.controls.password.hasError('required')">
+            Password is
+            <strong>required</strong>
+          </mat-error>
         </mat-input-container>
         <button type="submit" [disabled]="!form.valid || submitted" mat-raised-button color="primary">
           Sign Up

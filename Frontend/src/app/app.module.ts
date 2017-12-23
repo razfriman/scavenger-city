@@ -18,7 +18,9 @@ import {
   MatProgressSpinnerModule,
   MatDialogModule,
   MatTabsModule,
-  MatExpansionModule
+  MatExpansionModule,
+  ErrorStateMatcher,
+  ShowOnDirtyErrorStateMatcher
 } from '@angular/material';
 import { JwtModule, JwtModuleOptions } from '@auth0/angular-jwt';
 import { MarkdownModule } from 'ngx-markdown';
@@ -52,6 +54,7 @@ import { AvailableHuntInstancesComponent } from './available-hunt-instances/avai
 import { CompletedHuntInstancesComponent } from './completed-hunt-instances/completed-hunt-instances.component';
 import { FactDialogComponent } from './dialogs/fact-dialog/fact-dialog.component';
 import { MessageDialogComponent } from './dialogs/message-dialog/message-dialog.component';
+import { JoinHuntComponent } from './join-hunt/join-hunt.component';
 
 
 export function tokenGetter() {
@@ -100,7 +103,8 @@ export class RavenErrorHandler implements ErrorHandler {
     AvailableHuntInstancesComponent,
     CompletedHuntInstancesComponent,
     FactDialogComponent,
-    MessageDialogComponent
+    MessageDialogComponent,
+    JoinHuntComponent
   ],
   imports: [
     BrowserModule,
@@ -130,6 +134,7 @@ export class RavenErrorHandler implements ErrorHandler {
     GuestGuard,
     AuthService,
     ApiService,
+    { provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher },
     { provide: ErrorHandler, useClass: RavenErrorHandler }
   ],
   entryComponents: [FactDialogComponent, MessageDialogComponent],

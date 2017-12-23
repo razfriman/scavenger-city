@@ -9,6 +9,7 @@ namespace ScavengerCity.SignalR
         {
             return Groups.AddAsync(Context.ConnectionId, huntShareID);
         }
+
         public Task UpdateHunt(string huntShareID)
         {
             return Clients.Group(huntShareID).InvokeAsync("HuntUpdated");

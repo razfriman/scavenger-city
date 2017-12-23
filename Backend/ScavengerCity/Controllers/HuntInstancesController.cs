@@ -42,8 +42,5 @@ namespace ScavengerCity.Controllers
 
         [HttpGet("shared/{id}")]
         public HuntInstance GetShared(string id) => _huntInstanceService.GetShared(id);
-
-        [HttpPost("shared/{id}/join")]
-        public void Join(string id) => _huntInstanceService.Join(id);
     }
 }

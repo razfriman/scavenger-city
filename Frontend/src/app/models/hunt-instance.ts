@@ -18,4 +18,5 @@ export class HuntInstance {
   purchase: any;
   questionCount: number;
   skipped: number;
+  shareID: string;
 }

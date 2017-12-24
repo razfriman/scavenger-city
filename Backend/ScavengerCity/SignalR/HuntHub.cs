@@ -7,11 +7,21 @@ namespace ScavengerCity.SignalR
     {
         public Task JoinHunt(string huntShareID)
         {
+            if (huntShareID == null)
+            {
+                return Task.CompletedTask;
+            }
+
             return Groups.AddAsync(Context.ConnectionId, huntShareID);
         }
 
         public Task UpdateHunt(string huntShareID)
         {
+            if (huntShareID == null)
+            {
+                return Task.CompletedTask;
+            }
+
             return Clients.Group(huntShareID).InvokeAsync("HuntUpdated");
         }
     }

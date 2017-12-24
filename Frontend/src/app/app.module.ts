@@ -56,6 +56,7 @@ import { FactDialogComponent } from './dialogs/fact-dialog/fact-dialog.component
 import { MessageDialogComponent } from './dialogs/message-dialog/message-dialog.component';
 import { JoinHuntComponent } from './join-hunt/join-hunt.component';
 import { JoinHuntDetailComponent } from './join-hunt-detail/join-hunt-detail.component';
+import { ShareHuntDialogComponent } from './Dialogs/share-hunt-dialog/share-hunt-dialog.component';
 
 
 export function tokenGetter() {
@@ -106,7 +107,8 @@ export class RavenErrorHandler implements ErrorHandler {
     FactDialogComponent,
     MessageDialogComponent,
     JoinHuntComponent,
-    JoinHuntDetailComponent
+    JoinHuntDetailComponent,
+    ShareHuntDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -139,7 +141,7 @@ export class RavenErrorHandler implements ErrorHandler {
     { provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher },
     { provide: ErrorHandler, useClass: RavenErrorHandler }
   ],
-  entryComponents: [FactDialogComponent, MessageDialogComponent],
+  entryComponents: [FactDialogComponent, MessageDialogComponent, ShareHuntDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

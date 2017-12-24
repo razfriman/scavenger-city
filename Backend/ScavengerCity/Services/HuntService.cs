@@ -69,7 +69,6 @@ namespace ScavengerCity.Services
             {
                 HuntID = id,
                 Hunt = hunt,
-                ShareID = Guid.NewGuid().ToString(),
                 Status = HuntStatus.Available,
                 UserID = _userManager.GetUserId(_user),
                 Purchase = new PurchaseEntity
@@ -85,8 +84,13 @@ namespace ScavengerCity.Services
             _dbContext.HuntInstances.Add(instance);
             _dbContext.SaveChanges();
 
+            instance.ShareID = GenerateShareID(instance.HuntInstanceID);
+            _dbContext.SaveChanges();
+
             return Mapper.Map<HuntInstance>(instance);
         }
+
+        private string GenerateShareID(int huntInstanceID) => $"{huntInstanceID}:{Guid.NewGuid()}";
 
         private StripeCharge Charge(PurchaseRequest request, int price, string description)
         {

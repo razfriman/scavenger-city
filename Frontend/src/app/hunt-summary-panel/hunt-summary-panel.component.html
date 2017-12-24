@@ -13,4 +13,11 @@
   <p>Penalties: {{hunt?.penalties}}</p>
   <p>Skipped: {{hunt?.skipped}}</p>
   <p>Date Started: {{hunt?.startTime | date: 'medium' }}</p>
+
+  <button mat-raised-button color="primary" (click)="openDialog()">
+
+    Share QR
+    <mat-icon matListIcon>share</mat-icon>
+  </button>
+  <p>{{hunt.shareID}}</p>
 </mat-expansion-panel>

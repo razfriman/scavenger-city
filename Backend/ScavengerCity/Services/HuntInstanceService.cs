@@ -42,26 +42,43 @@ namespace ScavengerCity.Services
 
         internal HuntInstance GetShared(string id)
         {
+            if (id == null || id.IndexOf(':') == -1)
+            {
+                throw new RecordNotFoundException($"Cannot find Hunt Instance with ShareID={id}");
+            }
+
+            var huntInstanceIDSection = id.Remove(id.IndexOf(':'));
+            if (!int.TryParse(huntInstanceIDSection, out int huntInstanceID))
+            {
+                throw new InvalidActionException("Invalid Share ID");
+            }
+
             var hunt = _dbContext
                 .HuntInstances
                 .Include(x => x.Hunt)
                 .Include(x => x.CurrentQuestionInstance.Answers)
                 .Include(x => x.CurrentQuestionInstance.Question)
-                .FirstOrDefault(x => x.ShareID == id);
+                .Where(x => x.ShareID == id)
+                .FirstOrDefault(x => x.HuntInstanceID == huntInstanceID);
 
             if (hunt == null)
             {
                 throw new RecordNotFoundException($"Cannot find Hunt Instance with ID={id}");
             }
 
+            LoadHintIfUsed(hunt);
+
+            return Mapper.Map<HuntInstance>(hunt);
+        }
+
+        private void LoadHintIfUsed(HuntInstanceEntity hunt)
+        {
             if (hunt.CurrentQuestionInstance?.IsHintUsed ?? false)
             {
                 _dbContext.Hints
                          .Where(x => x.HintID == hunt.CurrentQuestionInstance.Question.HintID)
                          .ToArray();
             }
-
-            return Mapper.Map<HuntInstance>(hunt);
         }
 
         public HuntInstance Get(int id)

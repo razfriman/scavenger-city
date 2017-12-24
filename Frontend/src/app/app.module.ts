@@ -27,6 +27,7 @@ import { MarkdownModule } from 'ngx-markdown';
 import { Angulartics2Module } from 'angulartics2';
 import { Angulartics2GoogleAnalytics } from 'angulartics2/ga';
 import { NgxQRCodeModule } from 'ngx-qrcode2';
+import { QrScannerModule } from 'angular2-qrscanner';
 
 import { AppComponent } from './app.component';
 import { FooterComponent } from './footer/footer.component';
@@ -134,7 +135,8 @@ export class RavenErrorHandler implements ErrorHandler {
     MarkdownModule.forRoot(),
     JwtModule.forRoot(jwtConf),
     Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
-    NgxQRCodeModule
+    NgxQRCodeModule,
+    QrScannerModule
   ],
   providers: [
     LoginGuard,

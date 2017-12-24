@@ -15,6 +15,9 @@
         <button [disabled]="!form.valid" mat-raised-button color="primary" routerLink="/join/{{form.value.hunt}}">
           Join
         </button>
+
+        <qr-scanner [debug]="false" [canvasWidth]="640" [canvasHeight]="480" [mirror]="false" [stopAfterScan]="true" [updateTime]="500"
+          (onRead)="decodedOutput($event)"></qr-scanner>
       </form>
     </mat-card-content>
   </mat-card>

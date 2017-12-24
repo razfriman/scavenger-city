@@ -2,8 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { HuntInstanceComponent } from 'app/hunt-instance/hunt-instance.component';
 import { HuntInstance } from 'app/models/hunt-instance';
 import { HuntShareDialogData } from 'app/models/hunt-share-dialog-data';
-import { ShareHuntDialogComponent } from 'app/Dialogs/share-hunt-dialog/share-hunt-dialog.component';
 import { MatDialog } from '@angular/material';
+import { HuntShareDialogComponent } from 'app/hunt-share-dialog/hunt-share-dialog.component';
 
 @Component({
   selector: 'app-hunt-summary-panel',
@@ -21,8 +21,8 @@ export class HuntSummaryPanelComponent implements OnInit {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(ShareHuntDialogComponent, {
-      width: '250px',
+    const dialogRef = this.dialog.open(HuntShareDialogComponent, {
+      width: '300px',
       data: {
         shareID: this.hunt.shareID
       } as HuntShareDialogData

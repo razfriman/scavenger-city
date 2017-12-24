@@ -26,6 +26,7 @@ import { JwtModule, JwtModuleOptions } from '@auth0/angular-jwt';
 import { MarkdownModule } from 'ngx-markdown';
 import { Angulartics2Module } from 'angulartics2';
 import { Angulartics2GoogleAnalytics } from 'angulartics2/ga';
+import { NgxQRCodeModule } from 'ngx-qrcode2';
 
 import { AppComponent } from './app.component';
 import { FooterComponent } from './footer/footer.component';
@@ -56,7 +57,7 @@ import { FactDialogComponent } from './dialogs/fact-dialog/fact-dialog.component
 import { MessageDialogComponent } from './dialogs/message-dialog/message-dialog.component';
 import { JoinHuntComponent } from './join-hunt/join-hunt.component';
 import { JoinHuntDetailComponent } from './join-hunt-detail/join-hunt-detail.component';
-import { ShareHuntDialogComponent } from './Dialogs/share-hunt-dialog/share-hunt-dialog.component';
+import { HuntShareDialogComponent } from './hunt-share-dialog/hunt-share-dialog.component';
 
 
 export function tokenGetter() {
@@ -108,7 +109,7 @@ export class RavenErrorHandler implements ErrorHandler {
     MessageDialogComponent,
     JoinHuntComponent,
     JoinHuntDetailComponent,
-    ShareHuntDialogComponent
+    HuntShareDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -131,7 +132,8 @@ export class RavenErrorHandler implements ErrorHandler {
     HttpClientModule,
     MarkdownModule.forRoot(),
     JwtModule.forRoot(jwtConf),
-    Angulartics2Module.forRoot([Angulartics2GoogleAnalytics])
+    Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
+    NgxQRCodeModule
   ],
   providers: [
     LoginGuard,
@@ -141,7 +143,7 @@ export class RavenErrorHandler implements ErrorHandler {
     { provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher },
     { provide: ErrorHandler, useClass: RavenErrorHandler }
   ],
-  entryComponents: [FactDialogComponent, MessageDialogComponent, ShareHuntDialogComponent],
+  entryComponents: [FactDialogComponent, MessageDialogComponent, HuntShareDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

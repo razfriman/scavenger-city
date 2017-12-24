@@ -26,4 +26,5 @@ export class JoinHuntComponent implements OnInit {
       hunt: ['', Validators.compose([Validators.required])]
     });
   }
+  // @TODO - Add support for QR scanning inside web app.
 }

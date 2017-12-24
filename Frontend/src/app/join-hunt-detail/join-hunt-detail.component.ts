@@ -24,12 +24,17 @@ export class JoinHuntDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this._hubConnection = new HubConnection('/hunt');
+    console.log('setting up hub connection');
+
+    // this._hubConnection = new HubConnection('/hunt');
+    this._hubConnection = new HubConnection('http://app.scavenger.city/hunt');
 
     this._hubConnection.on('HuntUpdated', () => {
       console.log('Received Event: HuntUpdated');
       this.reloadHunt();
     });
+
+    console.log('hub is setup. Need to connect.');
 
     this.route.params
       .takeUntil(this.ngUnsubscribe)
@@ -51,6 +56,9 @@ export class JoinHuntDetailComponent implements OnInit, OnDestroy {
   }
 
   connectToSignalR() {
+
+    console.log('starting hub connection');
+
     this._hubConnection.start()
       .then(() => {
         console.log('Hub connection started');

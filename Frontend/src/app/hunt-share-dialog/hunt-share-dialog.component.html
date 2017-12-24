@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>Share Hunt</h1>
+<mat-dialog-content>
+  <section class="mat-typography">
+    <p>Have your friends scan the following QR code to join </p>
+    <ngx-qrcode [qrc-element-type]="'url'" [qrc-value]="url">
+    </ngx-qrcode>
+    <p>Or manually enter the following Share ID</p>
+    <code>{{shareID}}</code>
+  </section>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button mat-dialog-close type="button" color="primary">CLOSE</button>
+</mat-dialog-actions>

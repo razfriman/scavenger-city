@@ -106,7 +106,8 @@ namespace ScavengerCity
                     builder => builder
                     .AllowAnyHeader()
                     .AllowAnyMethod()
-                    .AllowAnyOrigin());
+                    .AllowAnyOrigin()
+                    .AllowCredentials());
             });
 
             // ===== Add MVC ========

@@ -21,7 +21,7 @@ export class HuntSummaryPanelComponent implements OnInit {
   ngOnInit() {
   }
 
-  openDialog(shareID: string): void {
+  openDialog(): void {
     this.dialogService.openHuntShareDialog(this.hunt.shareID);
   }
 }

@@ -26,7 +26,7 @@ import { JwtModule, JwtModuleOptions } from '@auth0/angular-jwt';
 import { MarkdownModule } from 'ngx-markdown';
 import { Angulartics2Module } from 'angulartics2';
 import { Angulartics2GoogleAnalytics } from 'angulartics2/ga';
-import { NgxQRCodeModule } from 'ngx-qrcode2';
+import { QRCodeModule } from 'angular2-qrcode';
 import { QrScannerModule } from 'angular2-qrscanner';
 
 import { AppComponent } from './app.component';
@@ -135,7 +135,7 @@ export class RavenErrorHandler implements ErrorHandler {
     MarkdownModule.forRoot(),
     JwtModule.forRoot(jwtConf),
     Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
-    NgxQRCodeModule,
+    QRCodeModule,
     QrScannerModule
   ],
   providers: [

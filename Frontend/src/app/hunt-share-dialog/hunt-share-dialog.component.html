@@ -2,8 +2,7 @@
 <mat-dialog-content>
   <section class="mat-typography">
     <p>Have your friends scan the following QR code to join </p>
-    <ngx-qrcode [qrc-element-type]="'url'" [qrc-value]="url">
-    </ngx-qrcode>
+    <qr-code [value]="url" [size]="150"></qr-code>
     <p>Or manually enter the following Share ID</p>
     <code>{{shareID}}</code>
   </section>

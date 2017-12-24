@@ -18,7 +18,7 @@ export class HuntShareDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<HuntShareDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: HuntShareDialogData) {
     this.shareID = data.shareID;
-    this.url = `{${(platformLocation as any).location.origin}/join/${this.shareID}`;
+    this.url = `${(platformLocation as any).location.origin}/join/${this.shareID}`;
   }
 
   ngOnInit() {

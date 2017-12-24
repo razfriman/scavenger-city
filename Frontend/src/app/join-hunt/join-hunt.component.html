@@ -4,6 +4,10 @@
       <h2>Join a Hunt</h2>
     </mat-card-subtitle>
     <mat-card-content>
+
+      <qr-scanner *ngIf="hasHttps" [debug]="false" [canvasWidth]="640" [canvasHeight]="480" [mirror]="false" [updateTime]="500"
+        (onRead)="decodedOutput($event)"></qr-scanner>
+
       <form [formGroup]="form">
         <mat-input-container>
           <input matInput formControlName="hunt" placeholder="Hunt Share ID">
@@ -15,9 +19,6 @@
         <button [disabled]="!form.valid" mat-raised-button color="primary" routerLink="/join/{{form.value.hunt}}">
           Join
         </button>
-
-        <qr-scanner [debug]="false" [canvasWidth]="640" [canvasHeight]="480" [mirror]="false" [stopAfterScan]="true" [updateTime]="500"
-          (onRead)="decodedOutput($event)"></qr-scanner>
       </form>
     </mat-card-content>
   </mat-card>

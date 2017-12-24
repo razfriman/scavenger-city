@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material';
 import { ApiService } from 'app/services/api.service';
 import { AuthService } from 'app/services/auth.service';
 import { Router } from '@angular/router';
+import { PlatformLocation } from '@angular/common';
 
 @Component({
   selector: 'app-join-hunt',
@@ -14,11 +15,15 @@ import { Router } from '@angular/router';
 export class JoinHuntComponent implements OnInit {
 
   form: FormGroup;
+  hasHttps: boolean;
 
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private platformLocation: PlatformLocation
   ) {
-
+    const origin = (platformLocation as any).location.origin as string;
+    this.hasHttps = origin.startsWith('https://');
   }
 
   ngOnInit() {
@@ -27,7 +32,19 @@ export class JoinHuntComponent implements OnInit {
     });
   }
 
-  decodedOutput(data: any) {
-    console.log(data);
+  decodedOutput(data: string) {
+
+    if (!data) {
+      return;
+    }
+
+    const splitted = data.split('/');
+
+    if (!splitted.length) {
+      return;
+    }
+
+    const shareID = splitted[splitted.length - 1];
+    this.router.navigate(['/join', shareID]);
   }
 }

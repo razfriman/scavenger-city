@@ -4,10 +4,9 @@ import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
 import { ApiService } from '../services/api.service';
 import { AuthService } from '../services/auth.service';
 import { Hunt } from '../models/hunt';
-import { MatDialog } from '@angular/material';
 import { Subject } from 'rxjs/Subject';
-import { MessageDialogComponent } from 'app/dialogs/message-dialog/message-dialog.component';
 import { MessageDialogData } from 'app/models/message-dialog-data';
+import { DialogService } from 'app/services/dialog.services';
 
 @Component({
   selector: 'app-hunt-detail',
@@ -26,7 +25,7 @@ export class HuntDetailComponent implements OnInit, OnDestroy {
     private router: Router,
     private apiService: ApiService,
     private authService: AuthService,
-    private dialog: MatDialog) { }
+    private dialogService: DialogService) { }
 
   ngOnInit() {
     this.route.params
@@ -88,23 +87,12 @@ export class HuntDetailComponent implements OnInit, OnDestroy {
       .takeUntil(this.ngUnsubscribe)
       .subscribe(data => {
         this.submitted = false;
-        this.openDialog('Success', `Congratulations, you just purchased the ${this.hunt.name} hunt!`);
+        this.dialogService.openMessageDialog('Success', `Congratulations, you just purchased the ${this.hunt.name} hunt!`);
         this.router.navigate(['/hunt-instances', data.data.huntInstanceID]);
       },
       error => {
         this.submitted = false;
-        this.openDialog('Error', error.error.data);
+        this.dialogService.openMessageDialog('Error', error.error.data);
       });
-  }
-
-  openDialog(title: string, message: string, closeButtonLabel: string = 'Close'): void {
-    const dialogRef = this.dialog.open(MessageDialogComponent, {
-      width: '250px',
-      data: {
-        title: title,
-        message: message,
-        closeButtonLabel: closeButtonLabel
-      } as MessageDialogData
-    });
   }
 }

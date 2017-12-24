@@ -12,60 +12,60 @@ import { LoginRequest } from 'app/models/login-request';
 @Injectable()
 export class ApiService {
 
-  private API_BASE = 'http://api.scavenger.city';
+  public static API_BASE = 'http://api.scavenger.city';
 
   constructor(private httpClient: HttpClient) {
   }
 
   public login(request: LoginRequest) {
-    return this.httpClient.post<ApiResponse>(`${this.API_BASE}/account/login`, request);
+    return this.httpClient.post<ApiResponse>(`${ApiService.API_BASE}/account/login`, request);
   }
 
   public signUp(request: LoginRequest) {
-    return this.httpClient.post<ApiResponse>(`${this.API_BASE}/account/register`, request);
+    return this.httpClient.post<ApiResponse>(`${ApiService.API_BASE}/account/register`, request);
   }
 
   public getHunts() {
-    return this.httpClient.get<ApiResponse<Hunt[]>>(`${this.API_BASE}/hunts`);
+    return this.httpClient.get<ApiResponse<Hunt[]>>(`${ApiService.API_BASE}/hunts`);
   }
 
   public getHunt(id: number) {
-    return this.httpClient.get<ApiResponse<Hunt>>(`${this.API_BASE}/hunts/${id}`);
+    return this.httpClient.get<ApiResponse<Hunt>>(`${ApiService.API_BASE}/hunts/${id}`);
   }
 
   public getInstances() {
-    return this.httpClient.get<ApiResponse<HuntInstance[]>>(`${this.API_BASE}/hunt-instances/`);
+    return this.httpClient.get<ApiResponse<HuntInstance[]>>(`${ApiService.API_BASE}/hunt-instances/`);
   }
 
   public getInstance(id: number) {
-    return this.httpClient.get<ApiResponse<HuntInstance>>(`${this.API_BASE}/hunt-instances/${id}`);
+    return this.httpClient.get<ApiResponse<HuntInstance>>(`${ApiService.API_BASE}/hunt-instances/${id}`);
   }
 
   public getSharedInstance(id: string) {
-    return this.httpClient.get<ApiResponse<HuntInstance>>(`${this.API_BASE}/hunt-instances/shared/${id}`);
+    return this.httpClient.get<ApiResponse<HuntInstance>>(`${ApiService.API_BASE}/hunt-instances/shared/${id}`);
   }
 
   public joinSharedInstance(id: string) {
-    return this.httpClient.post<ApiResponse>(`${this.API_BASE}/hunt-instances/shared/${id}/join`, {});
+    return this.httpClient.post<ApiResponse>(`${ApiService.API_BASE}/hunt-instances/shared/${id}/join`, {});
   }
 
   public skip(id: number) {
-    return this.httpClient.post<ApiResponse<AnswerInstance>>(`${this.API_BASE}/hunt-instances/${id}/skip`, {});
+    return this.httpClient.post<ApiResponse<AnswerInstance>>(`${ApiService.API_BASE}/hunt-instances/${id}/skip`, {});
   }
 
   public hint(id: number) {
-    return this.httpClient.post<ApiResponse<Hint>>(`${this.API_BASE}/hunt-instances/${id}/hint`, {});
+    return this.httpClient.post<ApiResponse<Hint>>(`${ApiService.API_BASE}/hunt-instances/${id}/hint`, {});
   }
 
   public submitAnswer(id: number, answerSubmission: AnswerSubmission) {
-    return this.httpClient.post<ApiResponse<AnswerInstance>>(`${this.API_BASE}/hunt-instances/${id}/submit`, answerSubmission);
+    return this.httpClient.post<ApiResponse<AnswerInstance>>(`${ApiService.API_BASE}/hunt-instances/${id}/submit`, answerSubmission);
   }
 
   public start(id: number) {
-    return this.httpClient.post<ApiResponse<HuntInstance>>(`${this.API_BASE}/hunt-instances/${id}/start`, {});
+    return this.httpClient.post<ApiResponse<HuntInstance>>(`${ApiService.API_BASE}/hunt-instances/${id}/start`, {});
   }
 
   public purchase(id: number, purchaseRequest: PurchaseRequest) {
-    return this.httpClient.post<ApiResponse<HuntInstance>>(`${this.API_BASE}/hunts/${id}/purchase`, purchaseRequest);
+    return this.httpClient.post<ApiResponse<HuntInstance>>(`${ApiService.API_BASE}/hunts/${id}/purchase`, purchaseRequest);
   }
 }

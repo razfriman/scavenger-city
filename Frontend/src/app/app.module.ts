@@ -58,6 +58,7 @@ import { MessageDialogComponent } from './dialogs/message-dialog/message-dialog.
 import { JoinHuntComponent } from './join-hunt/join-hunt.component';
 import { JoinHuntDetailComponent } from './join-hunt-detail/join-hunt-detail.component';
 import { HuntShareDialogComponent } from './hunt-share-dialog/hunt-share-dialog.component';
+import { DialogService } from 'app/services/dialog.services';
 
 
 export function tokenGetter() {
@@ -140,6 +141,7 @@ export class RavenErrorHandler implements ErrorHandler {
     GuestGuard,
     AuthService,
     ApiService,
+    DialogService,
     { provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher },
     { provide: ErrorHandler, useClass: RavenErrorHandler }
   ],

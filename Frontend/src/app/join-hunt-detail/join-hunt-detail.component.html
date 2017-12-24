@@ -1,7 +1,11 @@
 <mat-spinner class="page-loading-spinner" *ngIf="!hunt" mode="indeterminate"></mat-spinner>
 
-<p>
-  join-hunt-detail works!
-</p>
+<app-hunt-summary-panel [hunt]="hunt"></app-hunt-summary-panel>
 
-{{hunt | json}}
+<mat-card *ngIf="hunt">
+  <mat-card-content>
+    <markdown [data]="hunt?.currentQuestionInstance.question.text">
+    </markdown>
+    <mat-card-subtitle>Hint: {{getHint()}}</mat-card-subtitle>
+  </mat-card-content>
+</mat-card>

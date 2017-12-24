@@ -186,7 +186,11 @@ namespace ScavengerCity.Services
             _dbContext.SaveChanges();
             UpdateHunt(hunt.ShareID);
 
-            return Mapper.Map<AnswerInstance>(submission);
+            var result = Mapper.Map<AnswerInstance>(submission);
+
+            SubmitAnswer(hunt.ShareID, result);
+
+            return result;
         }
 
         public Hint Hint(int id)
@@ -265,7 +269,25 @@ namespace ScavengerCity.Services
             }
         }
 
-        private Task UpdateHunt(string huntShareID) => _hubContext.Clients.Group(huntShareID).InvokeAsync("HuntUpdated");
+        private Task UpdateHunt(string huntShareID)
+        {
+            if (huntShareID == null)
+            {
+                return Task.CompletedTask;
+            }
+
+            return _hubContext.Clients.Group(huntShareID).InvokeAsync("HuntUpdated");
+        }
+
+        private Task SubmitAnswer(string huntShareID, AnswerInstance answer)
+        {
+            if (huntShareID == null)
+            {
+                return Task.CompletedTask;
+            }
+
+            return _hubContext.Clients.Group(huntShareID).InvokeAsync("AnswerSubmitted", answer);
+        }
 
         private bool CheckAnswer(string userAnswer, string realAnswer) => userAnswer?.Trim()?.Equals(realAnswer.Trim(), StringComparison.InvariantCultureIgnoreCase) ?? false;
     }

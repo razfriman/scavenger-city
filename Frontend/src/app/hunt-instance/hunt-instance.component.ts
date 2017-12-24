@@ -3,16 +3,14 @@ import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { ApiService } from '../services/api.service';
-import { MatDialog } from '@angular/material';
 import { HuntInstance } from '../models/hunt-instance';
 import { Subject } from 'rxjs/Subject';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HuntStatus } from 'app/models/hunt-status';
-import { FactDialogComponent } from 'app/dialogs/fact-dialog/fact-dialog.component';
 import { Question } from 'app/models/question';
 import { FactDialogData } from 'app/models/fact-dialog-data';
-import { MessageDialogComponent } from 'app/dialogs/message-dialog/message-dialog.component';
 import { MessageDialogData } from 'app/models/message-dialog-data';
+import { DialogService } from 'app/services/dialog.services';
 
 @Component({
   selector: 'app-hunt-instance',
@@ -34,7 +32,7 @@ export class HuntInstanceComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private apiService: ApiService,
     private authService: AuthService,
-    private dialog: MatDialog) { }
+    private dialogService: DialogService) { }
 
   ngOnInit() {
     this.form = this.formBuilder.group({
@@ -68,7 +66,7 @@ export class HuntInstanceComponent implements OnInit, OnDestroy {
       return this.hunt.currentQuestionInstance.question.hint.text;
     }
 
-    return 'NOT USED';
+    return '<NOT USED>';
   }
 
   isHintUsed() {
@@ -110,10 +108,10 @@ export class HuntInstanceComponent implements OnInit, OnDestroy {
 
         if (x.data.isCorrect) {
           this.form.reset();
-          this.openFactDialog(this.hunt.currentQuestionInstance.question);
-          this.openMessageDialog('Success', 'That was correct!');
+          this.dialogService.openFactDialog(this.hunt.currentQuestionInstance.question);
+          this.dialogService.openMessageDialog('Success', 'That was correct!');
         } else {
-          this.openMessageDialog('Incorrect', 'That was incorrect, please try again');
+          this.dialogService.openMessageDialog('Incorrect', 'That was incorrect, please try again');
         }
 
         this.reloadQuestion();
@@ -173,23 +171,5 @@ export class HuntInstanceComponent implements OnInit, OnDestroy {
       default:
         return 'Unknown';
     }
-  }
-
-  openFactDialog(question: Question): void {
-    const dialogRef = this.dialog.open(FactDialogComponent, {
-      width: '250px',
-      data: { fact: question.fact } as FactDialogData
-    });
-  }
-
-  openMessageDialog(title: string, message: string, closeButtonLabel: string = 'Close'): void {
-    const dialogRef = this.dialog.open(MessageDialogComponent, {
-      width: '250px',
-      data: {
-        title: title,
-        message: message,
-        closeButtonLabel: closeButtonLabel
-      } as MessageDialogData
-    });
   }
 }

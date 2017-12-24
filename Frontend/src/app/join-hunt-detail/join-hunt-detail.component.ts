@@ -4,6 +4,9 @@ import { Subject } from 'rxjs/Subject';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from 'app/services/api.service';
 import { HubConnection } from '@aspnet/signalr-client';
+import { AuthService } from 'app/services/auth.service';
+import { AnswerInstance } from 'app/models/answer-instance';
+import { DialogService } from 'app/services/dialog.services';
 
 @Component({
   selector: 'app-join-hunt-detail',
@@ -20,21 +23,23 @@ export class JoinHuntDetailComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private apiService: ApiService) { }
+    private apiService: ApiService,
+    private dialogService: DialogService) { }
 
   ngOnInit() {
 
-    console.log('setting up hub connection');
-
-    // this._hubConnection = new HubConnection('/hunt');
-    this._hubConnection = new HubConnection('http://app.scavenger.city/hunt');
+    this._hubConnection = new HubConnection(`${ApiService.API_BASE}/hunt`);
 
     this._hubConnection.on('HuntUpdated', () => {
       console.log('Received Event: HuntUpdated');
       this.reloadHunt();
     });
 
-    console.log('hub is setup. Need to connect.');
+    this._hubConnection.on('AnswerSubmitted', (answer: AnswerInstance) => {
+      if (answer.isCorrect) {
+        this.dialogService.openMessageDialog('Success', 'That was correct!');
+      }
+    });
 
     this.route.params
       .takeUntil(this.ngUnsubscribe)
@@ -56,26 +61,21 @@ export class JoinHuntDetailComponent implements OnInit, OnDestroy {
   }
 
   connectToSignalR() {
-
-    console.log('starting hub connection');
-
     this._hubConnection.start()
       .then(() => {
-        console.log('Hub connection started');
         this.joinGroup();
       })
       .catch(err => {
-        console.log('Error while establishing connection');
+        console.error('Error while establishing connection', err);
       });
   }
   joinGroup() {
     this._hubConnection.invoke('JoinHunt', this.id)
       .then(() => {
-        console.log('Joined group');
         this.reloadHunt();
       })
       .catch(err => {
-        console.log('Error while joining group');
+        console.error('Error while joining group', err);
       });
   }
 
@@ -90,4 +90,14 @@ export class JoinHuntDetailComponent implements OnInit, OnDestroy {
       });
   }
 
+  getHint() {
+    if (this.hunt &&
+      this.hunt.currentQuestionInstance &&
+      this.hunt.currentQuestionInstance.question &&
+      this.hunt.currentQuestionInstance.question.hint) {
+      return this.hunt.currentQuestionInstance.question.hint.text;
+    }
+
+    return '<NOT USED>';
+  }
 }

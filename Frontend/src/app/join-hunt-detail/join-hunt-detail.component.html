@@ -1,11 +1,14 @@
 <mat-spinner class="page-loading-spinner" *ngIf="!hunt" mode="indeterminate"></mat-spinner>
 
-<app-hunt-summary-panel [hunt]="hunt"></app-hunt-summary-panel>
+<div *ngIf="hunt">
+  <app-hunt-summary *ngIf="isFinished() || isAvailable()" [hunt]="hunt"></app-hunt-summary>
+  <app-hunt-summary-panel *ngIf="isInProgress()" [hunt]="hunt"></app-hunt-summary-panel>
 
-<mat-card *ngIf="hunt">
-  <mat-card-content>
-    <markdown [data]="hunt?.currentQuestionInstance.question.text">
-    </markdown>
-    <mat-card-subtitle>Hint: {{getHint()}}</mat-card-subtitle>
-  </mat-card-content>
-</mat-card>
+  <mat-card *ngIf="isInProgress()">
+    <mat-card-content>
+      <markdown [data]="hunt?.currentQuestionInstance.question.text">
+      </markdown>
+      <mat-card-subtitle>Hint: {{getHint()}}</mat-card-subtitle>
+    </mat-card-content>
+  </mat-card>
+</div>

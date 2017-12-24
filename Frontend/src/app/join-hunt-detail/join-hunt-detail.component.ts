@@ -7,6 +7,7 @@ import { HubConnection } from '@aspnet/signalr-client';
 import { AuthService } from 'app/services/auth.service';
 import { AnswerInstance } from 'app/models/answer-instance';
 import { DialogService } from 'app/services/dialog.services';
+import { HuntStatus } from 'app/models/hunt-status';
 
 @Component({
   selector: 'app-join-hunt-detail',
@@ -69,6 +70,7 @@ export class JoinHuntDetailComponent implements OnInit, OnDestroy {
         console.error('Error while establishing connection', err);
       });
   }
+
   joinGroup() {
     this._hubConnection.invoke('JoinHunt', this.id)
       .then(() => {
@@ -100,4 +102,17 @@ export class JoinHuntDetailComponent implements OnInit, OnDestroy {
 
     return '<NOT USED>';
   }
+
+  isAvailable(): boolean {
+    return this.hunt && this.hunt.status === HuntStatus.Available;
+  }
+
+  isInProgress(): boolean {
+    return this.hunt && this.hunt.status === HuntStatus.InProgress;
+  }
+
+  isFinished(): boolean {
+    return this.hunt && this.hunt.status === HuntStatus.Finished;
+  }
+
 }

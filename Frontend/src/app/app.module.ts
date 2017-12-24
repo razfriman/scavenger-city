@@ -3,6 +3,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule, ErrorHandler } from '@angular/core';
+import { ServiceWorkerModule } from '@angular/service-worker';
 import * as Raven from 'raven-js';
 
 import {
@@ -27,7 +28,6 @@ import { MarkdownModule } from 'ngx-markdown';
 import { Angulartics2Module } from 'angulartics2';
 import { Angulartics2GoogleAnalytics } from 'angulartics2/ga';
 import { QRCodeModule } from 'angular2-qrcode';
-import { QrScannerModule } from 'angular2-qrscanner';
 
 import { AppComponent } from './app.component';
 import { FooterComponent } from './footer/footer.component';
@@ -59,7 +59,9 @@ import { MessageDialogComponent } from './dialogs/message-dialog/message-dialog.
 import { JoinHuntComponent } from './join-hunt/join-hunt.component';
 import { JoinHuntDetailComponent } from './join-hunt-detail/join-hunt-detail.component';
 import { HuntShareDialogComponent } from './hunt-share-dialog/hunt-share-dialog.component';
-import { DialogService } from 'app/services/dialog.services';
+import { QrScannerComponent } from './scanner/qr-scanner.component';
+import { DialogService } from './services/dialog.services';
+import { environment } from '../environments/environment';
 
 
 export function tokenGetter() {
@@ -111,7 +113,8 @@ export class RavenErrorHandler implements ErrorHandler {
     MessageDialogComponent,
     JoinHuntComponent,
     JoinHuntDetailComponent,
-    HuntShareDialogComponent
+    HuntShareDialogComponent,
+    QrScannerComponent
   ],
   imports: [
     BrowserModule,
@@ -119,6 +122,7 @@ export class RavenErrorHandler implements ErrorHandler {
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
+    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
     MatMenuModule,
     MatTooltipModule,
     MatButtonModule,
@@ -135,8 +139,8 @@ export class RavenErrorHandler implements ErrorHandler {
     MarkdownModule.forRoot(),
     JwtModule.forRoot(jwtConf),
     Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
-    QRCodeModule,
-    QrScannerModule
+    QRCodeModule
+
   ],
   providers: [
     LoginGuard,

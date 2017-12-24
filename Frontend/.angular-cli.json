@@ -9,6 +9,7 @@
     "assets": [
       "assets",
       ".well-known",
+      "manifest.json",
       "favicon.ico"
     ],
     "index": "index.html",
@@ -27,7 +28,8 @@
     "environments": {
       "dev": "environments/environment.ts",
       "prod": "environments/environment.prod.ts"
-    }
+    },
+    "serviceWorker": true
   }],
   "e2e": {
     "protractor": {

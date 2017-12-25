@@ -7,7 +7,7 @@
   "scope": "/",
 
   "display": "fullscreen",
-  "start_url": "http://app.scavenger.city/",
+  "start_url": "https://app.scavenger.city/",
 
   "display_": "standalone",
   "start_url_": "/",

@@ -12,7 +12,7 @@ import { LoginRequest } from 'app/models/login-request';
 @Injectable()
 export class ApiService {
 
-  public static API_BASE = 'http://api.scavenger.city';
+  public static API_BASE = 'https://api.scavenger.city';
 
   constructor(private httpClient: HttpClient) {
   }

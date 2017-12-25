@@ -98,8 +98,8 @@ namespace ScavengerCity
                 options.AddPolicy(
                     "AllowSpecificOrigin",
                     builder => builder.WithOrigins(
-                        "http://*.razfriman.com",
-                        "http://localhost:4200"));
+                        "https://*.scavenger.city",
+                        "https://localhost:4200"));
 
                 options.AddPolicy(
                    "AllowAll",

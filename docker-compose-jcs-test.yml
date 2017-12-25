@@ -1,0 +1,146 @@
+version: '3'
+
+services:
+  
+  ### PROXY ###
+
+  nginxproxy:
+    image: jwilder/nginx-proxy
+    container_name: proxy
+    networks:
+      - proxynet
+    labels:
+      - "com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy=true"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - certs:/etc/nginx/certs
+      - vhost:/etc/nginx/vhost.d 
+      - html:/usr/share/nginx/html
+    environment:
+      - DEFAULT_HOST=scavenger.city
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: letsencrypt
+    networks:
+      - proxynet
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - certs:/etc/nginx/certs
+      - vhost:/etc/nginx/vhost.d 
+      - html:/usr/share/nginx/html
+    depends_on:
+      - nginxproxy
+    environment:
+      DEBUG: "true"
+
+  ### END OF PROXY ###
+  
+  ### DATABASE ###
+
+  postgres:
+     image: postgres:latest
+     container_name: postgres
+     environment:
+         POSTGRES_USER: test
+         POSTGRES_PASSWORD: test
+         POSTGRES_DB: scavengercity
+     networks:
+      - proxynet
+     volumes:
+       - pgdata:/var/lib/postgresql/data
+     ports:
+       - 5432:5432
+
+  wordpress_db:
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    networks:
+      - proxynet
+    environment:
+      MYSQL_ROOT_PASSWORD: wordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+
+  ### END OF DATABASE ###
+
+  ### WEB APPS ###
+  
+  razapp:
+    image: rfriman/raz-app:latest
+    container_name: razapp
+    networks:
+      - proxynet
+    environment:
+      VIRTUAL_HOST: "www.razfriman.com,razfriman.com"
+      LETSENCRYPT_HOST: "razfriman.com"
+      LETSENCRYPT_EMAIL: "raz.friman@razfriman.com"
+      LETSENCRYPT_TEST: "true"
+  
+  backend:
+    image: rfriman/scavenger-city-api:latest
+    container_name: backend
+    ports:
+       - 5000:80
+    depends_on:
+       - "postgres"
+    networks:
+      - proxynet
+    environment:
+      VIRTUAL_HOST: "api.scavenger.city"
+      LETSENCRYPT_HOST: "api.scavenger.city"
+      LETSENCRYPT_EMAIL: "raz.friman@razfriman.com"
+      LETSENCRYPT_TEST: "true"
+  
+  
+  frontend:
+    image: rfriman/scavenger-city:latest
+    container_name: frontend
+    environment:
+      VIRTUAL_HOST: "app.scavenger.city"
+      LETSENCRYPT_HOST: "app.scavenger.city"
+      LETSENCRYPT_EMAIL: "raz.friman@razfriman.com"
+      LETSENCRYPT_TEST: "true"
+  
+  wordpress:
+    depends_on:
+      - wordpress_db
+    image: wordpress:latest
+    volumes:
+      - wp-content:/var/www/html
+    restart: always
+    ports:
+      - "8080:80"
+    networks:
+      - proxynet
+    environment:
+      WORDPRESS_DB_HOST: wordpress_db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      VIRTUAL_HOST: "www.scavenger.city,scavenger.city"
+      LETSENCRYPT_HOST: scavenger.city
+      LETSENCRYPT_EMAIL: raz.friman@razfriman.com
+      LETSENCRYPT_TEST: "true"
+
+### END OF WEB APPS ###
+
+volumes:
+  pgdata:
+  db_data:
+  wp-content:
+  certs:
+  vhost:
+  html:
+
+networks:
+  proxynet:
+    external:
+      name: nginx-proxy

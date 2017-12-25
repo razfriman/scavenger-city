@@ -2,8 +2,7 @@ version: '3'
 
 services:
   nginxproxy:
-    #image: eforce21/letsencrypt-nginx-proxy
-    image: jwilder/nginx-proxy
+    image: eforce21/letsencrypt-nginx-proxy
     container_name: nginxproxy
     restart: always
     ports:
@@ -11,13 +10,21 @@ services:
       - "443:443"
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
+      - cert_data:/etc/letsencrypt/archive
     environment:
       - LETSENCRYPT_EMAIL=raz.friman@razfriman.com
-  razapp:
-    image: rfriman/raz-app:latest
-    container_name: razapp
+ 
+  wordpress_db:
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
     environment:
-      - VIRTUAL_HOST=www.razfriman.com,razfriman.com
+      MYSQL_ROOT_PASSWORD: wordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress 
+
   postgres:
      image: postgres:latest
      container_name: postgres
@@ -29,6 +36,17 @@ services:
        - pgdata:/var/lib/postgresql/data
      ports:
        - 5432:5432
+
+
+
+  razapp:
+    image: rfriman/raz-app:latest
+    container_name: razapp
+    labels:
+      - "letsencrypt.nocert=true"
+    environment:
+      - VIRTUAL_HOST=www.razfriman.com,razfriman.com
+
   backend:
     image: rfriman/scavenger-city-api:latest
     container_name: backend
@@ -38,21 +56,14 @@ services:
        - "postgres"
     environment:
       - VIRTUAL_HOST=api.scavenger.city
+
+
   frontend:
     image: rfriman/scavenger-city:latest
     container_name: frontend
     environment:
       - VIRTUAL_HOST=app.scavenger.city
-  wordpress_db:
-    image: mysql:5.7
-    volumes:
-      - db_data:/var/lib/mysql
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: wordpress
-      MYSQL_DATABASE: wordpress
-      MYSQL_USER: wordpress
-      MYSQL_PASSWORD: wordpress
+  
   wordpress:
     depends_on:
       - wordpress_db
@@ -71,17 +82,4 @@ volumes:
   pgdata:
   db_data:
   wp-content:
-
-
-
-
-
-
-
-
-
-
-
-
-^G Get Help                      ^O WriteOut                      ^R Read File                     ^Y Prev Page                     ^K Cut Text                      ^C Cur Pos
-^X Exit                          ^J Justify                       ^W Where Is                      ^V Next Page                     ^U UnCut Text                    ^T To Spell
+  cert_data:

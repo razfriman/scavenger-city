@@ -2,7 +2,7 @@
   "dir": "ltr",
   "lang": "en",
   "name": "Scavenger City",
-  "short_name": "ScavengerCity",
+  "short_name": "ScavCity",
   "description": "Scavenger City - Scavenger Hunts",
   "scope": "/",
 
@@ -57,6 +57,11 @@
       "sizes": "192x192",
       "type": "image/png",
       "density": "4.0"
+    },
+    {
+      "src": "/assets/favicons/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
     }
   ]
 }

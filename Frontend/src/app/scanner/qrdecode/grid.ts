@@ -23,9 +23,9 @@
 */
 
 
-import { PerspectiveTransform } from "./detector";
+import { PerspectiveTransform } from './detector';
 
-import { BitMatrix } from "./bitmat"
+import { BitMatrix } from './bitmat'
 
 
 export class GridSampler {

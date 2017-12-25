@@ -22,8 +22,8 @@
 * limitations under the License.
 */
 
-import { BitMatrix } from "./bitmat"
-import { FormatInformation } from "./formatinf"
+import { BitMatrix } from './bitmat'
+import { FormatInformation } from './formatinf'
 
 export class ECB {
   count: any;

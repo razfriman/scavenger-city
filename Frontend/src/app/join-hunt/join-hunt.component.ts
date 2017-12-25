@@ -32,7 +32,7 @@ export class JoinHuntComponent implements OnInit {
     });
   }
 
-  decodedOutput(data: string) {
+  readCompleted(data: string) {
 
     if (!data) {
       return;

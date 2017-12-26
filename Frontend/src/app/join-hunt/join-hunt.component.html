@@ -5,8 +5,9 @@
     </mat-card-subtitle>
     <mat-card-content>
 
-      <app-qr-scanner *ngIf="hasHttps" [updateTime]="500" (readCompleted)="readCompleted($event)">
-      </app-qr-scanner>
+      <app-ngx-zxing (scanCompleted)="readCompleted($event)" [cssClass]="'video-preview'" [start]="true"></app-ngx-zxing>
+      <!-- <app-qr-scanner *ngIf="hasHttps" [updateTime]="500" (readCompleted)="readCompleted($event)">
+      </app-qr-scanner> -->
 
       <form [formGroup]="form">
         <mat-input-container>

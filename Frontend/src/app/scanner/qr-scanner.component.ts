@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, Renderer2, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { QRCode } from './qrdecode/qrcode';
 import { NoInputDeviceError } from 'app/scanner/qrdecode/no-input-device-error';
+import { BrowserQRCodeReader } from 'app/scanner/zxing-typescript/browser/BrowserQRCodeReader';
 
 /**
  * QrScanner will scan for a QRCode from your Web-cam and return its
@@ -23,11 +24,12 @@ import { NoInputDeviceError } from 'app/scanner/qrdecode/no-input-device-error';
   moduleId: 'module.id',
   selector: 'app-qr-scanner',
   styles: [
-    ':host video {height: auto; width: 100%;}'
+    ':host video {height: auto; width: 100%;}',
+    ':host canvas {display: block; height: 500px; width: 500px;}'
   ],
   template: `
         <ng-container>
-          <canvas #qrCanvas [width]="canvasWidth" [height]="canvasHeight" hidden="true"></canvas>
+          <canvas #qrCanvas hidden="true" width="500" height="500"></canvas>
           <div #videoWrapper></div>
         </ng-container>`
 })
@@ -50,12 +52,21 @@ export class QrScannerComponent implements OnInit, OnDestroy, AfterViewInit {
   stop = false;
   nativeElement: ElementRef;
   captureTimeout: any;
-  trackSettings: MediaTrackSettings;
-  canvasWidth = 640;
-  canvasHeight = 480;
+  canvasWidth = 500;
+  canvasHeight = 500;
 
   constructor(private renderer: Renderer2, private element: ElementRef) {
     this.nativeElement = this.element.nativeElement;
+
+    // const codeReader = new BrowserQRCodeReader();
+
+    // codeReader.decodeFromInputVideoDevice(undefined, 'video')
+    //   .then((result) => {
+    //     console.log('ZXing');
+    //     console.log(result);
+    //   }).catch((err) => {
+    //     console.error(err);
+    //   });
   }
 
   ngOnInit() {
@@ -85,10 +96,12 @@ export class QrScannerComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private initCanvas(): void {
-    this.qrCanvas.nativeElement.style.width = `${this.canvasWidth}px`;
-    this.qrCanvas.nativeElement.style.height = `${this.canvasHeight}px`;
+    console.log(this.canvasWidth);
+    console.log(this.canvasHeight);
+
     this.gCtx = this.qrCanvas.nativeElement.getContext('2d');
     this.gCtx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+    this.gCtx.translate(1, -1);
   }
 
   private connectDevice(): void {
@@ -99,11 +112,13 @@ export class QrScannerComponent implements OnInit, OnDestroy, AfterViewInit {
       self.stream = stream;
       self.videoElement.srcObject = stream;
       self.gUM = true;
-      self.captureTimeout = setTimeout(captureToCanvas, self.updateTime);
-      self.trackSettings = stream.getVideoTracks()[0].getSettings();
-      self.canvasWidth = self.trackSettings.width;
-      self.canvasHeight = self.trackSettings.height;
-      self.initCanvas();
+
+      self.videoElement.onloadedmetadata = () => {
+        self.canvasWidth = self.videoElement.videoWidth;
+        self.canvasHeight = self.videoElement.videoHeight;
+        self.initCanvas();
+        self.captureTimeout = setTimeout(captureToCanvas, self.updateTime);
+      };
     }
 
     function error(error1: any): void {
@@ -140,7 +155,12 @@ export class QrScannerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.renderer.appendChild(this.videoWrapper.nativeElement, this.videoElement);
 
     const md = window.navigator.mediaDevices;
-    md.getUserMedia({ audio: false, video: { facingMode: 'environment' } })
+    md.getUserMedia({
+      audio: false,
+      video: {
+        facingMode: 'environment'
+      }
+    })
       .then(success)
       .catch(error);
 

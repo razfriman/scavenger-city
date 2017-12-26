@@ -33,7 +33,6 @@ export class JoinHuntComponent implements OnInit {
   }
 
   readCompleted(data: string) {
-
     if (!data) {
       return;
     }

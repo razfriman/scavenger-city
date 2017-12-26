@@ -62,6 +62,7 @@ import { HuntShareDialogComponent } from './hunt-share-dialog/hunt-share-dialog.
 import { QrScannerComponent } from './scanner/qr-scanner.component';
 import { DialogService } from './services/dialog.services';
 import { environment } from '../environments/environment';
+import { NgxZxingComponent } from 'app/scanner/ngx-zxing.component';
 
 
 export function tokenGetter() {
@@ -114,7 +115,8 @@ export class RavenErrorHandler implements ErrorHandler {
     JoinHuntComponent,
     JoinHuntDetailComponent,
     HuntShareDialogComponent,
-    QrScannerComponent
+    QrScannerComponent,
+    NgxZxingComponent
   ],
   imports: [
     BrowserModule,

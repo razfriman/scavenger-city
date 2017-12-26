@@ -176,6 +176,12 @@ export class QrScannerComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     this.renderer.appendChild(this.videoWrapper.nativeElement, this.videoElement);
 
+    // Use back camera for iPhone and iPad
+    const userAgent = window.navigator.userAgent;
+    if (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i)) {
+      options.facingMode = 'environment';
+    }
+
     if (_navigator.getUserMedia) {
       this.isWebkit = true;
       _navigator.getUserMedia({ video: options, audio: false }, success, error);

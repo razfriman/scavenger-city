@@ -9,8 +9,6 @@ import { NoInputDeviceError } from 'app/scanner/qrdecode/no-input-device-error';
  *
  * @usage:
  * <qr-scanner
- *     [canvasWidth]="640"      canvas width                                 (default: 640)
- *     [canvasHeight]="480"     canvas height                                (default: 480)
  *     [stopAfterScan]="true"   should the scanner stop after first success? (default: true)
  *     [updateTime]="500"       miliseconds between new capture              (default: 500)
  *     (readCompleted)="decodedOutput(string)" </qr-scanner>
@@ -35,8 +33,6 @@ import { NoInputDeviceError } from 'app/scanner/qrdecode/no-input-device-error';
 })
 export class QrScannerComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  @Input() canvasWidth = 640;
-  @Input() canvasHeight = 480;
   @Input() stopAfterScan = true;
   @Input() updateTime = 500;
 
@@ -53,8 +49,10 @@ export class QrScannerComponent implements OnInit, OnDestroy, AfterViewInit {
   stream: MediaStream;
   stop = false;
   nativeElement: ElementRef;
-
   captureTimeout: any;
+  trackSettings: MediaTrackSettings;
+  canvasWidth = 640;
+  canvasHeight = 480;
 
   constructor(private renderer: Renderer2, private element: ElementRef) {
     this.nativeElement = this.element.nativeElement;
@@ -86,12 +84,11 @@ export class QrScannerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.stop = true;
   }
 
-  private initCanvas(w: number, h: number): void {
-    this.qrCanvas.nativeElement.style.width = `${w}px`;
-    this.qrCanvas.nativeElement.style.height = `${h}px`;
+  private initCanvas(): void {
+    this.qrCanvas.nativeElement.style.width = `${this.canvasWidth}px`;
+    this.qrCanvas.nativeElement.style.height = `${this.canvasHeight}px`;
     this.gCtx = this.qrCanvas.nativeElement.getContext('2d');
-    this.gCtx.clearRect(0, 0, w, h);
-    // this.gCtx.translate(-1, 1);
+    this.gCtx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
   }
 
   private connectDevice(): void {
@@ -103,6 +100,10 @@ export class QrScannerComponent implements OnInit, OnDestroy, AfterViewInit {
       self.videoElement.srcObject = stream;
       self.gUM = true;
       self.captureTimeout = setTimeout(captureToCanvas, self.updateTime);
+      self.trackSettings = stream.getVideoTracks()[0].getSettings();
+      self.canvasWidth = self.trackSettings.width;
+      self.canvasHeight = self.trackSettings.height;
+      self.initCanvas();
     }
 
     function error(error1: any): void {
@@ -135,10 +136,6 @@ export class QrScannerComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Hack for safari
     this.videoElement.setAttribute('playsinline', 'true');
-    // this.videoElement.setAttribute('controls', 'true');
-    // setTimeout(() => {
-    //   this.videoElement.removeAttribute('controls');
-    // });
 
     this.renderer.appendChild(this.videoWrapper.nativeElement, this.videoElement);
 
@@ -162,7 +159,6 @@ export class QrScannerComponent implements OnInit, OnDestroy, AfterViewInit {
   private load(): void {
     this.stop = false;
     this.isDeviceConnected = false;
-    this.initCanvas(this.canvasHeight, this.canvasWidth);
     this.qrCode = new QRCode();
     this.qrCode.myCallback = (decoded: string) => this.decodeCallback(decoded);
     this.connectDevice();

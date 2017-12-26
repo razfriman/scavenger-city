@@ -166,6 +166,11 @@ export class QrScannerComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.videoElement = this.renderer.createElement('video');
     this.videoElement.setAttribute('autoplay', 'true');
+
+    // Hack for safari
+    this.videoElement.setAttribute('playsinline', 'true');
+    this.videoElement.setAttribute('controls', 'true');
+
     if (!this.mirror) {
       this.videoElement.classList.add('mirrored');
     }

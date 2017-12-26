@@ -28,17 +28,9 @@ import { NoInputDeviceError } from 'app/scanner/qrdecode/no-input-device-error';
     ':host video {height: auto; width: 100%;}'
   ],
   template: `
-        <ng-container [ngSwitch]="supported">
-            <ng-container *ngSwitchDefault>
-                <canvas #qrCanvas [width]="canvasWidth" [height]="canvasHeight" hidden="true"></canvas>
-                <div #videoWrapper></div>
-            </ng-container>
-            <ng-container *ngSwitchCase="false">
-                <p>
-                    You are using an <strong>outdated</strong> browser.
-                    Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.
-                </p>
-            </ng-container>
+        <ng-container>
+          <canvas #qrCanvas [width]="canvasWidth" [height]="canvasHeight" hidden="true"></canvas>
+          <div #videoWrapper></div>
         </ng-container>`
 })
 export class QrScannerComponent implements OnInit, OnDestroy, AfterViewInit {
@@ -61,13 +53,11 @@ export class QrScannerComponent implements OnInit, OnDestroy, AfterViewInit {
   stream: MediaStream;
   stop = false;
   nativeElement: ElementRef;
-  supported = true;
 
   captureTimeout: any;
 
   constructor(private renderer: Renderer2, private element: ElementRef) {
     this.nativeElement = this.element.nativeElement;
-    this.supported = this.isCanvasSupported();
   }
 
   ngOnInit() {
@@ -96,17 +86,12 @@ export class QrScannerComponent implements OnInit, OnDestroy, AfterViewInit {
     this.stop = true;
   }
 
-  private isCanvasSupported(): boolean {
-    const canvas = this.renderer.createElement('canvas');
-    return !!(canvas.getContext && canvas.getContext('2d'));
-  }
-
   private initCanvas(w: number, h: number): void {
     this.qrCanvas.nativeElement.style.width = `${w}px`;
     this.qrCanvas.nativeElement.style.height = `${h}px`;
     this.gCtx = this.qrCanvas.nativeElement.getContext('2d');
     this.gCtx.clearRect(0, 0, w, h);
-    this.gCtx.translate(-1, 1);
+    // this.gCtx.translate(-1, 1);
   }
 
   private connectDevice(): void {
@@ -129,6 +114,7 @@ export class QrScannerComponent implements OnInit, OnDestroy, AfterViewInit {
       if (self.stop || !self.isDeviceConnected) {
         return;
       }
+
       if (self.gUM) {
         try {
           self.gCtx.drawImage(self.videoElement, 0, 0, self.canvasWidth, self.canvasHeight);
@@ -149,7 +135,10 @@ export class QrScannerComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Hack for safari
     this.videoElement.setAttribute('playsinline', 'true');
-    this.videoElement.setAttribute('controls', 'true');
+    // this.videoElement.setAttribute('controls', 'true');
+    // setTimeout(() => {
+    //   this.videoElement.removeAttribute('controls');
+    // });
 
     this.renderer.appendChild(this.videoWrapper.nativeElement, this.videoElement);
 
@@ -164,6 +153,7 @@ export class QrScannerComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private decodeCallback(decoded: string) {
     this.readCompleted.emit(decoded);
+
     if (this.stopAfterScan) {
       this.stopScanning();
     }
@@ -172,13 +162,9 @@ export class QrScannerComponent implements OnInit, OnDestroy, AfterViewInit {
   private load(): void {
     this.stop = false;
     this.isDeviceConnected = false;
-
-    if (this.supported) {
-      this.initCanvas(this.canvasHeight, this.canvasWidth);
-      this.qrCode = new QRCode();
-      this.qrCode.myCallback = (decoded: string) => this.decodeCallback(decoded);
-
-      this.connectDevice();
-    }
+    this.initCanvas(this.canvasHeight, this.canvasWidth);
+    this.qrCode = new QRCode();
+    this.qrCode.myCallback = (decoded: string) => this.decodeCallback(decoded);
+    this.connectDevice();
   }
 }

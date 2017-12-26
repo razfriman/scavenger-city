@@ -22,11 +22,8 @@
 * limitations under the License.
 */
 
-
-import { PerspectiveTransform } from './detector';
-
-import { BitMatrix } from './bitmat'
-
+import { PerspectiveTransform } from './perspective-transform';
+import { BitMatrix } from './bitmat';
 
 export class GridSampler {
 
@@ -39,15 +36,15 @@ export class GridSampler {
   }
 
   checkAndNudgePoints(image: any, points: any): void {
-    var width = this.width;
-    var height = this.height;
+    const width = this.width;
+    const height = this.height;
     // Check and nudge points from start until we see some that are OK:
     var nudged = true;
     for (var offset = 0; offset < points.length && nudged; offset += 2) {
       var x = Math.floor(points[offset]);
       var y = Math.floor(points[offset + 1]);
       if (x < - 1 || x > width || y < - 1 || y > height) {
-        throw "Error.checkAndNudgePoints ";
+        throw 'Error.checkAndNudgePoints ';
       }
       nudged = false;
       if (x == - 1) {
@@ -73,7 +70,7 @@ export class GridSampler {
       var x = Math.floor(points[offset]);
       var y = Math.floor(points[offset + 1]);
       if (x < - 1 || x > width || y < - 1 || y > height) {
-        throw "Error.checkAndNudgePoints ";
+        throw 'Error.checkAndNudgePoints ';
       }
       nudged = false;
       if (x == - 1) {
@@ -98,12 +95,12 @@ export class GridSampler {
 
 
   sampleGrid3(image: any, rawImage: any, dimension: any, transform: any): any {
-    var bits = new BitMatrix(dimension, dimension);
-    var points = new Array(dimension << 1);
+    const bits = new BitMatrix(dimension, dimension);
+    const points = new Array(dimension << 1);
     for (var y = 0; y < dimension; y++) {
-      var max = points.length;
-      var iValue = y + 0.5;
-      for (var x = 0; x < max; x += 2) {
+      let max = points.length;
+      let iValue = y + 0.5;
+      for (let x = 0; x < max; x += 2) {
         points[x] = (x >> 1) + 0.5;
         points[x + 1] = iValue;
       }
@@ -112,16 +109,17 @@ export class GridSampler {
       // sufficient to check the endpoints
       this.checkAndNudgePoints(image, points);
       try {
-        for (var x = 0; x < max; x += 2) {
-          var xpoint = (Math.floor(points[x]) * 4) + (Math.floor(points[x + 1]) * this.width * 4);
-          var bit = image[Math.floor(points[x]) + this.width * Math.floor(points[x + 1])];
+        for (let x = 0; x < max; x += 2) {
+          const xpoint = (Math.floor(points[x]) * 4) + (Math.floor(points[x + 1]) * this.width * 4);
+          const bit = image[Math.floor(points[x]) + this.width * Math.floor(points[x + 1])];
           rawImage.data[xpoint] = bit ? 255 : 0;
           rawImage.data[xpoint + 1] = bit ? 255 : 0;
           rawImage.data[xpoint + 2] = 0;
           rawImage.data[xpoint + 3] = 255;
-          //bits[x >> 1][ y]=bit;
-          if (bit)
+          // bits[x >> 1][ y]=bit;
+          if (bit) {
             bits.set_Renamed(x >> 1, y);
+          }
         }
       }
       catch (aioobe) {
@@ -132,7 +130,7 @@ export class GridSampler {
         // This results in an ugly runtime exception despite our clever checks above -- can't have
         // that. We could check each point's coordinates but that feels duplicative. We settle for
         // catching and wrapping ArrayIndexOutOfBoundsException.
-        throw "Error.checkAndNudgePoints";
+        throw new Error('Error.checkAndNudgePoints');
       }
     }
     return bits;
@@ -141,7 +139,7 @@ export class GridSampler {
   sampleGridx(image: any, dimension: any, p1ToX: any, p1ToY: any, p2ToX: any, p2ToY: any, p3ToX: any, p3ToY: any, p4ToX: any, p4ToY: any, p1FromX: any, p1FromY: any, p2FromX: any, p2FromY: any, p3FromX: any, p3FromY: any, p4FromX: any, p4FromY: any): any {
 
 
-    var transform = PerspectiveTransform.quadrilateralToQuadrilateral(p1ToX, p1ToY, p2ToX, p2ToY, p3ToX, p3ToY, p4ToX, p4ToY, p1FromX, p1FromY, p2FromX, p2FromY, p3FromX, p3FromY, p4FromX, p4FromY);
+    const transform = PerspectiveTransform.quadrilateralToQuadrilateral(p1ToX, p1ToY, p2ToX, p2ToY, p3ToX, p3ToY, p4ToX, p4ToY, p1FromX, p1FromY, p2FromX, p2FromY, p3FromX, p3FromY, p4FromX, p4FromY);
 
     return this.sampleGrid3(image, {}, dimension, transform);
   }

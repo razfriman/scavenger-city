@@ -23,7 +23,7 @@ export class JoinHuntComponent implements OnInit {
     private platformLocation: PlatformLocation
   ) {
     const origin = (platformLocation as any).location.origin as string;
-    this.hasHttps = origin.startsWith('https://');
+    this.hasHttps = origin.startsWith('https://') || origin.indexOf('localhost') > -1;
   }
 
   ngOnInit() {

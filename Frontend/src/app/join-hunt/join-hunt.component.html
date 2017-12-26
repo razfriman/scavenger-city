@@ -5,8 +5,7 @@
     </mat-card-subtitle>
     <mat-card-content>
 
-      <app-qr-scanner *ngIf="hasHttps" [debug]="false" [canvasWidth]="640" [canvasHeight]="480" [mirror]="false" [updateTime]="500"
-        (readCompleted)="readCompleted($event)">
+      <app-qr-scanner *ngIf="hasHttps" [canvasWidth]="640" [canvasHeight]="480" [updateTime]="500" (readCompleted)="readCompleted($event)">
       </app-qr-scanner>
 
       <form [formGroup]="form">

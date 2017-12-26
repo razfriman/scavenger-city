@@ -26,7 +26,7 @@ export class AlignmentPattern {
   x: any;
   y: any;
   count = 1;
-  estimatedModuleSize: any
+  estimatedModuleSize: any;
   constructor(posX: any, posY: any, estimatedModuleSize: any) {
     this.x = posX;
     this.y = posY;
@@ -35,29 +35,29 @@ export class AlignmentPattern {
 
   get EstimatedModuleSize() {
     return this.estimatedModuleSize;
-  };
+  }
 
   get Count() {
     return this.count;
-  };
+  }
   get X() {
     return Math.floor(this.x);
-  };
+  }
   get Y() {
     return Math.floor(this.y);
-  };
+  }
 
 
   incrementCount = function () {
     this.count++;
-  }
+  };
   aboutEquals = function (moduleSize: any, i: any, j: any) {
     if (Math.abs(i - this.y) <= moduleSize && Math.abs(j - this.x) <= moduleSize) {
-      var moduleSizeDiff = Math.abs(moduleSize - this.estimatedModuleSize);
+      const moduleSizeDiff = Math.abs(moduleSize - this.estimatedModuleSize);
       return moduleSizeDiff <= 1.0 || moduleSizeDiff / this.estimatedModuleSize <= 1.0;
     }
     return false;
-  }
+  };
 
 }
 
@@ -91,7 +91,7 @@ export class AlignmentPatternFinder {
 
   centerFromEnd = function (stateCount: any, end: any) {
     return (end - stateCount[2]) - stateCount[1] / 2.0;
-  }
+  };
   foundPatternCross = function (stateCount: any) {
     var moduleSize = this.moduleSize;
     var maxVariance = moduleSize / 2.0;
@@ -101,7 +101,7 @@ export class AlignmentPatternFinder {
       }
     }
     return true;
-  }
+  };
 
   crossCheckVertical = function (startI: any, centerJ: any, maxCount: any, originalStateCountTotal: any) {
     var image = this.image;
@@ -153,7 +153,7 @@ export class AlignmentPatternFinder {
     }
 
     return this.foundPatternCross(stateCount) ? this.centerFromEnd(stateCount, i) : NaN;
-  }
+  };
 
   handlePossibleCenter = function (stateCount: any, i: any, j: any) {
     var stateCountTotal = stateCount[0] + stateCount[1] + stateCount[2];
@@ -177,7 +177,7 @@ export class AlignmentPatternFinder {
       }
     }
     return null;
-  }
+  };
 
   find = function () {
     var startX = this.startX;
@@ -254,5 +254,5 @@ export class AlignmentPatternFinder {
     }
 
     throw "Couldn't find enough alignment patterns";
-  }
+  };
 }

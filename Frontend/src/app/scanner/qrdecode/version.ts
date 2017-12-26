@@ -22,8 +22,8 @@
 * limitations under the License.
 */
 
-import { BitMatrix } from './bitmat'
-import { FormatInformation } from './formatinf'
+import { BitMatrix } from './bitmat';
+import { FormatInformation } from './formatinf';
 
 export class ECB {
   count: any;
@@ -34,11 +34,11 @@ export class ECB {
   }
   get Count() {
     return this.count;
-  };
+  }
 
   get DataCodewords() {
     return this.dataCodewords;
-  };
+  }
 
 }
 
@@ -48,28 +48,29 @@ export class ECBlocks {
   ecBlocks: any;
   constructor(ecCodewordsPerBlock: any, ecBlocks1: any, ecBlocks2?: any) {
     this.ecCodewordsPerBlock = ecCodewordsPerBlock;
-    if (ecBlocks2)
+    if (ecBlocks2) {
       this.ecBlocks = new Array(ecBlocks1, ecBlocks2);
-    else
+    } else {
       this.ecBlocks = new Array(ecBlocks1);
+    }
   }
   get ECCodewordsPerBlock() {
     return this.ecCodewordsPerBlock;
-  };
+  }
   get TotalECCodewords() {
     return this.ecCodewordsPerBlock * this.NumBlocks;
-  };
+  }
   get NumBlocks() {
-    var total = 0;
-    for (var i = 0; i < this.ecBlocks.length; i++) {
+    let total = 0;
+    for (let i = 0; i < this.ecBlocks.length; i++) {
       total += this.ecBlocks[i].length;
     }
     return total;
-  };
+  }
 
   getECBlocks = function () {
     return this.ecBlocks;
-  }
+  };
 }
 
 
@@ -85,32 +86,32 @@ export class Version {
     this.alignmentPatternCenters = alignmentPatternCenters;
     this.ecBlocks = new Array(ecBlocks1, ecBlocks2, ecBlocks3, ecBlocks4);
 
-    var total = 0;
-    var ecCodewords = ecBlocks1.ECCodewordsPerBlock;
-    var ecbArray = ecBlocks1.getECBlocks();
-    for (var i = 0; i < ecbArray.length; i++) {
-      var ecBlock = ecbArray[i];
+    let total = 0;
+    const ecCodewords = ecBlocks1.ECCodewordsPerBlock;
+    const ecbArray = ecBlocks1.getECBlocks();
+    for (let i = 0; i < ecbArray.length; i++) {
+      const ecBlock = ecbArray[i];
       total += ecBlock.Count * (ecBlock.DataCodewords + ecCodewords);
     }
     this.totalCodewords = total;
   }
   get VersionNumber() {
     return this.versionNumber;
-  };
+  }
 
   get AlignmentPatternCenters() {
     return this.alignmentPatternCenters;
-  };
+  }
   get TotalCodewords() {
     return this.totalCodewords;
-  };
+  }
   get DimensionForVersion() {
     return 17 + 4 * this.versionNumber;
-  };
+  }
 
   buildFunctionPattern = function () {
-    var dimension = this.DimensionForVersion;
-    var bitMatrix = new BitMatrix(dimension);
+    const dimension = this.DimensionForVersion;
+    const bitMatrix = new BitMatrix(dimension);
 
     // Top left finder pattern + separator + format
     bitMatrix.setRegion(0, 0, 9, 9);
@@ -120,11 +121,11 @@ export class Version {
     bitMatrix.setRegion(0, dimension - 8, 9, 8);
 
     // Alignment patterns
-    var max = this.alignmentPatternCenters.length;
-    for (var x = 0; x < max; x++) {
-      var i = this.alignmentPatternCenters[x] - 2;
-      for (var y = 0; y < max; y++) {
-        if ((x == 0 && (y == 0 || y == max - 1)) || (x == max - 1 && y == 0)) {
+    const max = this.alignmentPatternCenters.length;
+    for (let x = 0; x < max; x++) {
+      const i = this.alignmentPatternCenters[x] - 2;
+      for (let y = 0; y < max; y++) {
+        if ((x === 0 && (y === 0 || y === max - 1)) || (x === max - 1 && y === 0)) {
           // No alignment patterns near the three finder paterns
           continue;
         }
@@ -145,10 +146,10 @@ export class Version {
     }
 
     return bitMatrix;
-  }
+  };
   getECBlocksForLevel = function (ecLevel: any) {
     return this.ecBlocks[ecLevel.ordinal()];
-  }
+  };
 
   static VERSION_DECODE_INFO = new Array(0x07C94, 0x085BC, 0x09A99, 0x0A4D3, 0x0BBF6, 0x0C762, 0x0D847, 0x0E60D, 0x0F928, 0x10B78, 0x1145D, 0x12A17, 0x13532, 0x149A6, 0x15683, 0x168C9, 0x177EC, 0x18EC4, 0x191E1, 0x1AFAB, 0x1B08E, 0x1CC1A, 0x1D33F, 0x1ED75, 0x1F250, 0x209D5, 0x216F0, 0x228BA, 0x2379F, 0x24B0B, 0x2542E, 0x26A64, 0x27541, 0x28C69);
 
@@ -162,7 +163,7 @@ export class Version {
   }
 
   static getProvisionalVersionForDimension(dimension: any) {
-    if (dimension % 4 != 1) {
+    if (dimension % 4 !== 1) {
       throw "Error getProvisionalVersionForDimension";
     }
     try {
@@ -179,7 +180,7 @@ export class Version {
     for (let i = 0; i < Version.VERSION_DECODE_INFO.length; i++) {
       let targetVersion = Version.VERSION_DECODE_INFO[i];
       // Do the version info bits match exactly? done.
-      if (targetVersion == versionBits) {
+      if (targetVersion === versionBits) {
         return this.getVersionForNumber(i + 7);
       }
       // Otherwise see if this is the closest to a real version info bit string

@@ -34,6 +34,14 @@ export default class GenericGFPoly {
   private field: GenericGF;
   private coefficients: Int32Array;
 
+  public static getZero(field: GenericGF) {
+    return new GenericGFPoly(field, Int32Array.from([0]));
+  }
+
+  public static getOne(field: GenericGF) {
+    return new GenericGFPoly(field, Int32Array.from([1]));
+  }
+
   /**
    * @param field the {@link GenericGF} instance representing the field to use
    * to perform computations
@@ -68,6 +76,18 @@ export default class GenericGFPoly {
     } else {
       this.coefficients = coefficients;
     }
+  }
+
+  public static buildMonomial(field: GenericGF, degree: number /*int*/, coefficient: number /*int*/): GenericGFPoly {
+    if (degree < 0) {
+      throw new Exception(Exception.IllegalArgumentException);
+    }
+    if (coefficient === 0) {
+      return GenericGFPoly.getZero(field);
+    }
+    const coefficients = new Int32Array(degree + 1);
+    coefficients[0] = coefficient;
+    return new GenericGFPoly(field, coefficients);
   }
 
   public getCoefficients(): Int32Array {
@@ -158,7 +178,7 @@ export default class GenericGFPoly {
       throw new Exception(Exception.IllegalArgumentException, 'GenericGFPolys do not have same GenericGF field');
     }
     if (this.isZero() || other.isZero()) {
-      return this.field.getZero();
+      return GenericGFPoly.getZero(this.field);
     }
     const aCoefficients = this.coefficients;
     const aLength = aCoefficients.length;
@@ -178,7 +198,7 @@ export default class GenericGFPoly {
 
   public multiplyScalar(scalar: number /*int*/): GenericGFPoly {
     if (scalar === 0) {
-      return this.field.getZero();
+      return GenericGFPoly.getZero(this.field);
     }
     if (scalar === 1) {
       return this;
@@ -198,7 +218,7 @@ export default class GenericGFPoly {
       throw new Exception(Exception.IllegalArgumentException);
     }
     if (coefficient === 0) {
-      return this.field.getZero();
+      return GenericGFPoly.getZero(this.field);
     }
     const coefficients = this.coefficients;
     const size = coefficients.length;
@@ -220,7 +240,7 @@ export default class GenericGFPoly {
 
     const field = this.field;
 
-    let quotient: GenericGFPoly = field.getZero();
+    let quotient: GenericGFPoly = GenericGFPoly.getZero(field);
     let remainder: GenericGFPoly = this;
 
     const denominatorLeadingTerm = other.getCoefficient(other.getDegree());
@@ -230,7 +250,7 @@ export default class GenericGFPoly {
       const degreeDifference = remainder.getDegree() - other.getDegree();
       const scale = field.multiply(remainder.getCoefficient(remainder.getDegree()), inverseDenominatorLeadingTerm);
       const term = other.multiplyByMonomial(degreeDifference, scale);
-      const iterationQuotient = field.buildMonomial(degreeDifference, scale);
+      const iterationQuotient = GenericGFPoly.buildMonomial(field, degreeDifference, scale);
       quotient = quotient.addOrSubtract(iterationQuotient);
       remainder = remainder.addOrSubtract(term);
     }

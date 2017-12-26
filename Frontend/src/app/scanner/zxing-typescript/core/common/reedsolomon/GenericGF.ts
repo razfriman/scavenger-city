@@ -16,7 +16,6 @@
 
 /*namespace com.google.zxing.common.reedsolomon {*/
 
-import GenericGFPoly from './GenericGFPoly';
 import Exception from './../../Exception';
 import Integer from './../../util/Integer';
 
@@ -44,8 +43,6 @@ export default class GenericGF {
 
   private expTable: Int32Array;
   private logTable: Int32Array;
-  private zero: GenericGFPoly;
-  private one: GenericGFPoly;
 
   /**
    * Create a representation of GF(size) using the given primitive polynomial.
@@ -79,31 +76,11 @@ export default class GenericGF {
     this.logTable = logTable;
 
     // logTable[0] == 0 but this should never be used
-    this.zero = new GenericGFPoly(this, Int32Array.from([0]));
-    this.one = new GenericGFPoly(this, Int32Array.from([1]));
-  }
 
-  public getZero(): GenericGFPoly {
-    return this.zero;
-  }
 
-  public getOne(): GenericGFPoly {
-    return this.one;
-  }
-
-  /**
-   * @return the monomial representing coefficient * x^degree
-   */
-  public buildMonomial(degree: number /*int*/, coefficient: number /*int*/): GenericGFPoly {
-    if (degree < 0) {
-      throw new Exception(Exception.IllegalArgumentException);
-    }
-    if (coefficient === 0) {
-      return this.zero;
-    }
-    const coefficients = new Int32Array(degree + 1);
-    coefficients[0] = coefficient;
-    return new GenericGFPoly(this, coefficients);
+    ////////////////////////////
+    // this.zero = new GenericGFPoly(this, Int32Array.from([0]));
+    // this.one = new GenericGFPoly(this, Int32Array.from([1]));
   }
 
   /**

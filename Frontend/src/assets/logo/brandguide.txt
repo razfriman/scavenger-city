@@ -1,0 +1,5 @@
+Main text Font: Arkhip
+Main Font Color HEX: #fff
+Slogan Text Font: Pier Regular
+Slogan Font Color HEX: #fff
+Symbol Color HEX: #fff

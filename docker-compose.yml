@@ -1,19 +1,35 @@
-version: '3'
+version: '3.4'
 
 services:
-  nginxproxy:
-    image: eforce21/letsencrypt-nginx-proxy
-    container_name: nginxproxy
-    restart: always
+  https-portal:
+    image: steveltn/https-portal:latest
     ports:
-      - "80:80"
-      - "443:443"
+      - '80:80'
+      - '443:443'
     volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-      - cert_data:/etc/letsencrypt/archive
+      - ./nginx/default.conf.erb:/var/lib/nginx-conf/default.conf.erb:ro
+      - ./nginx/default.ssl.conf.erb:/var/lib/nginx-conf/default.ssl.conf.erb:ro
+      - certs:/var/lib/https-port
     environment:
-      - LETSENCRYPT_EMAIL=raz.friman@razfriman.com
- 
+      DOMAINS: 'scavenger.city -> http://wordpress, app.scavenger.city -> http://frontend, api.scavenger.city -> http://backend'
+      STAGE: local
+
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: ./Dockerfile
+    image: registry.gitlab.com/raz.friman/scavenger-city/scavenger-city-backend:latest
+    ports:
+       - 5000:80
+    depends_on:
+       - "postgres"
+
+  frontend:
+    build:
+      context: ./Frontend
+      dockerfile: ./Dockerfile
+    image: registry.gitlab.com/raz.friman/scavenger-city/scavenger-city-frontend:latest
+
   wordpress_db:
     image: mysql:5.7
     volumes:
@@ -36,33 +52,6 @@ services:
        - pgdata:/var/lib/postgresql/data
      ports:
        - 5432:5432
-
-
-
-  razapp:
-    image: rfriman/raz-app:latest
-    container_name: razapp
-    labels:
-      - "letsencrypt.nocert=true"
-    environment:
-      - VIRTUAL_HOST=www.razfriman.com,razfriman.com
-
-  backend:
-    image: rfriman/scavenger-city-api:latest
-    container_name: backend
-    ports:
-       - 5000:80
-    depends_on:
-       - "postgres"
-    environment:
-      - VIRTUAL_HOST=api.scavenger.city
-
-
-  frontend:
-    image: rfriman/scavenger-city:latest
-    container_name: frontend
-    environment:
-      - VIRTUAL_HOST=app.scavenger.city
   
   wordpress:
     depends_on:
@@ -79,7 +68,7 @@ services:
       WORDPRESS_DB_PASSWORD: wordpress
       VIRTUAL_HOST: "www.scavenger.city,scavenger.city"
 volumes:
+  certs:
   pgdata:
   db_data:
-  wp-content:
-  cert_data:
+  wp-content:  
